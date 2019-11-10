@@ -94,8 +94,9 @@ echo "${#task_names_array[@]} tasks found"
 
 echo -e "\n"
 
-#add a rty tag with the rty_number to all tasks in the new_config file that had the same tag in the old_config file
-#this will cause duplicate tags if tags already exist in the new_config file
+#add a rty tag with the rty_number to all tasks in the new_config file that had the tag in the old_config file
+#this will create duplicate tags if tags already exist in the new_config file for the task
+#either remove tags in the current_config file before running the script or remove duplicates in the new_config file after the script is run  
 for i in "${!task_names_array[@]}"; do
 
 	task_name="${task_names_array[$i]}"
