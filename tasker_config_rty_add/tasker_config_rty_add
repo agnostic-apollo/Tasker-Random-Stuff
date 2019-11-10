@@ -1,0 +1,137 @@
+#!/bin/bash
+
+#replace first line of this script with the following line if using termux
+#!/data/data/com.termux/files/usr/bin/bash
+
+#replace first line of this script with the following line if not using termux like a linux distro
+#!/bin/bash
+
+#title:         tasker_config_rty_add
+#description:   add tasker config missing collision handling rty tags to current config based on an old config
+#author:        agnostic-apollo
+#usage:         run "bash tasker_config_rty_add"
+#date:          9-Nov-2019
+#bash version:  4.0 or higher but has only been test under bash 5.0.3
+#credits:       -
+version=1.0
+
+
+old_config="backup v390.xml" #set path to an old config file that has the correct tags (will not be modified) 
+current_config="backup v412.xml" #set path to the current config file to which the tags should be added (will not be modified) 
+new_config="backup v413.xml" #set path to new output config file
+
+#you can set this to 1 as well and try it, haven't tested
+rty_number=2
+
+#if old_config file is not found
+if [ ! -f "$old_config" ]; then
+	echo "Failed to find old_config \"$old_config\" file"
+	exit 1
+fi
+
+#if current_config file is not found
+if [ ! -f "$current_config" ]; then
+	echo "Failed to find current_config \"$current_config\" file"
+	exit 1
+fi
+
+#create copy of current_config at new_config
+cp -f "$current_config" "$new_config"
+return_value=$?
+if [ $return_value -ne 0 ]; then
+	echo "Failed to copy of current_config \"$current_config\" to new_config \"$new_config\""
+	exit $return_value
+fi
+
+#if new_config file is not found
+if [ ! -f "$new_config" ]; then
+	echo "Failed to find \"$new_config\" file"
+	exit 1
+fi
+
+#find all task names that have rty tag matching rty_number in the old_config file
+#use -E for extended regex
+#sed -E '/^[[:space:]]*<nme>.*<\/nme>[[:space:]]*$ #match task nme line
+#					/{  #if matched start a subscript
+#					#add next 4 lines to pattern space
+#					N;   #ideally pri,rty,stayawake,one more just in case
+#					N;   
+#					N;   
+#					N;   
+#					#if pattern space matches the pattern "<nme>(.*)<\/nme>[[:space:]]+(.*)?[[:space:]]+<rty>'"$rty_number"'<\/rty>(([[:space:]]+.*)?)*", then extract task name and print it
+#					s/[[:space:]]*<nme>(.*)<\/nme>(([[:space:]]+.*)?)*[[:space:]]+<rty>'"$rty_number"'<\/rty>(([[:space:]]+.*)?)*/\1/p;
+#					}'
+#the '(([[:space:]]+.*)?)*' is to match optional non empty lines
+task_names="$(sed -nE '/^[[:space:]]*<nme>.*<\/nme>[[:space:]]*$/{N;N;N;N;s/[[:space:]]*<nme>(.*)<\/nme>(([[:space:]]+.*)?)*[[:space:]]+<rty>'"$rty_number"'<\/rty>(([[:space:]]+.*)?)*/\1/p;}' "$old_config")"
+return_value=$?
+if [ $return_value -ne 0 ]; then
+	echo "Failed to find task_name from tasker config"
+	exit $return_value
+fi
+
+echo "$task_names" | sort -n
+
+#convert task_names variable to an array
+IFS=$'\n' readarray -t task_names_array <<< "$task_names"
+return_value=$?
+if [ $return_value -ne 0 ]; then
+	echo "Failed to convert task_names variable to an array"
+	exit $return_value
+fi
+
+echo -e "\n\n"
+
+#if task_names_array is empty
+if [ "${#task_names_array[@]}" -eq "0" ]; then 
+	echo "No tasks found"
+	exit 0
+fi
+
+echo "${#task_names_array[@]} tasks found"
+
+#uncomment if you just want to print the tasks found of a specific rty_number
+#exit 0
+
+echo -e "\n"
+
+#add a rty tag with the rty_number to all tasks in the new_config file that had the same tag in the old_config file
+#this will cause duplicate tags if tags already exist in the new_config file
+for i in "${!task_names_array[@]}"; do
+
+	task_name="${task_names_array[$i]}"
+
+	echo "Processing task $(( i + 1)) \"$task_name\""
+
+	#escape `[]/$*.^` with backslashes for sed
+	#test with: echo -n "[]/$.*^" | sed -zE -e 's/[][/$*.^]/\\&/g' -e "s/'/'\\\''/g"
+	sed_formatted_task_name="$(echo -n "$task_name" | sed -zE -e 's/[][/$*.^]/\\&/g')"
+	return_value=$?
+	if [ $return_value -ne 0 ]; then
+		echo "Failed to convert task_name \"$task_name\" to sed supported format"
+		exit $return_value
+	fi
+
+	#add rty tag
+	#use -E for extended regex
+	#sed -E '/^[[:space:]]*<Task sr=.*[[:space:]]*$ #match task sr line
+	#					/{  #if matched start a subscript
+	#					#add next 4 lines to pattern space
+	#					N;   #ideally cdate,edate,id,nme
+	#					N;   
+	#					N;   
+	#					N;   
+	#					#if pattern space matches the pattern "(<nme>'"$sed_formatted_task_name"'<\/nme>", then add a newline, 2 tabs and <rty>'"$rty_number"'</rty> after nme line
+	#					s/\(<nme>'"$sed_formatted_task_name"'<\/nme>\)/\1\n\t\t<rty>'"$rty_number"'<\/rty>/;
+	#					}'
+	sed -inE '/^[[:space:]]*<Task sr=.*[[:space:]]*$/{N;N;N;N;s/\(<nme>'"$sed_formatted_task_name"'<\/nme>\)/\1\n\t\t<rty>'"$rty_number"'<\/rty>/;}' "$new_config"
+	return_value=$?
+	if [ $return_value -ne 0 ]; then
+		echo "Failed to find add rty tag to tasker config"
+		exit $return_value
+	fi
+done
+
+echo complete
+
+#print difference of new_config file and current_config file and also show one line above and one line below
+diff -U1 "$new_config" "$current_config"
