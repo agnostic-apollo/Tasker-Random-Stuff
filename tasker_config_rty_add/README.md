@@ -12,7 +12,7 @@ The tasker config stores the collision handling option of each task in the `<rty
 <rty>2</rty> == Run Both Together
 ```
 
-The script finds all tasks with `Run Both Together <rty>2</rty>` tags in an old config file and then adds the same tag to all tasks in the current config file overriding any existing tags of the tasks found. (The previous duplication issue has been fixed)
+The script finds all tasks with `Run Both Together <rty>2</rty>` tags in an old config file and then adds the same tag to all tasks in the current config file overriding any existing `<rty>` tags of the tasks found. (The previous duplication issue has been fixed)
 
 Note that the `<rty>` tags are added before the `<pri>` tags but you can export another backup from tasker to fix the order, it shouldn't matter during importing the new config to tasker.
 
