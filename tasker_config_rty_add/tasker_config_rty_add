@@ -58,11 +58,10 @@ fi
 #					N;   
 #					N;   
 #					N;   
-#					#if pattern space matches the pattern "<nme>(.*)<\/nme>[[:space:]]+(.*)?[[:space:]]+<rty>'"$rty_number"'<\/rty>(([[:space:]]+.*)?)*", then extract task name and print it
-#					s/[[:space:]]*<nme>(.*)<\/nme>(([[:space:]]+.*)?)*[[:space:]]+<rty>'"$rty_number"'<\/rty>(([[:space:]]+.*)?)*/\1/p;
+#					#if pattern space matches the pattern "[[:space:]]*<nme>(.*)<\/nme>.*[[:space:]]+<rty>'"$rty_number"'<\/rty>.*", then extract task name and print it
+#					s/[[:space:]]*<nme>(.*)<\/nme>.*<rty>'"$rty_number"'<\/rty>.*/\1/p;
 #					}'
-#the '(([[:space:]]+.*)?)*' is to match optional non empty lines
-task_names="$(sed -nE '/^[[:space:]]*<nme>.*<\/nme>[[:space:]]*$/{N;N;N;N;s/[[:space:]]*<nme>(.*)<\/nme>(([[:space:]]+.*)?)*[[:space:]]+<rty>'"$rty_number"'<\/rty>(([[:space:]]+.*)?)*/\1/p;}' "$old_config")"
+task_names="$(sed -nE '/^[[:space:]]*<nme>.*<\/nme>[[:space:]]*$/{N;N;N;N;s/[[:space:]]*<nme>(.*)<\/nme>.*<rty>'"$rty_number"'<\/rty>.*/\1/p;}' "$old_config")"
 return_value=$?
 if [ $return_value -ne 0 ]; then
 	echo "Failed to find task_name from tasker config"
@@ -95,8 +94,7 @@ echo "${#task_names_array[@]} tasks found"
 echo -e "\n"
 
 #add a rty tag with the rty_number to all tasks in the new_config file that had the tag in the old_config file
-#this will create duplicate tags if tags already exist in the new_config file for the task
-#either remove tags in the current_config file before running the script or remove duplicates in the new_config file after the script is run  
+#this will override the tags if tags already exist in the new_config file for the task
 for i in "${!task_names_array[@]}"; do
 
 	task_name="${task_names_array[$i]}"
@@ -116,23 +114,29 @@ for i in "${!task_names_array[@]}"; do
 	#use -E for extended regex
 	#sed -E '/^[[:space:]]*<Task sr=.*[[:space:]]*$ #match task sr line
 	#					/{  #if matched start a subscript
-	#					#add next 4 lines to pattern space
-	#					N;   #ideally cdate,edate,id,nme
+	#					#add next 8 lines to pattern space
+	#					N;   #ideally cdate,edate,id,nme,pri,rty,stayawake,one more just in case
 	#					N;   
 	#					N;   
 	#					N;   
+	#					N;   
+	#					N;   
+	#					N;   
+	#					N;
+	#					#if any rty tag already exists, then remove it before adding new one to prevent duplicated
+	#					s/\(<nme>'"$sed_formatted_task_name"'<\/nme>.*\)\n\t\t<rty>.*<\/rty>/\1/;
 	#					#if pattern space matches the pattern "(<nme>'"$sed_formatted_task_name"'<\/nme>", then add a newline, 2 tabs and <rty>'"$rty_number"'</rty> after nme line
 	#					s/\(<nme>'"$sed_formatted_task_name"'<\/nme>\)/\1\n\t\t<rty>'"$rty_number"'<\/rty>/;
 	#					}'
-	sed -inE '/^[[:space:]]*<Task sr=.*[[:space:]]*$/{N;N;N;N;s/\(<nme>'"$sed_formatted_task_name"'<\/nme>\)/\1\n\t\t<rty>'"$rty_number"'<\/rty>/;}' "$new_config"
+	sed -inE '/^[[:space:]]*<Task sr=.*[[:space:]]*$/{N;N;N;N;N;N;N;N;s/\(<nme>'"$sed_formatted_task_name"'<\/nme>.*\)\n\t\t<rty>.*<\/rty>/\1/;s/\(<nme>'"$sed_formatted_task_name"'<\/nme>\)/\1\n\t\t<rty>'"$rty_number"'<\/rty>/;}' "$new_config"
 	return_value=$?
 	if [ $return_value -ne 0 ]; then
-		echo "Failed to find add rty tag to tasker config"
+		echo "Failed to add rty tag to tasker config"
 		exit $return_value
 	fi
 done
 
 echo complete
 
-#print difference of new_config file and current_config file and also show one line above and one line below
-diff -U1 "$new_config" "$current_config"
+#print difference of current_config file and new_config file and also show one line above and one line below
+diff -U1 "$current_config" "$new_config"
