@@ -1,0 +1,713 @@
+<TaskerData sr="" dvi="1" tv="5.9.beta.9">
+	<Task sr="task489">
+		<cdate>1529014883082</cdate>
+		<edate>1573740359390</edate>
+		<id>489</id>
+		<nme>MX Player Video Start</nme>
+		<pri>100</pri>
+		<Action sr="act0" ve="7">
+			<code>300</code>
+			<label>A task that sends an intent to MX Player to start a video with optional subtitles.
+
+Set the mx_player_package_name in the variable set action at the start of this task depending depending on your MX Player Version.
+
+The video file must exist at video_path passed. It must be an absolute unix file path.
+
+The subtitle file must exist at subtitle_path if passed. It must be an absolute unix file path.
+
+Check "https://sites.google.com/site/mxvpen/api" for more information on how to send an intent to MX Player.
+
+Input %par1:
+"
+video_path
+"
+
+Input %par2:
+"
+subtitle_path #optional
+"
+
+Returns:
+"
+result_code
+"
+
+If the intent is sent successfully, result_code will contain "0".
+Otherwise it will contain an appropriate exit code.</label>
+		</Action>
+		<Action sr="act1" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%task_name</Str>
+			<Str sr="arg1" ve="3">MX Player Video Start</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act10" ve="7">
+			<code>126</code>
+			<Str sr="arg0" ve="3">1</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act11" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act12" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%video_path_escaped</Str>
+			<Str sr="arg1" ve="3">%video_path</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act13" ve="7">
+			<code>598</code>
+			<label>replace all single quotes (') with ('\'')</label>
+			<Str sr="arg0" ve="3">%video_path_escaped</Str>
+			<Str sr="arg1" ve="3">'</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="1"/>
+			<Int sr="arg4" val="0"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Str sr="arg7" ve="3">'\\''</Str>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%video_path_escaped</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act14" ve="7">
+			<code>300</code>
+			<label>Check If Video File Exists At video_path</label>
+		</Action>
+		<Action sr="act15" ve="7">
+			<code>123</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">[ -f '%video_path_escaped' ] &amp;&amp; echo 0 || echo 1</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="1"/>
+			<Str sr="arg3" ve="3">%output</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+		</Action>
+		<Action sr="act16" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%output</lhs>
+					<op>1</op>
+					<rhs>0</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act17" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Failed To Find Video File At "%video_path"</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act18" ve="7">
+			<code>126</code>
+			<Str sr="arg0" ve="3">1</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act19" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act2" ve="7">
+			<code>547</code>
+			<label>Set this to "com.mxtech.videoplayer.pro" if you you using MX Player Pro version or set this to "com.mxtech.videoplayer.ad" if you are using MX Player Ad version</label>
+			<Str sr="arg0" ve="3">%mx_player_package_name</Str>
+			<Str sr="arg1" ve="3">com.mxtech.videoplayer.ad</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act20" ve="7">
+			<code>37</code>
+			<label>If set_subtitle Is Set To 1</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%set_subtitle</lhs>
+					<op>0</op>
+					<rhs>1</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act21" ve="7">
+			<code>300</code>
+			<label>Check If subtitle_path Is An Absolute Path</label>
+		</Action>
+		<Action sr="act22" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%subtitle_path</lhs>
+					<op>5</op>
+					<rhs>^[\/].*[^\/]$</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act23" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Subtitle Path "%subtitle_path" Is Not An Absolute Path</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act24" ve="7">
+			<code>126</code>
+			<Str sr="arg0" ve="3">1</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act25" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act26" ve="7">
+			<code>300</code>
+			<label>Check If Subtitle File Exists At subtitle_path</label>
+		</Action>
+		<Action sr="act27" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%subtitle_path_escaped</Str>
+			<Str sr="arg1" ve="3">%subtitle_path</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act28" ve="7">
+			<code>598</code>
+			<label>replace all single quotes (') with ('\'')</label>
+			<Str sr="arg0" ve="3">%subtitle_path_escaped</Str>
+			<Str sr="arg1" ve="3">'</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="1"/>
+			<Int sr="arg4" val="0"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Str sr="arg7" ve="3">'\\''</Str>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%subtitle_path_escaped</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act29" ve="7">
+			<code>123</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">[ -f '%subtitle_path_escaped' ] &amp;&amp; echo 0 || echo 1</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Str sr="arg3" ve="3">%output</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+		</Action>
+		<Action sr="act3" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%mx_player_activity_name</Str>
+			<Str sr="arg1" ve="3">%mx_player_package_name.ActivityScreen</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act30" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%output</lhs>
+					<op>1</op>
+					<rhs>0</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act31" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Failed To Find Subtitle File At "%subtitle_path"</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act32" ve="7">
+			<code>126</code>
+			<Str sr="arg0" ve="3">1</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act33" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act34" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act35" ve="7">
+			<code>300</code>
+			<label>Convert Video Path To Android.Net URI</label>
+		</Action>
+		<Action sr="act36" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">video_file</Str>
+			<Str sr="arg1" ve="3">File</Str>
+			<Str sr="arg2" ve="3">new
+{File} (String)</Str>
+			<Str sr="arg3" ve="3">%video_path</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act37" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">video_uri</Str>
+			<Str sr="arg1" ve="3">Uri</Str>
+			<Str sr="arg2" ve="3">fromFile
+{Uri} (File)</Str>
+			<Str sr="arg3" ve="3">video_file</Str>
+			<Str sr="arg4" ve="3">%tasker_file_provider</Str>
+			<Str sr="arg5" ve="3">video_file</Str>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act38" ve="7">
+			<code>300</code>
+			<label>Create Intent For MX Player</label>
+		</Action>
+		<Action sr="act39" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%intent_type</Str>
+			<Str sr="arg1" ve="3">android.intent.action.VIEW</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act4" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%video_path</Str>
+			<Str sr="arg1" ve="3">%par1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act40" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">intent</Str>
+			<Str sr="arg1" ve="3">Intent</Str>
+			<Str sr="arg2" ve="3">new
+{Intent} (String)</Str>
+			<Str sr="arg3" ve="3">%intent_type</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act41" ve="7">
+			<code>300</code>
+			<label>Set Intent Package And Class</label>
+		</Action>
+		<Action sr="act42" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3"/>
+			<Str sr="arg1" ve="3">intent</Str>
+			<Str sr="arg2" ve="3">setPackage
+{Intent} (String)</Str>
+			<Str sr="arg3" ve="3">%mx_player_package_name</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act43" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3"/>
+			<Str sr="arg1" ve="3">intent</Str>
+			<Str sr="arg2" ve="3">setClassName
+{Intent} (String, String)</Str>
+			<Str sr="arg3" ve="3">%mx_player_package_name</Str>
+			<Str sr="arg4" ve="3">%mx_player_activity_name</Str>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act44" ve="7">
+			<code>37</code>
+			<label>If Android Version Is Nougat Or Higher</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%SDK</lhs>
+					<op>7</op>
+					<rhs>23</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act45" ve="7">
+			<code>300</code>
+			<label>Convert Video Path To FileProvider URI</label>
+		</Action>
+		<Action sr="act46" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%tasker_file_provider</Str>
+			<Str sr="arg1" ve="3">net.dinglisch.android.taskerm.fileprovider</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act47" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">file_provider_video_uri</Str>
+			<Str sr="arg1" ve="3">android.support.v4.content.FileProvider</Str>
+			<Str sr="arg2" ve="3">a
+{Uri} (Context, String, File)</Str>
+			<Str sr="arg3" ve="3">CONTEXT</Str>
+			<Str sr="arg4" ve="3">%tasker_file_provider</Str>
+			<Str sr="arg5" ve="3">video_file</Str>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act48" ve="7">
+			<code>664</code>
+			<label>Set Video FileProvider URI To Intent Data Field</label>
+			<Str sr="arg0" ve="3"/>
+			<Str sr="arg1" ve="3">intent</Str>
+			<Str sr="arg2" ve="3">setData
+{Intent} (Uri)</Str>
+			<Str sr="arg3" ve="3">file_provider_video_uri</Str>
+			<Str sr="arg4" ve="3">%mx_player_activity_name</Str>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act49" ve="7">
+			<code>664</code>
+			<label>Set FLAG_GRANT_READ_URI_PERMISSION Intent Flag</label>
+			<Str sr="arg0" ve="3"/>
+			<Str sr="arg1" ve="3">intent</Str>
+			<Str sr="arg2" ve="3">setFlags
+{Intent} (int)</Str>
+			<Str sr="arg3" ve="3">1</Str>
+			<Str sr="arg4" ve="3">%mx_player_activity_name</Str>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act5" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%subtitle_path</Str>
+			<Str sr="arg1" ve="3">%par2</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act50" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act51" ve="7">
+			<code>664</code>
+			<label>Set Video Android.Net URI To Data</label>
+			<Str sr="arg0" ve="3"/>
+			<Str sr="arg1" ve="3">intent</Str>
+			<Str sr="arg2" ve="3">setData
+{Intent} (Uri)</Str>
+			<Str sr="arg3" ve="3">video_uri</Str>
+			<Str sr="arg4" ve="3">%mx_player_activity_name</Str>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act52" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act53" ve="7">
+			<code>300</code>
+			<label>Add Video URI To Intent Extra video_list Field</label>
+		</Action>
+		<Action sr="act54" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">videos_array_list</Str>
+			<Str sr="arg1" ve="3">Parcelable[]</Str>
+			<Str sr="arg2" ve="3">new
+{Parcelable[]} (int)</Str>
+			<Str sr="arg3" ve="3">1</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act55" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">videos_array_list[0]</Str>
+			<Str sr="arg1" ve="3">video_uri</Str>
+			<Str sr="arg2" ve="3">assign
+{Object} ()</Str>
+			<Str sr="arg3" ve="3">%subtitle_uri</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act56" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3"/>
+			<Str sr="arg1" ve="3">intent</Str>
+			<Str sr="arg2" ve="3">putExtra
+{Intent} (String, Parcelable[])</Str>
+			<Str sr="arg3" ve="3">video_list</Str>
+			<Str sr="arg4" ve="3">videos_array_list</Str>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act57" ve="7">
+			<code>37</code>
+			<label>If set_subtitle Is Set To 1</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%set_subtitle</lhs>
+					<op>0</op>
+					<rhs>1</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act58" ve="7">
+			<code>300</code>
+			<label>Convert Subtitle Path To Android.Net URI</label>
+		</Action>
+		<Action sr="act59" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">subtitle_file</Str>
+			<Str sr="arg1" ve="3">File</Str>
+			<Str sr="arg2" ve="3">new
+{File} (String)</Str>
+			<Str sr="arg3" ve="3">%subtitle_path</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act6" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%set_subtitle</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>And</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%subtitle_path</lhs>
+					<op>1</op>
+					<rhs>\%subtitle_path</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%subtitle_path</lhs>
+					<op>1</op>
+					<rhs>\%par2</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act60" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">subtitle_uri</Str>
+			<Str sr="arg1" ve="3">Uri</Str>
+			<Str sr="arg2" ve="3">fromFile
+{Uri} (File)</Str>
+			<Str sr="arg3" ve="3">subtitle_file</Str>
+			<Str sr="arg4" ve="3">%tasker_file_provider</Str>
+			<Str sr="arg5" ve="3">video_file</Str>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act61" ve="7">
+			<code>300</code>
+			<label>Add Subtitle Android.Net URI To Intent Extra subs Field</label>
+		</Action>
+		<Action sr="act62" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">subtitles_array_list</Str>
+			<Str sr="arg1" ve="3">Parcelable[]</Str>
+			<Str sr="arg2" ve="3">new
+{Parcelable[]} (int)</Str>
+			<Str sr="arg3" ve="3">1</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act63" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">subtitles_array_list[0]</Str>
+			<Str sr="arg1" ve="3">subtitle_uri</Str>
+			<Str sr="arg2" ve="3">assign
+{Object} ()</Str>
+			<Str sr="arg3" ve="3">%subtitle_uri</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act64" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3"/>
+			<Str sr="arg1" ve="3">intent</Str>
+			<Str sr="arg2" ve="3">putExtra
+{Intent} (String, Parcelable[])</Str>
+			<Str sr="arg3" ve="3">subs</Str>
+			<Str sr="arg4" ve="3">subtitles_array_list</Str>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act65" ve="7">
+			<code>300</code>
+			<label>Add Subtitle Android.Net URI To Intent Extra subs.enable Field</label>
+		</Action>
+		<Action sr="act66" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">enable_subtitles_array_list</Str>
+			<Str sr="arg1" ve="3">Parcelable[]</Str>
+			<Str sr="arg2" ve="3">new
+{Parcelable[]} (int)</Str>
+			<Str sr="arg3" ve="3">1</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act67" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">enable_subtitles_array_list[0]</Str>
+			<Str sr="arg1" ve="3">subtitle_uri</Str>
+			<Str sr="arg2" ve="3">assign
+{Object} ()</Str>
+			<Str sr="arg3" ve="3">%subtitle_uri</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act68" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3"/>
+			<Str sr="arg1" ve="3">intent</Str>
+			<Str sr="arg2" ve="3">putExtra
+{Intent} (String, Parcelable[])</Str>
+			<Str sr="arg3" ve="3">subs.enable</Str>
+			<Str sr="arg4" ve="3">enable_subtitles_array_list</Str>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act69" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act7" ve="7">
+			<code>300</code>
+			<label>Check If video_path Is An Absolute Path</label>
+		</Action>
+		<Action sr="act70" ve="7">
+			<code>664</code>
+			<on>false</on>
+			<Str sr="arg0" ve="3">%intent_string</Str>
+			<Str sr="arg1" ve="3">intent</Str>
+			<Str sr="arg2" ve="3">toString
+{String} ()</Str>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act71" ve="7">
+			<code>548</code>
+			<on>false</on>
+			<Str sr="arg0" ve="3">%intent_string</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act72" ve="7">
+			<code>300</code>
+			<label>Start MX Player Activity</label>
+		</Action>
+		<Action sr="act73" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3"/>
+			<Str sr="arg1" ve="3">CONTEXT</Str>
+			<Str sr="arg2" ve="3">startActivity
+{} (Intent)</Str>
+			<Str sr="arg3" ve="3">intent</Str>
+			<Str sr="arg4" ve="3">%mx_player_activity_name</Str>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act74" ve="7">
+			<code>126</code>
+			<Str sr="arg0" ve="3">0</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act8" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%video_path</lhs>
+					<op>5</op>
+					<rhs>^[\/].*[^\/]$</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act9" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Video Path "%video_path" Is Not An Absolute Path</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+	</Task>
+</TaskerData>
