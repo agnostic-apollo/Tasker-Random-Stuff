@@ -1,6 +1,6 @@
 # Tasker Config Names Extractor
 
-A helper script to extract tasker profile, scene or task names from tasker config or project file.
+A helper script to extract tasker profile, scene or task names from a tasker config or project file.
 
 ## Usage:
 
