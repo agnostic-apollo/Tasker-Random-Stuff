@@ -1,0 +1,273 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+#replace first line of this script with the following line if using termux
+#!/data/data/com.termux/files/usr/bin/bash
+
+#replace first line of this script with the following line if not using termux like a linux distro
+#!/bin/bash
+
+#title:         tasker_config_names_extractor
+#description:   extract names of profiles, scenes or tasks
+#author:        agnostic-apollo
+#usage:         run "bash tasker_config_names_extractor -p|s|t tasker_file"
+#date:          15-Nov-2019
+#bash version:  4.0 or higher
+#credits:       -
+version=1.0
+
+#extract all profile, scene and task names from tasker_file
+#tasker_file="config.xml"; echo -e "Profiles:"; bash tasker_config_names_extractor -p "$tasker_file"; echo -e "\nScenes:"; bash tasker_config_names_extractor -s "$tasker_file"; echo -e "\nTasks:"; bash tasker_config_names_extractor -t "$tasker_file";
+
+#setup info:
+#the rclone_mounti file should be placed in termux bin directory "/data/data/com.termux/files/usr/bin"
+#it should have termux uid:gid ownership and have executable (700) permission before it can be run in the termux terminal
+#
+#1. copy the file to termux bin directory
+#either "cd" to the download/extraction directory and run following commands
+#cat tasker_config_names_extractor > /data/data/com.termux/files/usr/bin/tasker_config_names_extractor
+#or
+#use a file browser like root explorer to copy the file to the termux bin directory
+#
+#2. set correct ownership and permission
+#either run following commands, requires su binary to be in PATH
+#export termux_bin_path="/data/data/com.termux/files/usr/bin"; export owner="$(stat -c "%u" "$termux_bin_path")"; for f in tasker_config_names_extractor rclone_mounti mounti bindfs; do if [ -f "$termux_bin_path/$f" ]; then su -c "chown $owner:$owner \"$termux_bin_path/$f\" && chmod 700 \"$termux_bin_path/$f\""; fi; done;
+#or
+#manually set them with your file browser
+
+#define user modifiable variables start
+
+
+tasker_config_names_extractor_args_verbose_level=0 #set this to "1" manually, if you want to debug arguments received
+
+#define user modifiable variables end
+
+
+#define default variables start
+#do not modify below values unless you know what you are doing
+
+extraction_mode="" #default to none
+tasker_file="" #default to none
+tasker_config_names_extractor_verbose_level=0 #default to log level 0
+
+#set regexes for validation
+valid_number_regex='^[0-9]+$'
+valid_absolute_path_regex='^(/[^/]+)+$'
+
+#define default variables end
+
+
+[[ x"${BASH_SOURCE[0]}" == x"$0" ]] && tasker_config_names_extractor_exit_command="exit" || tasker_config_names_extractor_exit_command="return"
+
+function tasker_config_names_extractor_log () { local log_level="${1}"; shift; if [[ $tasker_config_names_extractor_verbose_level -ge $log_level ]]; then echo "$@"; fi }
+function tasker_config_names_extractor_log_literal () { local log_level="${1}"; shift; if [[ $tasker_config_names_extractor_verbose_level -ge $log_level ]]; then echo -e "$@"; fi }
+function tasker_config_names_extractor_log_errors () { echo "$@" 1>&2; }
+function tasker_config_names_extractor_log_args () { if [[ $tasker_config_names_extractor_args_verbose_level -ge "1" ]]; then echo "$@"; fi }
+function tasker_config_names_extractor_log_arg_errors () { echo "$@" 1>&2; }
+
+
+tasker_config_names_extractor_main() {
+
+	local return_value
+
+	#process the command or options passed to tasker_config_names_extractor
+	process_tasker_config_names_extractor_parameters "$@"
+
+	#start tasker_config_names_extractor
+	tasker_config_names_extractor
+	return_value=$?
+	if [ $return_value -ne 0 ]; then
+		tasker_config_names_extractor_log_literal 1 "\ntasker_config_names_extractor failed"
+	else
+		tasker_config_names_extractor_log_literal 1 "\ntasker_config_names_extractor successful"
+	fi
+
+	$tasker_config_names_extractor_exit_command $return_value
+
+}
+
+tasker_config_names_extractor() {
+
+	local return_value
+
+	tasker_config_names_extractor_log_literal 1 "\nStarting tasker_config_names_extractor with extraction_mode \"$extraction_mode\""
+
+	tasker_config_names_extractor_log 2 "extraction_mode = \"$extraction_mode\""
+	tasker_config_names_extractor_log 2 "tasker_file = \"$tasker_file\""
+
+
+	#if extraction_mode set is empty or not valid
+	if [ -z "$extraction_mode" ] || \
+		[[ "$extraction_mode" == *,* ]] || \
+			[[ ! ",profiles,scenes,tasks," == *",$extraction_mode,"* ]]; then
+		tasker_config_names_extractor_log_errors "The extraction_mode  \"$extraction_mode\" set is invalid"
+		return 1
+	fi
+
+	#if tasker_file is not set
+	if [ -z "$tasker_file" ]; then
+		tasker_config_names_extractor_log_errors "tasker_file is not set which is required by \"tasker_config_names_extractor\" function"
+		return 1
+	fi
+
+	#if tasker_file file is not found
+	if [ ! -f "$tasker_file" ]; then
+		tasker_config_names_extractor_log_arg_errors "Failed to find tasker_file at \"$tasker_file\""
+		return 1
+	fi
+
+	#if extraction_mode is "profiles"
+	if [[ "$extraction_mode" == "profiles" ]]; then
+		root_tag="Profile"
+	#if extraction_mode is "scenes"
+	elif [[ "$extraction_mode" == "scenes" ]]; then
+		root_tag="Scene"
+	#if extraction_mode is "tasks"
+	elif [[ "$extraction_mode" == "tasks" ]]; then
+		root_tag="Task"
+	#else exit with error
+	else
+		tasker_config_names_extractor_log_errors "extraction_mode \"$extraction_mode\" not handled"
+		return 1
+	fi
+
+	#find all names
+	#use -E for extended regex
+	#sed -E '/^[[:space:]]*<'"$root_tag"' sr=.*[[:space:]]*$ #match root_tag sr line
+	#					/{  #if matched start a subscript
+	#					#add next 8 lines to pattern space
+	#					N;
+	#					N;   
+	#					N;   
+	#					N;   
+	#					N;   
+	#					N;   
+	#					N;   
+	#					N;
+	#					#if pattern space matches the pattern "[[:space:]]*<nme>(.*)<\/nme>", then extract name and print it
+	#					s/[[:space:]]*<nme>(.*)<\/nme>/\1/p;
+	#					}'
+	names="$(sed -nE '/^[[:space:]]*<'"$root_tag"' sr=.*[[:space:]]*$/{N;N;N;N;N;N;N;N;s/.*<nme>(.*)<\/nme>.*/\1/p;}' "$tasker_file")"
+	return_value=$?
+	if [ $return_value -ne 0 ]; then
+		tasker_config_names_extractor_log_errors "Failed to find names of $extraction_mode from tasker_file"
+		return $return_value
+	fi
+
+	echo "$names" | sort -n
+	return_value=$?
+
+	return $return_value
+
+}
+
+process_tasker_config_names_extractor_parameters () {
+
+	#parse options to tasker_config_names_extractor command
+	while getopts ":hvpst-:" opt; do
+		case ${opt} in
+			-)
+				case "${OPTARG}" in
+					help)
+						tasker_config_names_extractor_log_args "Parsing option: '--${OPTARG%=*}'"
+						show_tasker_config_names_extractor_help
+						$tasker_config_names_extractor_exit_command 0
+						;;
+					help*)
+						tasker_config_names_extractor_log_arg_errors "Invalid option or parameters not allowed for option: '--${OPTARG%=*}'"
+						exit_tasker_config_names_extractor_on_error
+						;;
+					version)
+						tasker_config_names_extractor_log_args "Parsing option: '--${OPTARG%=*}'"
+						echo "$version"
+						$tasker_config_names_extractor_exit_command 0
+						;;
+					version*)
+						tasker_config_names_extractor_log_arg_errors "Invalid option or parameters not allowed for option: '--${OPTARG%=*}'"
+						exit_tasker_config_names_extractor_on_error
+						;;
+					*)
+						tasker_config_names_extractor_log_arg_errors "Unknown option '--${OPTARG%=*}'"
+						exit_tasker_config_names_extractor_on_error
+						;;
+				esac
+				;;
+			h)
+				tasker_config_names_extractor_log_args "Parsing option: '-${opt}'"
+				show_tasker_config_names_extractor_help
+				$tasker_config_names_extractor_exit_command 0
+				;;
+			v)
+				tasker_config_names_extractor_log_args "Parsing option: '-${opt}'"
+				if [ "$tasker_config_names_extractor_verbose_level" -lt "2" ]; then 
+					tasker_config_names_extractor_verbose_level=$((tasker_config_names_extractor_verbose_level+1)); 
+				else
+					tasker_config_names_extractor_log_arg_errors "Invalid Option, max verbose level is 2"
+					exit_tasker_config_names_extractor_on_error
+				fi 
+				;;	
+			p)
+				tasker_config_names_extractor_log_args "Parsing option: '-${opt}'"
+				extraction_mode="profiles"
+				;;
+			s)
+				tasker_config_names_extractor_log_args "Parsing option: '-${opt}'"
+				extraction_mode="scenes"
+				;;		
+			t)
+				tasker_config_names_extractor_log_args "Parsing option: '-${opt}'"
+				extraction_mode="tasks"
+				;;
+			\?)
+				tasker_config_names_extractor_log_arg_errors "Unknown option: '-${OPTARG}'"
+				exit_tasker_config_names_extractor_on_error
+				;;
+		esac
+	done
+	shift $((OPTIND -1)) #remove already processed arguments from argument list
+
+	#if no arg passed
+	if [ $# -eq 0 ]; then
+		show_tasker_config_names_extractor_help
+		$tasker_config_names_extractor_exit_command 0
+	#if only 1 arg: tasker_file
+	elif [ $# -eq 1 ]; then
+		tasker_file="$(echo "$1")" #remove trailing newlines
+	else
+		tasker_config_names_extractor_log_arg_errors "Invalid number of args passed. \"tasker_config_names_extractor\" command expects 1 arg: tasker_file"
+		$tasker_config_names_extractor_exit_command 1
+	fi
+
+}
+
+show_tasker_config_names_extractor_help () {
+
+echo "
+Usage:
+  tasker_config_names_extractor [ -h | --help ]
+  tasker_config_names_extractor [ --version ]
+  tasker_config_names_extractor [command_options] tasker_file
+
+
+  Available command_options:
+  [ -h | --help ]    display this help screen
+  [ --version ]      display version
+  [ -v | -vv ]       set verbose level to 1 or 2
+  [ -p ]             extract profile names
+  [ -s ]             extract task names
+  [ -t ]             extract scene names
+
+
+set verbose level to 1 or 2 to get more info when running tasker_config_names_extractor command.
+"
+
+}
+
+exit_tasker_config_names_extractor_on_error () {
+
+	show_tasker_config_names_extractor_help
+	$tasker_config_names_extractor_exit_command 1
+
+}
+
+#run tasker_config_names_extractor_main function
+[[ x"${BASH_SOURCE[0]}" == x"$0" ]] && tasker_config_names_extractor_main "$@"; $tasker_config_names_extractor_exit_command 0;
