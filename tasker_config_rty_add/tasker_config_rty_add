@@ -128,7 +128,7 @@ for i in "${!task_names_array[@]}"; do
 	#					#if pattern space matches the pattern "(<nme>'"$sed_formatted_task_name"'<\/nme>", then add a newline, 2 tabs and <rty>'"$rty_number"'</rty> after nme line
 	#					s/\(<nme>'"$sed_formatted_task_name"'<\/nme>\)/\1\n\t\t<rty>'"$rty_number"'<\/rty>/;
 	#					}'
-	sed -inE '/^[[:space:]]*<Task sr=.*[[:space:]]*$/{N;N;N;N;N;N;N;N;s/\(<nme>'"$sed_formatted_task_name"'<\/nme>.*\)\n\t\t<rty>.*<\/rty>/\1/;s/\(<nme>'"$sed_formatted_task_name"'<\/nme>\)/\1\n\t\t<rty>'"$rty_number"'<\/rty>/;}' "$new_config"
+	sed -i'' -E '/^[[:space:]]*<Task sr=.*[[:space:]]*$/{N;N;N;N;N;N;N;N;s/(<nme>'"$sed_formatted_task_name"'<\/nme>.*)\n\t\t<rty>.*<\/rty>/\1/;s/(<nme>'"$sed_formatted_task_name"'<\/nme>)/\1\n\t\t<rty>'"$rty_number"'<\/rty>/;}' "$new_config"
 	return_value=$?
 	if [ $return_value -ne 0 ]; then
 		echo "Failed to add rty tag to tasker config"
