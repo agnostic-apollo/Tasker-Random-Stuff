@@ -1,4 +1,4 @@
-# Tasker Config <rty> Add
+# Tasker Config rty Add
 
 A helper script to fix tasker configs of people who updated from Tasker v5.8.5 to v5.9.beta.3 and had their collision handling messed up because the update removed all `<rty>2</rty>` tags.
 
