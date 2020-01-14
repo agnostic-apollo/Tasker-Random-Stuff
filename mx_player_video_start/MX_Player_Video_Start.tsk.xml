@@ -1,10 +1,11 @@
-<TaskerData sr="" dvi="1" tv="5.9.rc">
+<TaskerData sr="" dvi="1" tv="5.9.1">
 	<Task sr="task489">
 		<cdate>1529014883082</cdate>
-		<edate>1573876023423</edate>
+		<edate>1579037714220</edate>
 		<id>489</id>
 		<nme>MX Player Video Start</nme>
 		<pri>100</pri>
+		<rty>2</rty>
 		<Action sr="act0" ve="7">
 			<code>300</code>
 			<label>A task that sends an intent to MX Player to start a video with optional subtitles.
@@ -18,6 +19,7 @@ The subtitle file must exist at subtitle_path if passed. It must be an absolute 
 If the subtitle_path is not passed, then MX Player will automatically detect if a subtitle file exists in the video directory with same filename or if subtitles are embedded in the video itself. Passing subtitle_path is likely only to be necessary if the subtitle file has a different filename than the video or if it's in a different directory than the video.
 
 Check "https://sites.google.com/site/mxvpen/api" for more information on how to send an intent to MX Player.
+
 
 Input %par1:
 "
@@ -34,7 +36,7 @@ Returns:
 result_code
 "
 
-If the intent is sent successfully, result_code will contain "0".
+If the intent is sent successfully, then result_code will contain "0".
 Otherwise it will contain an appropriate exit code or will not be set if there are exceptions.</label>
 		</Action>
 		<Action sr="act1" ve="7">

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 
 #replace first line of this script with the following line if using termux
 #!/data/data/com.termux/files/usr/bin/bash
@@ -13,7 +13,7 @@
 #date:          9-Nov-2019
 #bash version:  4.0 or higher but has only been test under bash 5.0.3
 #credits:       -
-version=1.0
+version=1.0.0
 
 
 old_config="backup v390.xml" #set path to an old config file that has the correct tags (will not be modified) 

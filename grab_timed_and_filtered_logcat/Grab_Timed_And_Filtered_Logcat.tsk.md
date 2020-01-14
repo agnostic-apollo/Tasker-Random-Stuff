@@ -1,8 +1,8 @@
-# Grab Timed_And_Filtered_Logcat
+# Grab Timed And Filtered Logcat
 
 ## Export Info:
-**Tasker Version:** `5.9`
-**Timestamp:** `2020-01-09 05.34.42`
+**Tasker Version:** `5.9.1`  
+**Timestamp:** `2020-01-14 19.22.17`  
 
 
 
@@ -31,14 +31,14 @@
 
 ## Tasks Info:
 
-**#:** `1`
-**Name:** `Grab Timed And Filtered Logcat`
-**ID:** `865`
-**Collision Handling:** `Abort New Task`
-**Keep Device Awake:** `false`
+**#:** `1`  
+**Name:** `Grab Timed And Filtered Logcat`  
+**ID:** `865`  
+**Collision Handling:** `Abort New Task`  
+**Keep Device Awake:** `false`  
 **Help:**
 ```
-A tasks that allows a user to capture logcats starting from the current time for the next x amount of seconds. It also allows capturing logcat entries of specific tags and also the usage of regexes to filter specific entries.
+A tasks that allows user to capture logcats starting from current time for the next x amount of seconds. It also allows capturing logcat entries of specific tags and application of regex to filter specific entries.
 
 The Tasker "Located Entry" Profile capturing mechanism sometimes doesn't allow the user to see the exact flow of logcat entries in a user friendly way specially if a lot of entries are captured. Moreover, sometimes the user doesn't know what filters to apply without seeing all the logcat entries first.
 
@@ -65,6 +65,10 @@ If only logcat_tag_filter is enabled, then the logcat_tag_filter will be passed 
 If only logcat_filter_regex is enabled, then the logcat_tag_filter will not be passed to the logcat command and only the logcat_filter_regex will applied to the logcat output. Both the unfiltered_logcat_file and filtered_logcat_file files will be created.
 
 If both are disabled, then the logcat_tag_filter will not be passed to the logcat command and the logcat_filter_regex will also not be applied. Only the unfiltered_logcat_file file will be created.
+
+To use the task, make a desktop shortcut if required or use the Tasker task play button to run the task, then do things for which you want to capture logcat entries for. Do not do extra things. Moreover, you might need to wait a couple of seconds for things to be added to logcat so finish doing what you want to capture entries for a few seconds before the timeout expires and then wait for it to expire.
+
+If the logcat command fails with a non-zero exit code but you still see the logcat output flashed, then this may be because the timeout command killed the logcat command and its exiting with a non-zero exit to show that. Just add another "And %exit_code neq code_you_received" in the if conditional statements of the exit_code after the logcat command with the anchor "If logcat command failed". Currently exit codes 124, 142 and 257 are ignored but additional ones may need to be ignored for some devices.
 
 
 This task does not take any parameters or return anything.

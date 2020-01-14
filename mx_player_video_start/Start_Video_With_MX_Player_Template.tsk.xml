@@ -1,7 +1,7 @@
-<TaskerData sr="" dvi="1" tv="5.9.beta.9">
+<TaskerData sr="" dvi="1" tv="5.9.1">
 	<Task sr="task777">
 		<cdate>1573739133259</cdate>
-		<edate>1573739557957</edate>
+		<edate>1579037722942</edate>
 		<id>777</id>
 		<nme>Start Video With MX Player Template</nme>
 		<pri>100</pri>
@@ -13,6 +13,7 @@ video_path should be set to video path.
 
 subtitle should be set to subtitle path if needed, otherwise unset it.
 
+
 This task does not take any parameters.
 
 Returns:
@@ -20,7 +21,7 @@ Returns:
 result
 "
 
-If the "MX Player Video Start" task is called, result will contain whatever is returned by it.
+If the "MX Player Video Start" task is called, then result will contain whatever is returned by it.
 Otherwise it will contain an appropriate exit code.</label>
 		</Action>
 		<Action sr="act1" ve="7">
