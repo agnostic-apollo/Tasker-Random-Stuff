@@ -46,7 +46,7 @@ This project allows a user to capture logcats starting from the current time for
 
 Set/Update variables in the `Set User Modifiable Variables*` section of the task and then run it either with a desktop shortcut or through Tasker task play button.
 
-Check [Grab_Timed_And_Filtered_Logcat](Grab_Timed_And_Filtered_Logcat.tsk.md) Task Info file for more info on how to use the task.
+Check [Grab_Timed_And_Filtered_Logcat Task Info](Grab_Timed_And_Filtered_Logcat.tsk.md) file for more info on how to use the task.
 ##
 
 
