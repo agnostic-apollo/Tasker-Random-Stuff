@@ -94,4 +94,4 @@ Check [CHANGELOG.md](../CHANGELOG.md) file for the **Changelog**.
 
 [Tasker App]: https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm
 [MX Player Ad App]: https://play.google.com/store/apps/details?id=com.mxtech.videoplayer.ad
-[MX Player Pro App]: https://play.google.com/store/apps/details?id=com.mxtech.videoplayer.Pro
+[MX Player Pro App]: https://play.google.com/store/apps/details?id=com.mxtech.videoplayer.pro
