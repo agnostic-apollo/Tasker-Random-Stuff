@@ -50,7 +50,7 @@ The `MX Player Video Start` task can be used to send an intent to MX Player Vide
 
 The `Start Video With MX Player Template` template task can be used to call the `MX Player Video Start` task. Set `%video_path` and optionally set the `%subtitle_path` and run the task. You may disable the `subtitle_path` variable set action if subtitles do not need to be passed.
 
-Check [MX Player Video Start Task Info](MX_Player_Video_Start.tsk.md) and [Start Video With MX Player Template Task Info](Start_Video_With_MX_Player_Template.tsk.md) files for more info on how to use the tasks.
+Check [MX_Player_Video_Start](MX_Player_Video_Start.tsk.md) and [Start_Video_With_MX_Player_Template](Start_Video_With_MX_Player_Template.tsk.md) Task Info files for more info on how to use the tasks.
 ##
 
 
