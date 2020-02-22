@@ -2,8 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-**Version Number Format:** `major.minor.patch`
-**Release Date Format:** `yyyy-mm-dd`
+**Version Number Format:** `major.minor.patch`  
+**Release Date Format:** `yyyy-mm-dd`  
 
 **Types of Changes:**
 - **Added** for new features.
@@ -13,11 +13,17 @@ All notable changes to this project will be documented in this file.
 - **Fixed** for any bug fixes.
 - **Security** in case of vulnerabilities.
 ##
-
+Extract Task Caller Array Values
 
 ## [Unreleased]
 
 `-`
+
+
+## [1.1.0] - 2020-02-22
+
+### Added
+- Added [Extract Task Caller Array Values](extract_task_caller_array_values).
 
 
 ## [1.0.0] - 2020-01-15

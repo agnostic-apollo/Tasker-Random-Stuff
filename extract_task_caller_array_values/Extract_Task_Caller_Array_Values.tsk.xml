@@ -1,0 +1,503 @@
+<TaskerData sr="" dvi="1" tv="5.9.3.beta">
+	<Task sr="task814">
+		<cdate>1565576291842</cdate>
+		<edate>1582241626290</edate>
+		<id>814</id>
+		<nme>Extract Task Caller Array Values</nme>
+		<pri>100</pri>
+		<rty>2</rty>
+		<Action sr="act0" ve="7">
+			<code>300</code>
+			<label>A helper task to extract values from the "%caller" array passed to every task that contains the information of the caller in the format "callertype(=callername(:subcallername)".
+
+For more info on what the "%caller" array contains check the "Task Caller %caller" section of Tasker Variables guide.
+
+"https://tasker.joaoapps.com/userguide/en/variables.html"
+
+index must be a valid number that should refer to the item number of the "%caller" array from which extraction should be done. The caller array does not contain the information of the current task but when the current task calls the "Extract Task Caller Array Values" task, the caller(1) refers to the information of the current task. caller(2) refers to the information that called the current task and so on... However, the index should be passed in reference to the task calling the "Extract Task Caller Array Values" task. If you want information of the current task, then set it to "0". If you want information of the task that called the current task, then set to "1". The index is automatically incremented by 1 by the "Extract Task Caller Array Values" task while processing. If %par1 is not passed, index defaults to "0".
+
+extraction_mode must be value that should be extracted. The valid values are any value from "callertype,callername,subcallername,callername_and_subcallername,callertype_callername_and_subcallername". If %par2 is not passed, extraction_mode defaults to "callername_and_subcallername".
+
+Examples:
+
+Get name of current task:
+index="0"
+extraction_mode="callername_and_subcallername"
+
+Get callername:subcallername of caller that called current task:
+index="1"
+extraction_mode="callername_and_subcallername"
+
+Get callertype of caller that called current task:
+index="1"
+extraction_mode="callertype"
+
+Get callername of task that called current task:
+index="1"
+extraction_mode="callername"
+
+Get subcallername of task that called current task:
+index="1"
+extraction_mode="subcallername"
+
+Get callername:subcallername of caller of caller that called current task:
+index="2"
+extraction_mode="callername_and_subcallername"
+
+
+Input %par1:
+"
+index
+"
+
+Input %par2:
+"
+extraction_mode
+"
+
+Returns:
+"
+result_string
+"
+
+If result_string exists and is not empty, it is returned, otherwise return value is not set. Return value will also not be set if invalid parameters are received or there are exceptions while running the task.</label>
+		</Action>
+		<Action sr="act1" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%task_name</Str>
+			<Str sr="arg1" ve="3">Extract Task Caller Array Values</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act10" ve="7">
+			<code>547</code>
+			<label>set "%caller_value" to "%caller(%index)"</label>
+			<Str sr="arg0" ve="3">%caller_value</Str>
+			<Str sr="arg1" ve="3">%caller(%index)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act11" ve="7">
+			<code>137</code>
+			<label>If "%caller_value" equals "%caller(%index)", then return nothing</label>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%caller_value</lhs>
+					<op>0</op>
+					<rhs>\%caller(%index)</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act12" ve="7">
+			<code>548</code>
+			<on>false</on>
+			<Str sr="arg0" ve="3">%caller_value</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act13" ve="7">
+			<code>37</code>
+			<label>If extraction_mode is "callertype_callername_and_subcallername"</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>0</op>
+					<rhs>callertype_callername_and_subcallername</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act14" ve="7">
+			<code>547</code>
+			<label>The "%caller_value" should be the "callertype_callername_and_subcallername", set it to return_string</label>
+			<Str sr="arg0" ve="3">%return_string</Str>
+			<Str sr="arg1" ve="3">%caller_value</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act15" ve="7">
+			<code>43</code>
+			<label>If extraction_mode is "callertype"</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>0</op>
+					<rhs>callertype</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act16" ve="7">
+			<code>37</code>
+			<label>If "%caller_value" contains a equals sign "="</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%caller_value</lhs>
+					<op>2</op>
+					<rhs>*=*</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act17" ve="7">
+			<code>590</code>
+			<label>Split "%caller_value" on a equals sign "="</label>
+			<Str sr="arg0" ve="3">%caller_value</Str>
+			<Str sr="arg1" ve="3">=</Str>
+			<Int sr="arg2" val="0"/>
+		</Action>
+		<Action sr="act18" ve="7">
+			<code>547</code>
+			<label>The "%caller_value(1)" should be the "callertype", set it to return_string</label>
+			<Str sr="arg0" ve="3">%return_string</Str>
+			<Str sr="arg1" ve="3">%caller_value(1)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act19" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act2" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%index</Str>
+			<Str sr="arg1" ve="3">%par1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act20" ve="7">
+			<code>547</code>
+			<label>The "%caller_value" should be the "callertype", set it to return_string</label>
+			<Str sr="arg0" ve="3">%return_string</Str>
+			<Str sr="arg1" ve="3">%caller_value</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act21" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act22" ve="7">
+			<code>43</code>
+			<label>If extraction_mode is "callername_and_subcallername", "callername" or "subcallername"</label>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<bool1>Or</bool1>
+				<Condition sr="c0" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>0</op>
+					<rhs>callername_and_subcallername</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>0</op>
+					<rhs>callername</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>0</op>
+					<rhs>subcallername</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act23" ve="7">
+			<code>37</code>
+			<label>If "%caller_value" contains a equals sign "="</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%caller_value</lhs>
+					<op>2</op>
+					<rhs>*=*</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act24" ve="7">
+			<code>590</code>
+			<label>Split "%caller_value" on a equals sign "="</label>
+			<Str sr="arg0" ve="3">%caller_value</Str>
+			<Str sr="arg1" ve="3">=</Str>
+			<Int sr="arg2" val="0"/>
+		</Action>
+		<Action sr="act25" ve="7">
+			<code>547</code>
+			<label>The "%caller_value(2)" should be the "callername:subcallername", set it to callername_and_subcallername</label>
+			<Str sr="arg0" ve="3">%callername_and_subcallername</Str>
+			<Str sr="arg1" ve="3">%caller_value(2)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act26" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act27" ve="7">
+			<code>547</code>
+			<label>The "%caller_value" should be the "callername:subcallername", "callername" and "subcallername", set it to return_string</label>
+			<Str sr="arg0" ve="3">%return_string</Str>
+			<Str sr="arg1" ve="3">%caller_value</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act28" ve="7">
+			<code>135</code>
+			<label>Goto "Return"</label>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="1"/>
+			<Str sr="arg2" ve="3">Return</Str>
+		</Action>
+		<Action sr="act29" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act3" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%extraction_mode</Str>
+			<Str sr="arg1" ve="3">%par2</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act30" ve="7">
+			<code>37</code>
+			<label>If "%callername_and_subcallername" does not contain a colon ":" or extraction_mode is "callername_and_subcallername"</label>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%callername_and_subcallername</lhs>
+					<op>3</op>
+					<rhs>*:*</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>0</op>
+					<rhs>callername_and_subcallername</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act31" ve="7">
+			<code>547</code>
+			<label>The "%callername_and_subcallername" should be the "callername:subcallername", "callername" and "subcallername", set it to return_string</label>
+			<Str sr="arg0" ve="3">%return_string</Str>
+			<Str sr="arg1" ve="3">%callername_and_subcallername</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act32" ve="7">
+			<code>135</code>
+			<label>Goto "Return"</label>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="1"/>
+			<Str sr="arg2" ve="3">Return</Str>
+		</Action>
+		<Action sr="act33" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act34" ve="7">
+			<code>590</code>
+			<label>Split "%callername_and_subcallername" on a colon ":"</label>
+			<Str sr="arg0" ve="3">%callername_and_subcallername</Str>
+			<Str sr="arg1" ve="3">:</Str>
+			<Int sr="arg2" val="0"/>
+		</Action>
+		<Action sr="act35" ve="7">
+			<code>37</code>
+			<label>If extraction_mode is "callername"</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>0</op>
+					<rhs>callername</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act36" ve="7">
+			<code>547</code>
+			<label>The "%callername_and_subcallername(1)" should be the "callername", set it to return_string</label>
+			<Str sr="arg0" ve="3">%return_string</Str>
+			<Str sr="arg1" ve="3">%callername_and_subcallername(1)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act37" ve="7">
+			<code>43</code>
+			<label>If extraction_mode is "subcallername"</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>0</op>
+					<rhs>subcallername</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act38" ve="7">
+			<code>547</code>
+			<label>The "%callername_and_subcallername(2)" should be the "subcallername", set it to return_string</label>
+			<Str sr="arg0" ve="3">%return_string</Str>
+			<Str sr="arg1" ve="3">%callername_and_subcallername(2)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act39" ve="7">
+			<code>43</code>
+			<label>Else unhandled extraction_mode</label>
+		</Action>
+		<Action sr="act4" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%valid_extraction_modes</Str>
+			<Str sr="arg1" ve="3">callertype,callername,subcallername,callername_and_subcallername,callertype_callername_and_subcallername</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act40" ve="7">
+			<code>137</code>
+			<label>Return nothing</label>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act41" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act42" ve="7">
+			<code>43</code>
+			<label>Else unhandled extraction_mode</label>
+		</Action>
+		<Action sr="act43" ve="7">
+			<code>137</code>
+			<label>Return nothing</label>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act44" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act45" ve="7">
+			<code>300</code>
+			<label>Return</label>
+		</Action>
+		<Action sr="act46" ve="7">
+			<code>548</code>
+			<on>false</on>
+			<Str sr="arg0" ve="3">"%return_string"</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act47" ve="7">
+			<code>137</code>
+			<label>If return_string is not set, then return nothing</label>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%return_string</lhs>
+					<op>0</op>
+					<rhs>\%return_string</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act48" ve="7">
+			<code>126</code>
+			<Str sr="arg0" ve="3">%return_string</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act5" ve="7">
+			<code>547</code>
+			<label>set default index value to "0"</label>
+			<Str sr="arg0" ve="3">%index</Str>
+			<Str sr="arg1" ve="3">0</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%index</lhs>
+					<op>0</op>
+					<rhs>\%par1</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act6" ve="7">
+			<code>547</code>
+			<label>set default extraction_mode to "callername_and_subcallername"</label>
+			<Str sr="arg0" ve="3">%extraction_mode</Str>
+			<Str sr="arg1" ve="3">callername_and_subcallername</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>0</op>
+					<rhs>\%par2</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act7" ve="7">
+			<code>137</code>
+			<label>If index is not a valid number or extraction_mode does not match a value contained in valid_extraction_modes, then return nothing</label>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<bool1>Or</bool1>
+				<Condition sr="c0" ve="3">
+					<lhs>%index</lhs>
+					<op>5</op>
+					<rhs>^[0-9]+$</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%extraction_mode</lhs>
+					<op>2</op>
+					<rhs>*,*</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>,%valid_extraction_modes,</lhs>
+					<op>3</op>
+					<rhs>*,%extraction_mode,*</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act8" ve="7">
+			<code>547</code>
+			<label>Increment index value by 1 so that "%caller" can be indexed in reference to this task</label>
+			<Str sr="arg0" ve="3">%index</Str>
+			<Str sr="arg1" ve="3">%index + 1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="1"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act9" ve="7">
+			<code>137</code>
+			<label>If index is greater than "%caller(#)", then return nothing</label>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%index</lhs>
+					<op>7</op>
+					<rhs>%caller(#)</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+	</Task>
+</TaskerData>

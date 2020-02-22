@@ -66,7 +66,9 @@ Check [Tasker XML Info] for more info on how Tasker App XML files work.
 You may optionally run the script placed in the current directory without setting the ownership and permission by running the command `bash tasker_config_rty_add`.
 If you are not running the script in termux, set the shebang of the script correctly (the first line of the script).
 
-Set `old_config`, `current_config` and `new_config` variables in the script to the names or paths of the configs.
+Set `old_config`, `current_config` and `new_config` variables in the script to the names or paths of the tasker configs.
+
+Both the `old_config` and `current_config` tasker configs passed to the script must have been generated using the `Data->Backup` Tasker menu option or the `Data Backup` action. The script will not work with `autobackups` since those contain XML nodes that are collapsed to a single line with no indentations. If you have an `autobackup`, then import that into Tasker and export a backup manually again with one of the ways mentioned earlier.
 
 Run script in your android device or linux distro or cygwin in windows:
 ```
@@ -102,7 +104,6 @@ bash tasker_config_rty_add
 ### Changelog
 
 Check [CHANGELOG.md](../CHANGELOG.md) file for the **Changelog**.
-
 ##
 
 

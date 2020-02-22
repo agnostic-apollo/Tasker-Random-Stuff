@@ -1,6 +1,6 @@
 # MX Player Video Start
 
-This project allows a user to start videos in [MX Player Ad App] or [MX Player Pro App] by sending intents through the [Tasker App].
+This project provides Tasker tasks that allows a user to start videos in [MX Player Ad App] or [MX Player Pro App] by sending intents through the [Tasker App].
 
 Check [MX Player Api](https://sites.google.com/site/mxvpen/api) for more information on how to send an intent to MX Player.
 ##
@@ -82,7 +82,6 @@ Check [MX_Player_Video_Start Task Info](MX_Player_Video_Start.tsk.md) and [Start
 ### Changelog
 
 Check [CHANGELOG.md](../CHANGELOG.md) file for the **Changelog**.
-
 ##
 
 

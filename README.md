@@ -20,6 +20,7 @@ This repository provides random stuff related to the [Tasker App].
 ### Stuff
 
 - [Grab Timed And Filtered Logcat](grab_timed_and_filtered_logcat)
+- [Extract Task Caller Array Values](extract_task_caller_array_values)
 - [MX Player Video Start](mx_player_video_start)
 - [tasker_config_rty_add](tasker_config_rty_add)
 ##
@@ -28,7 +29,6 @@ This repository provides random stuff related to the [Tasker App].
 ### Changelog
 
 Check [CHANGELOG.md](CHANGELOG.md) file for the **Changelog**.
-
 ##
 
 
