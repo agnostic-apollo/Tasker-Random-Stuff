@@ -33,5 +33,5 @@ Extract Task Caller Array Values
 
 
 [unreleased]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.1.0...HEAD
-[0.1.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.0.0...v1.1.0
+[1.1.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/releases
