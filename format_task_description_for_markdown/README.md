@@ -93,7 +93,7 @@ Check [CHANGELOG.md](../CHANGELOG.md) file for the **Changelog**.
 
 ### Contributions
 
-`-`
+- [u/Ratchet_Guy](https://www.reddit.com/user/Ratchet_Guy/) for his [Process REDDIT Code](https://www.reddit.com/r/tasker/comments/34dapt/best_way_to_format_task_descriptions_for_reddits/) task on which this was based on.
 ##
 
 
