@@ -20,10 +20,19 @@ Extract Task Caller Array Values
 `-`
 
 
+## [1.3.0] - 2020-04-15
+
+### Added
+- [Format Task Description For Markdown](format_task_description_for_markdown):
+	- Updated to `version_number: 0.2.0`.
+	- Added support to split action parameters on multiple lines.
+
+
 ## [1.2.0] - 2020-04-13
 
 ### Added
-- Added [Format Task Description For Markdown](format_task_description_for_markdown).
+- [Format Task Description For Markdown](format_task_description_for_markdown):
+	- Added initial release `version_number: 0.1.0`.
 
 
 ## [1.1.0] - 2020-02-22
@@ -38,7 +47,8 @@ Extract Task Caller Array Values
 ##
 
 
-[unreleased]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/releases

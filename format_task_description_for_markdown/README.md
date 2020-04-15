@@ -4,7 +4,7 @@ This project provides a Tasker task to format an exported tasker task descriptio
 
 For basic usage, just run the task provided after running `Export` -> `Description To Clipboard` on a task and it will read the description from the `%CLIP` variable and after formatting it, it will put the formatted description back into the clipboard as a markdown code block with space indents. Automatic conversion to markdown code block by default is helpful because a lot of users are not aware that code blocks exist and they just paste the description without it in posts and comments destroying all order making it impossibly hard to be read and understood by others. It also makes it slightly faster to post the description since it's automatically prefixed and suffixed with backticks by default.
 
-Depending on the number of actions and the device specs, it will take a few seconds to format the description.
+Depending on the number of actions, the device specs and the parameters, it will take a few seconds to a minute to format the description.
 ##
 
 
@@ -55,7 +55,10 @@ Check [Format_Task_Description_For_Markdown Task Info](Format_Task_Description_F
 
 ### Example Output Of Formatted Description
 
-Check [Example_Output_Of_Formatted_Task_Description](Example_Output_Of_Formatted_Task_Description.md) file for an example of the formatted task description.
+For examples of the formatted task description, check:
+
+- [`split_action_parameters_on_multiple_lines` Disabled](Example_Output_Of_Formatted_Task_Description_1.md)
+- [`split_action_parameters_on_multiple_lines` Enabled](Example_Output_Of_Formatted_Task_Description_2.md)
 ##
 
 
@@ -63,7 +66,8 @@ Check [Example_Output_Of_Formatted_Task_Description](Example_Output_Of_Formatted
 
 - Replaces all pre-existing indents with spaces by default.
 - Automatically increases indents for `If` and `For` related actions with support for capping indents at a max indent character count.
-- Allows prefixing and suffixing the formatted description with required number of backticks to create a markdown code block. 
+- Supports splitting action parameters of most action descriptions on multiple lines to increase readability. **[Experimental]**
+- Allows prefixing and suffixing the formatted description with required number of backticks to create a markdown code block.
 ##
 
 
