@@ -20,6 +20,13 @@ Extract Task Caller Array Values
 `-`
 
 
+## [1.4.0] - 2020-06-14
+
+### Added
+- [tasker_config_perform_task_return_variable_toggle_add](tasker_config_perform_task_return_variable_toggle_add):
+	- Added initial release `version_number: 1.0.0`.
+
+
 ## [1.3.0] - 2020-04-15
 
 ### Added
@@ -47,7 +54,8 @@ Extract Task Caller Array Values
 ##
 
 
-[unreleased]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.3.0...HEAD
+[unreleased]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.0.0...v1.1.0

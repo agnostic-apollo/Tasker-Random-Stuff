@@ -1,0 +1,195 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+#replace first line of this script with the following line if using termux
+#!/data/data/com.termux/files/usr/bin/bash
+
+#replace first line of this script with the following line if not using termux like a linux distro
+#!/bin/bash
+
+#title:         tasker_config_perform_task_return_variable_toggle_add
+#description:   Add 'Reset Return Variable' toggle enable tag to all 'Perform Task' actions inside tasks in a Tasker "Data Backup" XML config file
+#author:        agnostic-apollo
+#usage:         run "bash tasker_config_perform_task_return_variable_toggle_add current_config new_config"
+#date:          14-Jun-2020
+#bash version:  4.0 or higher but has only been test under bash 5.0.3
+#credits:       -
+version=1.0.0
+
+#regex to find 'Perform Task' actions not updated in new_config using a text editor like SublimeText
+#<code>130<\/code>(?!\n\t\t\t<Int)
+
+diff_output_file="diff.txt"
+perform_tasks_not_updated_file="perform_tasks_not_updated.txt"
+
+#if no parameter passed
+if [ $# -eq 0 ]; then
+	echo "
+tasker_config_perform_task_return_variable_toggle_add command is used to add 'Reset Return Variable' \
+toggle enable tag to all 'Perform Task' actions inside tasks in the Tasker \"Data Backup\" XML config file.
+
+Usage:
+  bash tasker_config_perform_task_return_variable_toggle_add current_config new_config
+
+current_config should be the path to a Tasker \"Data Backup\" XML config file that you want to modify. It \
+must be an exported \"Data Backup\" and not an auto backup.
+
+new_config is the path to the output Tasker \"Data Backup\" XML config file.
+
+Example Usage:
+bash tasker_config_perform_task_return_variable_toggle_add backup.xml backup-new.xml
+
+
+Any existing 'Reset Return Variable' toggle tags are removed before the enable tags are added. You will have to \
+manually disable the toggle in any tasks that require it to be disabled after importing the new_config into tasker, \
+depending on your task designs. 
+
+Tags by default are not added to 'Perform Task' actions nested inside other actions like 'Notify' action or Scene Menu \
+Elements since the result of tasks started by them is ignored and so the toggle doesn't apply to them.
+
+When the command is run, by default a '$diff_output_file' file is generated that will contain the difference \
+between the current_config and the new_config to show where the tags are added and removed. A \
+'$perform_tasks_not_updated_file' file is also generated that will show which 'Perform Task' actions were not \
+updated, ideally only the ones that were mentioned earlier. Make sure the new_config looks correct and report \
+any bugs to the dev.
+
+
+'Reset Return Variable' Toggle Info:
+The toggle exists in the following states in 'Perform Task' action nodes which have the code 130.
+
+'Reset Return Variable' toggle disabled:
+<Int sr=\"arg8\" val=\"0\"/>
+
+'Reset Return Variable' toggle enabled:
+<Int sr=\"arg8\" val=\"1\"/>
+
+The '<Int sr=\"arg8\" val=\"1\"/>' tag is added right after the '<code>130</code>' tag instead of at the end \
+of the action node, since conditional statements may exist there and adding it at the start seems to be a \
+universally reliable position to add it even for future Tasker versions. The order does not matter during \
+import into Tasker and the config will be imported correctly. When you export a new backup from Tasker again, \
+the order will be correct.
+"
+	exit 0
+#if only 4 parameters: tasker_config, current_exported_tasker_project, new_exported_tasker_project and project_name
+elif [ $# -eq 2 ]; then
+	current_config="$(echo "$1")" #remove trailing newlines
+	new_config="$(echo "$2")" #remove trailing newlines
+else
+	echo "Invalid parameter count. \"tasker_config_perform_task_return_variable_toggle_add\" command expects 2 parameters: current_config and new_config"
+	exit 1
+fi
+
+
+#if current_config file is not found
+if [ ! -f "$current_config" ]; then
+	echo "Failed to find current_config \"$current_config\" file"
+	exit 1
+fi
+
+#create copy of current_config at new_config
+cp -f "$current_config" "$new_config"
+return_value=$?
+if [ $return_value -ne 0 ]; then
+	echo "Failed to copy of current_config \"$current_config\" to new_config \"$new_config\""
+	exit $return_value
+fi
+
+#if new_config file is not found
+if [ ! -f "$new_config" ]; then
+	echo "Failed to find \"$new_config\" file"
+	exit 1
+fi
+
+#set Action node start and end line regexes
+action_node='Action'
+action_node_start_regex='^\t[\t]+<'"$action_node"' sr="[^"]*"[^>]*>'
+action_node_end_regex='\n\t\t[\t]*<\/'"$action_node"'>$'
+
+#set 'Perform Task' code tag regexes inside Action nodes
+#'Perform Task' actions have code 130
+perform_task_action_code_tag_regex='\n\t\t\t<code>130<\/code>'
+perform_task_action_code_nested_tag_regex='\n\t\t\t[\t]*<code>130<\/code>'
+
+#set 'Reset Return Variable' regexes
+#'Reset Return Variable' toggle disabled
+#<Int sr="arg8" val="0"/>
+
+#'Reset Return Variable' toggle enabled
+#<Int sr="arg8" val="1"/>
+reset_return_variable_toogle_tag_regex='\n\t\t\t[\t]*<Int sr="arg8" val="[0-9]+"\/>'
+reset_return_variable_toogle_enabled_regex='\n\t\t\t<Int sr="arg8" val="1"\/>'
+
+#add 'Reset Return Variable' toggle enable tag to all 'Perform Task' actions inside tasks and remove any existing 'Reset Return Variable' toggle tags to prevent duplicates
+#use -i'' to edit inplace and -E for extended regex
+#sed -i'' -E '/'"$action_node_start_regex"'$/ #match action_node sr line depending on action_node_start_regex
+#				{  #if matched start a subscript
+#					#add next n lines to pattern space until action_node_end_regex is reached
+#					:a;N;/'"$action_node_end_regex"'/!ba;
+#					#check if pattern space starts with action_node_start_regex followed by perform_task_action_code_tag_regex
+#					/'"$action_node_start_regex$perform_task_action_code_tag_regex"'/
+#					{  #if matched start a subscript
+#						#remove any existing reset_return_variable_toogle tags
+#						s/(.*)'"$reset_return_variable_toogle_tag_regex"'(.*)/\1\2/;
+#						#after the node_extraction_start followed by perform_task_action_code_tag, add a reset_return_variable_toogle enable tag
+#						s/('"$action_node_start_regex$perform_task_action_code_tag_regex"')/\1'"$reset_return_variable_toogle_enabled_regex"'/;
+#					};
+#				}'
+sed -i'' -E '/'"$action_node_start_regex"'$/{ :a;N;/'"$action_node_end_regex"'/!ba; /'"$action_node_start_regex$perform_task_action_code_tag_regex"'/{ s/(.*)'"$reset_return_variable_toogle_tag_regex"'(.*)/\1\2/; s/('"$action_node_start_regex$perform_task_action_code_tag_regex"')/\1'"$reset_return_variable_toogle_enabled_regex"'/;}; }' "$new_config"
+#enable the following two lines and disable the above one if for some unknown reason you want to update perform task actions nested inside other actions like 'Notify' action or Scene Menu element actions. The following method could be less safe in possibly some certain edge cases, so make sure output file is correct.
+#perform_task_action_code_tag_regex="$perform_task_action_code_nested_tag_regex"
+#sed -i'' -E '/'"$action_node_start_regex"'$/{N; /'"$action_node_start_regex$perform_task_action_code_tag_regex"'/{ :a;N;/'"$action_node_end_regex"'/!ba; s/(.*)'"$reset_return_variable_toogle_tag_regex"'(.*)/\1\2/; s/('"$action_node_start_regex$perform_task_action_code_tag_regex"')/\1'"$reset_return_variable_toogle_enabled_regex"'/;}; }' "$new_config"
+return_value=$?
+if [ $return_value -ne 0 ]; then
+	echo "Failed to add return_variable_toogle tag to tasker config"
+	exit $return_value
+fi
+
+#find difference between current_config file and new_config file
+diff_output="$(diff -U5 "$current_config" "$new_config" 2>&1)"
+return_value=$?
+if [ $return_value -ne 0 ] && [ $return_value -ne 1 ]; then
+	echo "Failed to generate diff output"
+	echo "$diff_output"
+	exit $return_value
+fi
+
+#find how many reset_return_variable_toogle enable tag lines were added 
+perform_tasks_updated_output="$(echo "$diff_output" | grep '+			<Int sr="arg8" val="1"/>' | wc -l)"
+return_value=$?
+if [ $return_value -ne 0 ]; then
+	echo "Failed to find how many 'Perform Task' actions updated"
+	echo "$perform_tasks_updated_output"
+	exit $return_value
+fi
+
+#find how many 'Perform Task' actions were not updated, meaning no reset_return_variable_toogle enable tag was added to them
+#use -E for extended regex, and -n to disable printing
+#sed -nE '/'"$action_node_start_regex"'$/ #match action_node sr line depending on action_node_start_regex
+#				{  #if matched start a subscript
+#					N; #add one line to pattern space
+#					#check if pattern space starts with action_node_start_regex followed by perform_task_action_code_tag_regex
+#					/'"$action_node_start_regex$perform_task_action_code_tag_regex"'/
+#					{  #if matched start a subscript
+#						#add next n lines to pattern space until action_node_end_regex is reached
+#						:a;N;/'"$action_node_end_regex"'/!ba;
+#						#if there is no reset_return_variable_toogle enable tag after the node_extraction_start followed by perform_task_action_code_tag 
+#						/'"$action_node_start_regex$perform_task_action_code_nested_tag_regex$reset_return_variable_toogle_enabled_regex"'/!
+#						{  #start a subscript
+#							=;p; #print line number of end of pattern space and the pattern space
+#						};
+#					};
+#				}'
+perform_task_nodes_not_updated_output="$(sed -nE '/'"$action_node_start_regex"'$/{N; /'"$action_node_start_regex$perform_task_action_code_nested_tag_regex"'/{ :a;N;/'"$action_node_end_regex"'/!ba; /'"$action_node_start_regex$perform_task_action_code_nested_tag_regex$reset_return_variable_toogle_enabled_regex"'/!{=;p;}; }; }' "$new_config")"
+return_value=$?
+if [ $return_value -ne 0 ]; then
+	echo "Failed to find 'Perform Task' action nodes not updated"
+	echo "$perform_task_nodes_not_updated_output"
+	exit $return_value
+fi
+
+#print output
+echo "$perform_tasks_updated_output 'Perform Task' actions updated"
+echo "Writing diff output to '$diff_output_file'"
+echo "$diff_output" > "$diff_output_file"
+echo "Writing 'Perform Task' actions not updated to '$perform_tasks_not_updated_file'"
+echo "$perform_task_nodes_not_updated_output" > "$perform_tasks_not_updated_file"
+echo "Complete"

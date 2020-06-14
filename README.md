@@ -23,6 +23,7 @@ This repository provides random stuff related to the [Tasker App].
 - [Format Task Description For Markdown](format_task_description_for_markdown)
 - [Grab Timed And Filtered Logcat](grab_timed_and_filtered_logcat)
 - [MX Player Video Start](mx_player_video_start)
+- [tasker_config_perform_task_return_variable_toggle_add](tasker_config_perform_task_return_variable_toggle_add)
 - [tasker_config_rty_add](tasker_config_rty_add)
 ##
 
