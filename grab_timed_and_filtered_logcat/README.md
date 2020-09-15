@@ -27,7 +27,9 @@ This project provides a Tasker task that allows a user to capture logcats starti
 
 ### Dependencies
 
-- No specific dependencies other than it requires Tasker to be granted root or ADB access or `android.permission.READ_LOGS`. To grant the permission, either grant it over adb manually using `pm grant net.dinglisch.android.taskerm android.permission.READ_LOGS` command or use the script in [tasker_package_utils](https://github.com/Taskomater/tasker_package_utils) project which has a few more features.
+- Reading logcat requires Tasker to be granted root or ADB access or `android.permission.READ_LOGS` permission.
+
+The `android.permission.READ_LOGS` permission can be granted to tasker over adb manually using `pm grant net.dinglisch.android.taskerm android.permission.READ_LOGS` command or use the script in [tasker_package_utils](https://github.com/Taskomater/tasker_package_utils) project which has a few more features.
 ##
 
 
