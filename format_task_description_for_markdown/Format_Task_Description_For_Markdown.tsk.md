@@ -1,9 +1,9 @@
 # Format Task Description For Markdown
 
 ## Export Info:
-**Tasker Version:** `5.9.3.beta.2`  
-**Timestamp:** `2020-04-15 13.01.18`  
-**sha256sum:** `d0d61dba8a8719ee1fc64222aa7217c4683a875a801da6806b6e1b50153c103b`  
+**Tasker Version:** `5.9.3`  
+**Timestamp:** `2020-09-15 10.21.33`  
+**sha256sum:** `5cb5705e2e2354af54059016f361ca689338d1c91570402b79526edd11c21b78`  
 
 
 
@@ -34,17 +34,17 @@
 
 **#:** `1`  
 **Name:** `Format Task Description For Markdown`  
-**ID:** `875`  
+**ID:** `979`  
 **Collision Handling:** `Abort New Task`  
 **Keep Device Awake:** `false`  
-**Comments:**
-````
+**Control:**
+```
 
-**version_number**: `0.2.0`
-````
+version_number: 0.3.0
+```
 **Help:**
-````
-A helper task to format an exported tasker task description/code into a more readable and markdown compatible format for websites like reddit and github.
+```
+A helper task to format an exported profile or tasker task description/code into a more readable and markdown compatible format for websites like reddit and github.
 
 For basic usage, just run this task after running "Export" -> "Description To Clipboard" on a task and it will read the description from the %CLIP variable and after formatting it, it will put the formatted description back into the clipboard as a markdown code block with space indents.
 
@@ -61,7 +61,7 @@ max_indent_character_count is the maximum indent that should be present for acti
 
 single_indent_character_count is a number of characters of indent_character_type that must be considered as one indent. It can be same as min_indent_character_count. It must be a valid integer and must not be greater than min_indent_character_count. Default value is "4".
 
-split_action_parameters_on_multiple_lines is a toggle that decides if parameters of actions in description are split over multiple lines or not. If this is enabled, then each parameter will be on a different line making it easier to read. It should work for most actions but will not work for actions whose action name is modified depending on its configuration other than the "Else" action whose name is modified to "Else If" if there is a condition added to it. It will also not for plugins and actions whose parameter names are repeated in the description in any way. This uses experimental code including tasker internal java functions. Use at your own risk. Disable it if it is not working properly or you are receiving exceptions. Enabling this will also slow down the task even more than normal because of all the extra processing. It must be set to "0" or "1". Default value is "1".
+split_action_parameters_on_multiple_lines is a toggle that decides if parameters of actions in description are split over multiple lines or not. If this is enabled, then each parameter will be on a different line making it easier to read. It should work for most actions but will not work for actions whose action name is modified depending on its configuration other than the "Else" action whose name is modified to "Else If" if there is a condition added to it. It will also not for plugins and actions whose parameter names are repeated in the description in any way. This uses EXPERIMENTAL CODE including tasker internal java functions which may stop working after an update to tasker, in that case, wait for the dev to update this task to be compatible with latest tasker version. Use at your own risk. Disable it if it is not working properly or you are receiving exceptions. Enabling this will also slow down the task even more than normal because of all the extra processing. It must be set to "0" or "1". Default value is "1".
 
 cap_indents_at_max_indent_character_count is a toggle that decides if there should be limit on max indents based on max_indent_character_count. This is helpful if too many nested conditions exist in the task increasing the indents to a point that it makes it harder to read without using horizontal scrolling. It must be set to "0" or "1". Default value is "0".
 
@@ -74,14 +74,14 @@ If %par2 is not passed, then data from the clipboard using the tasker variable %
 
 If %par2 is passed, then it is used as the code.
 
-The first line of the task description must be in the format "task_name (task_code)". It can optionally be prefixed with zero or more whitespace characters.
+The first line of the task description must be in the format "task_name (task_code)" or "Profile: profile_name (profile_code)". It can optionally be prefixed with whitespace characters.
 
-Depending on the number of actions, the device specs and the parameters, it will take a few seconds to a minute to format the description.
+Depending on the number of actions, the device specs and the parameters, it will take a few seconds to a minute to format the description. Run using a launcher desktop shortcut instead of with the play button in tasker UI for faster execution.
 
 
-Comments:
+Control:
 "
-**version_number**: `0.2.0`
+version_number: 0.3.0
 "
 
 Input %par1: #optional
@@ -108,6 +108,6 @@ formatted_code
 
 If task is successful, then formatted_code will contain the formatted code description.
 Otherwise it will not be set.
-````
+```
 ##
 

@@ -1,10 +1,12 @@
 # Format Task Description For Markdown
 
-This project provides a Tasker task to format an exported tasker task description/code into a more readable and markdown compatible format for websites like reddit and github.
+This project provides a Tasker task to format an exported tasker task or profile description/code into a more readable and markdown compatible format for websites like reddit and github.
 
 For basic usage, just run the task provided after running `Export` -> `Description To Clipboard` on a task and it will read the description from the `%CLIP` variable and after formatting it, it will put the formatted description back into the clipboard as a markdown code block with space indents. Automatic conversion to markdown code block by default is helpful because a lot of users are not aware that code blocks exist and they just paste the description without it in posts and comments destroying all order making it impossibly hard to be read and understood by others. It also makes it slightly faster to post the description since it's automatically prefixed and suffixed with backticks by default.
 
-Depending on the number of actions, the device specs and the parameters, it will take a few seconds to a minute to format the description.
+Depending on the number of actions, the device specs and the parameters, it will take a few seconds to a minute to format the description. Run using a launcher desktop shortcut instead of with the play button in tasker UI for faster execution.
+
+Check [Format_Task_Description_For_Markdown Task Info](Format_Task_Description_For_Markdown.tsk.md) file for more info on the task.
 ##
 
 
@@ -38,7 +40,11 @@ Depending on the number of actions, the device specs and the parameters, it will
 
 ### Downloads
 
+Latest version is `v0.3.0`.
+
 - [GitHub releases](https://github.com/agnostic-apollo/Tasker-Random-Stuff/releases).
+- [TaskerNet](https://taskernet.com/shares/?user=AS35m8mXdvaT1Vj8TwkSaCaoMUv220IIGtHe3pG4MymrCUhpgzrat6njEOnDVVulhAIHLi6BPUt1&id=Task%3AFormat+Task+Description+For+Markdown).
+
 ##
 
 
@@ -48,6 +54,8 @@ Depending on the number of actions, the device specs and the parameters, it will
 ##
 
 ### Usage
+
+For basic usage, just run the task provided after running `Export` -> `Description To Clipboard` on a task and it will read the description from the `%CLIP` variable and after formatting it, it will put the formatted description back into the clipboard as a markdown code block with space indents.
 
 Check [Format_Task_Description_For_Markdown Task Info](Format_Task_Description_For_Markdown.tsk.md) file for more info on how to use the task.
 ##
@@ -91,7 +99,7 @@ For examples of the formatted task description, check:
 
 ### Changelog
 
-Check [CHANGELOG.md](../CHANGELOG.md) file for the **Changelog**.
+Check [CHANGELOG.md](CHANGELOG.md) file for the **Changelog**.
 ##
 
 

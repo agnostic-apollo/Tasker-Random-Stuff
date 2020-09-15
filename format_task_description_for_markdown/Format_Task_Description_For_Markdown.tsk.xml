@@ -1,24 +1,12 @@
-<TaskerData sr="" dvi="1" tv="5.9.3.beta.2">
-	<Task sr="task875">
+<TaskerData sr="" dvi="1" tv="5.9.3">
+	<Task sr="task979">
 		<cdate>1430351635606</cdate>
-		<edate>1586937541036</edate>
-		<id>875</id>
+		<edate>1600136708694</edate>
+		<id>979</id>
 		<nme>Format Task Description For Markdown</nme>
-		<pri>7</pri>
+		<pri>100</pri>
 		<Share sr="Share">
-			<d>Makes Tasker Exported Task Descriptions look REALLY EXTRA nice when pasted into reddit.
-
-In Tasker - just use "Export &gt; Description To Clipboard" then run this Task.
-
-The new neatly formatted code will then be in your Clipboard, ready to paste into a reddit post.
-
-(For Tasker 5.5.2 or later)</d>
-			<p>false</p>
-			<t></t>
-		</Share>
-		<Action sr="act0" ve="7">
-			<code>300</code>
-			<label>A helper task to format an exported tasker task description/code into a more readable and markdown compatible format for websites like reddit and github.
+			<d>A helper task to format an exported profile or tasker task description/code into a more readable and markdown compatible format for websites like reddit and github.
 
 For basic usage, just run this task after running "Export" -&gt; "Description To Clipboard" on a task and it will read the description from the %CLIP variable and after formatting it, it will put the formatted description back into the clipboard as a markdown code block with space indents.
 
@@ -35,7 +23,7 @@ max_indent_character_count is the maximum indent that should be present for acti
 
 single_indent_character_count is a number of characters of indent_character_type that must be considered as one indent. It can be same as min_indent_character_count. It must be a valid integer and must not be greater than min_indent_character_count. Default value is "4".
 
-split_action_parameters_on_multiple_lines is a toggle that decides if parameters of actions in description are split over multiple lines or not. If this is enabled, then each parameter will be on a different line making it easier to read. It should work for most actions but will not work for actions whose action name is modified depending on its configuration other than the "Else" action whose name is modified to "Else If" if there is a condition added to it. It will also not for plugins and actions whose parameter names are repeated in the description in any way. This uses experimental code including tasker internal java functions. Use at your own risk. Disable it if it is not working properly or you are receiving exceptions. Enabling this will also slow down the task even more than normal because of all the extra processing. It must be set to "0" or "1". Default value is "1".
+split_action_parameters_on_multiple_lines is a toggle that decides if parameters of actions in description are split over multiple lines or not. If this is enabled, then each parameter will be on a different line making it easier to read. It should work for most actions but will not work for actions whose action name is modified depending on its configuration other than the "Else" action whose name is modified to "Else If" if there is a condition added to it. It will also not for plugins and actions whose parameter names are repeated in the description in any way. This uses EXPERIMENTAL CODE including tasker internal java functions which may stop working after an update to tasker, in that case, wait for the dev to update this task to be compatible with latest tasker version. Use at your own risk. Disable it if it is not working properly or you are receiving exceptions. Enabling this will also slow down the task even more than normal because of all the extra processing. It must be set to "0" or "1". Default value is "1".
 
 cap_indents_at_max_indent_character_count is a toggle that decides if there should be limit on max indents based on max_indent_character_count. This is helpful if too many nested conditions exist in the task increasing the indents to a point that it makes it harder to read without using horizontal scrolling. It must be set to "0" or "1". Default value is "0".
 
@@ -48,14 +36,83 @@ If %par2 is not passed, then data from the clipboard using the tasker variable %
 
 If %par2 is passed, then it is used as the code.
 
-The first line of the task description must be in the format "task_name (task_code)". It can optionally be prefixed with zero or more whitespace characters.
+The first line of the task description must be in the format "task_name (task_code)" or "Profile: profile_name (profile_code)". It can optionally be prefixed with whitespace characters.
 
-Depending on the number of actions, the device specs and the parameters, it will take a few seconds to a minute to format the description.
+Depending on the number of actions, the device specs and the parameters, it will take a few seconds to a minute to format the description. Run using a launcher desktop shortcut instead of with the play button in tasker UI for faster execution.
 
 
-Comments:
+Control:
 "
-**version_number**: `0.2.0`
+version_number: 0.3.0
+"
+
+Input %par1: #optional
+"
+indent_character_type
+min_indent_character_count
+max_indent_character_count
+single_indent_character_count
+cap_indents_at_max_indent_character_count
+split_action_parameters_on_multiple_lines
+convert_code_to_markdown_code_block
+set_clipboard_to_formatted_code
+"
+
+Input %par2: #optional
+"
+code
+"
+
+Returns:
+"
+formatted_code
+"
+
+If task is successful, then formatted_code will contain the formatted code description.
+Otherwise it will not be set.</d>
+			<p>false</p>
+			<t></t>
+		</Share>
+		<Action sr="act0" ve="7">
+			<code>300</code>
+			<label>A helper task to format an exported profile or tasker task description/code into a more readable and markdown compatible format for websites like reddit and github.
+
+For basic usage, just run this task after running "Export" -&gt; "Description To Clipboard" on a task and it will read the description from the %CLIP variable and after formatting it, it will put the formatted description back into the clipboard as a markdown code block with space indents.
+
+
+If %par1 is not passed, then default values are automatically used.
+
+If it is passed then it's parameters must be set to the following:
+
+indent_character_type is the type of character that should be used for indents. Valid values are "space" and "tab". Default value is "space".
+
+min_indent_character_count is the minimum indent that should be present for actions and comments. It must be a valid integer. Default value is "4".
+
+max_indent_character_count is the maximum indent that should be present for actions and comments depending "If" and "For" related actions. It must be a valid integer and is only considered if cap_indents_at_max_indent_character_count is set to "1" and it must not be less than min_indent_character_count. Default value is "12".
+
+single_indent_character_count is a number of characters of indent_character_type that must be considered as one indent. It can be same as min_indent_character_count. It must be a valid integer and must not be greater than min_indent_character_count. Default value is "4".
+
+split_action_parameters_on_multiple_lines is a toggle that decides if parameters of actions in description are split over multiple lines or not. If this is enabled, then each parameter will be on a different line making it easier to read. It should work for most actions but will not work for actions whose action name is modified depending on its configuration other than the "Else" action whose name is modified to "Else If" if there is a condition added to it. It will also not for plugins and actions whose parameter names are repeated in the description in any way. This uses EXPERIMENTAL CODE including tasker internal java functions which may stop working after an update to tasker, in that case, wait for the dev to update this task to be compatible with latest tasker version. Use at your own risk. Disable it if it is not working properly or you are receiving exceptions. Enabling this will also slow down the task even more than normal because of all the extra processing. It must be set to "0" or "1". Default value is "1".
+
+cap_indents_at_max_indent_character_count is a toggle that decides if there should be limit on max indents based on max_indent_character_count. This is helpful if too many nested conditions exist in the task increasing the indents to a point that it makes it harder to read without using horizontal scrolling. It must be set to "0" or "1". Default value is "0".
+
+convert_code_to_markdown_code_block is a toggle that decides whether the formatted code should automatically be converted to markdown code block by prefixing and suffixing the code with a minimum of 3 backticks. This is helpful because a lot of users are not aware that code blocks exist and they just paste the description without it in posts and comments destroying all order making it impossibly hard to be read and understood by others. It also makes it slightly faster to post the description since it's automatically prefixed and suffixed with backticks by default. Moreover, the task automatically checks if the code itself contains any backticks and then uses (max numbers of consecutive backticks found + 3) backticks for prefixing and suffixing so that any backticks in the code can be escaped and the entire code is enclosed in the code block. It must be set to "0" or "1". Default value is "1".
+
+set_clipboard_to_formatted_code is a toggle that decides if the formatted code is put back in the clipboard using the "Set Clipboard" action at the end. It must be set to "0" or "1". Default value is "1".
+
+
+If %par2 is not passed, then data from the clipboard using the tasker variable %CLIP is used as the code.
+
+If %par2 is passed, then it is used as the code.
+
+The first line of the task description must be in the format "task_name (task_code)" or "Profile: profile_name (profile_code)". It can optionally be prefixed with whitespace characters.
+
+Depending on the number of actions, the device specs and the parameters, it will take a few seconds to a minute to format the description. Run using a launcher desktop shortcut instead of with the play button in tasker UI for faster execution.
+
+
+Control:
+"
+version_number: 0.3.0
 "
 
 Input %par1: #optional
@@ -94,30 +151,16 @@ Otherwise it will not be set.</label>
 		</Action>
 		<Action sr="act10" ve="7">
 			<code>547</code>
-			<label>Set max_indent_character_count
-Default: "12"</label>
-			<Str sr="arg0" ve="3">%max_indent_character_count</Str>
-			<Str sr="arg1" ve="3">12</Str>
+			<label>Set min_indent_character_count
+Default: "4"</label>
+			<Str sr="arg0" ve="3">%min_indent_character_count</Str>
+			<Str sr="arg1" ve="3">4</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
 		<Action sr="act100" ve="7">
-			<code>664</code>
-			<Str sr="arg0" ve="3">new_string_array</Str>
-			<Str sr="arg1" ve="3">String[]</Str>
-			<Str sr="arg2" ve="3">new
-{String[]} (int)</Str>
-			<Str sr="arg3" ve="3">%action_names_list_size</Str>
-			<Str sr="arg4" ve="3"/>
-			<Str sr="arg5" ve="3"/>
-			<Str sr="arg6" ve="3"/>
-			<Str sr="arg7" ve="3"/>
-			<Str sr="arg8" ve="3"/>
-			<Str sr="arg9" ve="3"/>
-		</Action>
-		<Action sr="act101" ve="7">
 			<code>664</code>
 			<Str sr="arg0" ve="3">action_names_string_array</Str>
 			<Str sr="arg1" ve="3">action_names_list</Str>
@@ -131,18 +174,33 @@ Default: "12"</label>
 			<Str sr="arg8" ve="3"/>
 			<Str sr="arg9" ve="3"/>
 		</Action>
-		<Action sr="act102" ve="7">
+		<Action sr="act101" ve="7">
 			<code>38</code>
 		</Action>
+		<Action sr="act102" ve="7">
+			<code>590</code>
+			<label>Split Code On Newline To Create Code Array</label>
+			<Str sr="arg0" ve="3">%code</Str>
+			<Str sr="arg1" ve="3">%newline</Str>
+			<Int sr="arg2" val="0"/>
+		</Action>
 		<Action sr="act103" ve="7">
-			<code>300</code>
-			<label>Start Of Process Code Loop</label>
+			<code>547</code>
+			<Str sr="arg0" ve="3">%line_num</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
 		</Action>
 		<Action sr="act104" ve="7">
-			<code>548</code>
-			<on>false</on>
-			<Str sr="arg0" ve="3">%code(%line_num)</Str>
-			<Int sr="arg1" val="0"/>
+			<code>547</code>
+			<Str sr="arg0" ve="3">%current_line</Str>
+			<Str sr="arg1" ve="3">%code(%line_num)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
 		</Action>
 		<Action sr="act105" ve="7">
 			<code>547</code>
@@ -155,15 +213,6 @@ Default: "12"</label>
 		</Action>
 		<Action sr="act106" ve="7">
 			<code>547</code>
-			<Str sr="arg0" ve="3">%current_line</Str>
-			<Str sr="arg1" ve="3">%code(%line_num)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act107" ve="7">
-			<code>547</code>
 			<Str sr="arg0" ve="3">%next_line</Str>
 			<Str sr="arg1" ve="3">%code(%next_line_num)</Str>
 			<Int sr="arg2" val="0"/>
@@ -171,29 +220,141 @@ Default: "12"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act108" ve="7">
+		<Action sr="act107" ve="7">
 			<code>37</code>
-			<label>If Not Processing Any Code Type</label>
-			<ConditionList sr="if">
-				<Condition sr="c0" ve="3">
-					<lhs>%current_code_type</lhs>
-					<op>0</op>
-					<rhs>\%current_code_type</rhs>
-				</Condition>
-			</ConditionList>
-		</Action>
-		<Action sr="act109" ve="7">
-			<code>37</code>
-			<label>If Current Line Starts A Comment</label>
+			<label>If First Line Doesn't Contain Task Or Profile Name And Code</label>
 			<ConditionList sr="if">
 				<Condition sr="c0" ve="3">
 					<lhs>%current_line</lhs>
+					<op>5</op>
+					<rhs>%regex_task_or_profile_name_and_code_line</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act108" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Error! Task Or Profile Name And Code Not Found In Line %line_num Of Description Being Used
+%task_name Failed
+
+Line %line_num = "%current_line"</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act109" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act11" ve="7">
+			<code>547</code>
+			<label>Set max_indent_character_count
+Default: "12"</label>
+			<Str sr="arg0" ve="3">%max_indent_character_count</Str>
+			<Str sr="arg1" ve="3">12</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act110" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act111" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%lines_count</Str>
+			<Str sr="arg1" ve="3">%code(#)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act112" ve="7">
+			<code>356</code>
+			<label>Remove Last Line If Only Whitespaces</label>
+			<Str sr="arg0" ve="3">%code</Str>
+			<Int sr="arg1">
+				<var>%lines_count</var>
+			</Int>
+			<Str sr="arg2" ve="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%code(%lines_count)</lhs>
+					<op>4</op>
+					<rhs>%regex_whitespace_only_line</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act113" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%lines_count</Str>
+			<Str sr="arg1" ve="3">%code(#)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act114" ve="7">
+			<code>37</code>
+			<label>If First Line Doesn't Contain Profile Name And Code Or If Second Line Equals A Collision Handling Value Or First Action Or Comment Start Line (Last 3 checks exist to prevent false negatives where task name starts with "Profile: "</label>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<bool1>Or</bool1>
+				<bool2>Or</bool2>
+				<Condition sr="c0" ve="3">
+					<lhs>%current_line</lhs>
+					<op>5</op>
+					<rhs>%regex_profile_name_and_code_line</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%next_line</lhs>
+					<op>4</op>
+					<rhs>%regex_task_collision_handling_value_line</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%next_line</lhs>
+					<op>4</op>
+					<rhs>^[\s]+A1: .</rhs>
+				</Condition>
+				<Condition sr="c3" ve="3">
+					<lhs>%next_line</lhs>
 					<op>4</op>
 					<rhs>%regex_comment_line_start</rhs>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act11" ve="7">
+		<Action sr="act115" ve="7">
+			<code>547</code>
+			<label>Set "0" to is_profile_description</label>
+			<Str sr="arg0" ve="3">%is_profile_description</Str>
+			<Str sr="arg1" ve="3">0</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act116" ve="7">
+			<code>135</code>
+			<label>Goto Process Task Description Start</label>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="1"/>
+			<Str sr="arg2" ve="3">Process Task Description Start</Str>
+		</Action>
+		<Action sr="act117" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act118" ve="7">
+			<code>300</code>
+			<label>Process Profile Description Start</label>
+		</Action>
+		<Action sr="act119" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%description_name</Str>
+			<Str sr="arg1" ve="3">%current_line</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act12" ve="7">
 			<code>547</code>
 			<label>Set single_indent_character_count
 Default: "4"</label>
@@ -204,83 +365,110 @@ Default: "4"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act110" ve="7">
+		<Action sr="act120" ve="7">
+			<code>598</code>
+			<label>Get Profile Description Name From First Line</label>
+			<Str sr="arg0" ve="3">%description_name</Str>
+			<Str sr="arg1" ve="3">%regex_profile_name_and_code_line</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Str sr="arg7" ve="3">$1</Str>
+		</Action>
+		<Action sr="act121" ve="7">
 			<code>547</code>
-			<label>Set "comment" To current_code_type</label>
-			<Str sr="arg0" ve="3">%current_code_type</Str>
-			<Str sr="arg1" ve="3">comment</Str>
+			<label>Set First Line To "Profile Name: %description_name"</label>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Str sr="arg1" ve="3">Profile Name: %description_name</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act111" ve="7">
-			<code>43</code>
-			<label>If Current Line Starts An Action</label>
-			<ConditionList sr="if">
-				<Condition sr="c0" ve="3">
-					<lhs>%current_line</lhs>
-					<op>4</op>
-					<rhs>%regex_action_line_start</rhs>
-				</Condition>
-			</ConditionList>
-		</Action>
-		<Action sr="act112" ve="7">
-			<code>547</code>
-			<label>Set "action" To current_code_type</label>
-			<Str sr="arg0" ve="3">%current_code_type</Str>
-			<Str sr="arg1" ve="3">action</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act113" ve="7">
-			<code>43</code>
-			<label>If Current Line Is Empty</label>
-			<ConditionList sr="if">
-				<Condition sr="c0" ve="3">
-					<lhs>%current_line</lhs>
-					<op>0</op>
-					<rhs>\%code%line_num</rhs>
-				</Condition>
-			</ConditionList>
-		</Action>
-		<Action sr="act114" ve="7">
-			<code>135</code>
-			<label>Goto Next Line</label>
-			<Int sr="arg0" val="1"/>
-			<Int sr="arg1" val="1"/>
-			<Str sr="arg2" ve="3">Next Line</Str>
-		</Action>
-		<Action sr="act115" ve="7">
-			<code>43</code>
-			<label>Else Unknown current_code_type</label>
-		</Action>
-		<Action sr="act116" ve="7">
+		<Action sr="act122" ve="7">
 			<code>548</code>
-			<Str sr="arg0" ve="3">Error! Unknown Code Type At Line %line_num "%current_line" While Processing "%description_task_name" Description</Str>
-			<Int sr="arg1" val="1"/>
+			<Str sr="arg0" ve="3">Formatting "%description_name" Profile Description For Markdown</Str>
+			<Int sr="arg1" val="0"/>
 		</Action>
-		<Action sr="act117" ve="7">
-			<code>137</code>
-			<Int sr="arg0" val="0"/>
-			<Str sr="arg1" ve="3"/>
-		</Action>
-		<Action sr="act118" ve="7">
-			<code>38</code>
-		</Action>
-		<Action sr="act119" ve="7">
+		<Action sr="act123" ve="7">
 			<code>547</code>
-			<label>Set "1" to current_code_type_line_count</label>
-			<Str sr="arg0" ve="3">%current_code_type_line_count</Str>
+			<label>Set "1" to is_profile_description</label>
+			<Str sr="arg0" ve="3">%is_profile_description</Str>
 			<Str sr="arg1" ve="3">1</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act12" ve="7">
+		<Action sr="act124" ve="7">
+			<code>300</code>
+			<label>Process Profile Code Loop Start</label>
+		</Action>
+		<Action sr="act125" ve="7">
+			<code>300</code>
+			<label>Next Profile Line</label>
+		</Action>
+		<Action sr="act126" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%line_num</Str>
+			<Str sr="arg1" ve="3">%line_num + 1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="1"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act127" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%current_line</Str>
+			<Str sr="arg1" ve="3">%code(%line_num)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act128" ve="7">
+			<code>135</code>
+			<label>Goto Process Profile Code Loop Start If Next Line Does Not Match Entry Or Exit Task First Line</label>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="1"/>
+			<Str sr="arg2" ve="3">Process Profile Code Loop Start</Str>
+			<ConditionList sr="if">
+				<bool0>And</bool0>
+				<bool1>And</bool1>
+				<Condition sr="c0" ve="3">
+					<lhs>%line_num</lhs>
+					<op>6</op>
+					<rhs>%lines_count + 1</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%current_line</lhs>
+					<op>5</op>
+					<rhs>%regex_enter_task_name_and_code_line</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%current_line</lhs>
+					<op>5</op>
+					<rhs>%regex_exit_task_name_and_code_line</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act129" ve="7">
+			<code>135</code>
+			<label>Goto Process Task Code Loop End</label>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="1"/>
+			<Str sr="arg2" ve="3">Process Task Code Loop End</Str>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%line_num</lhs>
+					<op>7</op>
+					<rhs>%lines_count</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act13" ve="7">
 			<code>547</code>
 			<label>Set cap_indents_at_max_indent_character_count
 Default: "0"</label>
@@ -291,86 +479,97 @@ Default: "0"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act120" ve="7">
+		<Action sr="act130" ve="7">
+			<code>300</code>
+			<label>Process Profile Code Loop End</label>
+		</Action>
+		<Action sr="act131" ve="7">
+			<code>300</code>
+			<label>Process Task Description Start</label>
+		</Action>
+		<Action sr="act132" ve="7">
 			<code>547</code>
-			<label>Set line_num to current_code_type_start_line_num</label>
-			<Str sr="arg0" ve="3">%current_code_type_start_line_num</Str>
-			<Str sr="arg1" ve="3">%line_num</Str>
+			<label>Set Default Indent Character Count</label>
+			<Str sr="arg0" ve="3">%indent_character_count</Str>
+			<Str sr="arg1" ve="3">%min_indent_character_count</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act121" ve="7">
-			<code>38</code>
+		<Action sr="act133" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%current_line</Str>
+			<Str sr="arg1" ve="3">%code(%line_num)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act122" ve="7">
+		<Action sr="act134" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%description_name</Str>
+			<Str sr="arg1" ve="3">%current_line</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act135" ve="7">
 			<code>37</code>
-			<label>If First Line Of Action</label>
+			<label>If is_profile_description Equals "1"</label>
 			<ConditionList sr="if">
-				<bool0>And</bool0>
 				<Condition sr="c0" ve="3">
-					<lhs>%current_code_type_line_count</lhs>
+					<lhs>%is_profile_description</lhs>
 					<op>0</op>
 					<rhs>1</rhs>
 				</Condition>
-				<Condition sr="c1" ve="3">
-					<lhs>%current_code_type</lhs>
-					<op>0</op>
-					<rhs>action</rhs>
-				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act123" ve="7">
+		<Action sr="act136" ve="7">
 			<code>37</code>
-			<label>If Current Action Is "Else If", "Else" "End If" Or "End For"</label>
+			<label>If Current Line Starts An Entry Task</label>
 			<ConditionList sr="if">
 				<Condition sr="c0" ve="3">
 					<lhs>%current_line</lhs>
 					<op>4</op>
-					<rhs>^[\s]+A[0-9]+: (\[X\] )?((Else If)|(Else)|(End If)|(End For)).*</rhs>
+					<rhs>%regex_enter_task_name_and_code_line</rhs>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act124" ve="7">
-			<code>547</code>
-			<label>Decrement indent_character_count by single_indent_character_count</label>
-			<Str sr="arg0" ve="3">%indent_character_count</Str>
-			<Str sr="arg1" ve="3">%indent_character_count - %single_indent_character_count</Str>
+		<Action sr="act137" ve="7">
+			<code>598</code>
+			<label>Get Entry Task Description Name From First Line</label>
+			<Str sr="arg0" ve="3">%description_name</Str>
+			<Str sr="arg1" ve="3">%regex_enter_task_name_and_code_line</Str>
 			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="1"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Str sr="arg7" ve="3">$1</Str>
+		</Action>
+		<Action sr="act138" ve="7">
+			<code>547</code>
+			<label>Set First Line To "%newline%newline%newline"</label>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Str sr="arg1" ve="3">%newline%newline%newline</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act125" ve="7">
-			<code>38</code>
-		</Action>
-		<Action sr="act126" ve="7">
-			<code>38</code>
-		</Action>
-		<Action sr="act127" ve="7">
-			<code>549</code>
-			<Str sr="arg0" ve="3">%indent_string</Str>
-			<Int sr="arg1" val="0"/>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-		</Action>
-		<Action sr="act128" ve="7">
-			<code>39</code>
-			<label>Generate indent_string Based On Current indent_character_count</label>
-			<Str sr="arg0" ve="3">%num</Str>
-			<Str sr="arg1" ve="3">1:%indent_character_count</Str>
-		</Action>
-		<Action sr="act129" ve="7">
+		<Action sr="act139" ve="7">
 			<code>547</code>
-			<Str sr="arg0" ve="3">%indent_string</Str>
-			<Str sr="arg1" ve="3">%indent_character</Str>
+			<label>Append "Entry Task Name: %description_name" To First Line</label>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Str sr="arg1" ve="3">Entry Task Name: %description_name</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="1"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act13" ve="7">
+		<Action sr="act14" ve="7">
 			<code>547</code>
 			<label>Set split_action_parameters_on_multiple_lines
 Default: "1"</label>
@@ -381,10 +580,566 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act130" ve="7">
-			<code>40</code>
+		<Action sr="act140" ve="7">
+			<code>547</code>
+			<label>Set "1" to is_entry_task_description</label>
+			<Str sr="arg0" ve="3">%is_entry_task_description</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act131" ve="7">
+		<Action sr="act141" ve="7">
+			<code>43</code>
+			<label>If Current Line Starts An Exit Task</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%current_line</lhs>
+					<op>4</op>
+					<rhs>%regex_exit_task_name_and_code_line</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act142" ve="7">
+			<code>598</code>
+			<label>Get Exit Task Description Name From First Line</label>
+			<Str sr="arg0" ve="3">%description_name</Str>
+			<Str sr="arg1" ve="3">%regex_exit_task_name_and_code_line</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Str sr="arg7" ve="3">$1</Str>
+		</Action>
+		<Action sr="act143" ve="7">
+			<code>547</code>
+			<label>Set First Line To "%newline" If is_entry_task_description Equals "1"</label>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Str sr="arg1" ve="3">%newline</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%is_entry_task_description</lhs>
+					<op>0</op>
+					<rhs>1</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act144" ve="7">
+			<code>547</code>
+			<label>Set First Line To "%newline%newline%newline" If is_entry_task_description Does Not Equal "1"</label>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Str sr="arg1" ve="3">%newline%newline%newline</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%is_entry_task_description</lhs>
+					<op>1</op>
+					<rhs>1</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act145" ve="7">
+			<code>547</code>
+			<label>Append "Exit Task Name: %description_name" To First Line</label>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Str sr="arg1" ve="3">Exit Task Name: %description_name</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="1"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act146" ve="7">
+			<code>547</code>
+			<label>Set "1" to is_exit_task_description</label>
+			<Str sr="arg0" ve="3">%is_exit_task_description</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act147" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act148" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act149" ve="7">
+			<code>598</code>
+			<label>Get Task Description Name From First Line</label>
+			<Str sr="arg0" ve="3">%description_name</Str>
+			<Str sr="arg1" ve="3">%regex_task_or_profile_name_and_code_line</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Str sr="arg7" ve="3">$1</Str>
+		</Action>
+		<Action sr="act15" ve="7">
+			<code>547</code>
+			<label>Set convert_code_to_markdown_code_block
+Default: "1"</label>
+			<Str sr="arg0" ve="3">%convert_code_to_markdown_code_block</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act150" ve="7">
+			<code>547</code>
+			<label>Set First Line To "Task Name: %description_name"</label>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Str sr="arg1" ve="3">Task Name: %description_name</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act151" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Formatting "%description_name" Task Description For Markdown</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act152" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act153" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%line_num</Str>
+			<Str sr="arg1" ve="3">%line_num + 1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="1"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act154" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%current_line</Str>
+			<Str sr="arg1" ve="3">%code(%line_num)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act155" ve="7">
+			<code>37</code>
+			<label>If Second Line Of Task Description Equals A Collision Handling Value</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%current_line</lhs>
+					<op>4</op>
+					<rhs>%regex_task_collision_handling_value_line</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act156" ve="7">
+			<code>598</code>
+			<label>Remove Pre-existing "^[\s]{4}(%tab)?" Indent</label>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Str sr="arg1" ve="3">^[\s]{4}(%tab)?</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Str sr="arg7" ve="3"/>
+		</Action>
+		<Action sr="act157" ve="7">
+			<code>547</code>
+			<label>Set Second Line To "Collision Handling: collision_handling_value"</label>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Str sr="arg1" ve="3">Collision Handling: %code(%line_num)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act158" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%code_start_line_num</Str>
+			<Str sr="arg1" ve="3">%line_num + 1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act159" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act16" ve="7">
+			<code>547</code>
+			<label>Set set_clipboard_to_formatted_code
+Default: "1"</label>
+			<Str sr="arg0" ve="3">%set_clipboard_to_formatted_code</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act160" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%code_start_line_num</Str>
+			<Str sr="arg1" ve="3">%line_num</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act161" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act162" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%actions_label</Str>
+			<Str sr="arg1" ve="3">
+Actions:</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act163" ve="7">
+			<code>355</code>
+			<label>Push actions_label At code_start_line_num</label>
+			<Str sr="arg0" ve="3">%code</Str>
+			<Int sr="arg1">
+				<var>%code_start_line_num</var>
+			</Int>
+			<Str sr="arg2" ve="3">%actions_label</Str>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act164" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%lines_count</Str>
+			<Str sr="arg1" ve="3">%code(#)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act165" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%code_start_line_num</Str>
+			<Str sr="arg1" ve="3">%code_start_line_num + 1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="1"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act166" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%line_num</Str>
+			<Str sr="arg1" ve="3">%code_start_line_num</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act167" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%current_code_type</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act168" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%current_code_type_line_count</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act169" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%current_code_type_start_line_num</Str>
+			<Str sr="arg1" ve="3">%line_num</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act17" ve="7">
+			<code>300</code>
+			<label>Set User Modifiable Variables End</label>
+		</Action>
+		<Action sr="act170" ve="7">
+			<code>300</code>
+			<label>Process Task Code Loop Start</label>
+		</Action>
+		<Action sr="act171" ve="7">
+			<code>548</code>
+			<on>false</on>
+			<Str sr="arg0" ve="3">%code(%line_num)</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act172" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%current_line</Str>
+			<Str sr="arg1" ve="3">%code(%line_num)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act173" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%next_line_num</Str>
+			<Str sr="arg1" ve="3">%line_num + 1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="1"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act174" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%next_line</Str>
+			<Str sr="arg1" ve="3">%code(%next_line_num)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act175" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%next_to_next_line_num</Str>
+			<Str sr="arg1" ve="3">%line_num + 2</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="1"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act176" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%next_to_next_line</Str>
+			<Str sr="arg1" ve="3">%code(%next_to_next_line_num)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act177" ve="7">
+			<code>37</code>
+			<label>If Processing Entry Task And Next Line Contains Only Whitespaces And Next To Next Line Starts An Exit Task</label>
+			<ConditionList sr="if">
+				<bool0>And</bool0>
+				<bool1>And</bool1>
+				<Condition sr="c0" ve="3">
+					<lhs>%is_entry_task_description</lhs>
+					<op>0</op>
+					<rhs>1</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%next_line</lhs>
+					<op>4</op>
+					<rhs>%regex_whitespace_only_line</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%next_to_next_line</lhs>
+					<op>4</op>
+					<rhs>%regex_exit_task_name_and_code_line</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act178" ve="7">
+			<code>547</code>
+			<label>Set "1" to exit_task_starting_next</label>
+			<Str sr="arg0" ve="3">%exit_task_starting_next</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act179" ve="7">
+			<code>598</code>
+			<label>Remove Pre-existing "^[\s]+" Indent From Next Line</label>
+			<Str sr="arg0" ve="3">%code(%next_line_num)</Str>
+			<Str sr="arg1" ve="3">^[\s]+</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Str sr="arg7" ve="3"/>
+		</Action>
+		<Action sr="act18" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act180" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act181" ve="7">
+			<code>547</code>
+			<label>Set "0" to exit_task_starting_next</label>
+			<Str sr="arg0" ve="3">%exit_task_starting_next</Str>
+			<Str sr="arg1" ve="3">0</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act182" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act183" ve="7">
+			<code>37</code>
+			<label>If Not Processing Any Code Type</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%current_code_type</lhs>
+					<op>0</op>
+					<rhs>\%current_code_type</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act184" ve="7">
+			<code>37</code>
+			<label>If Current Line Starts A Comment</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%current_line</lhs>
+					<op>4</op>
+					<rhs>%regex_comment_line_start</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act185" ve="7">
+			<code>547</code>
+			<label>Set "comment" To current_code_type</label>
+			<Str sr="arg0" ve="3">%current_code_type</Str>
+			<Str sr="arg1" ve="3">comment</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act186" ve="7">
+			<code>43</code>
+			<label>If Current Line Starts An Action</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%current_line</lhs>
+					<op>4</op>
+					<rhs>%regex_action_line_start</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act187" ve="7">
+			<code>547</code>
+			<label>Set "action" To current_code_type</label>
+			<Str sr="arg0" ve="3">%current_code_type</Str>
+			<Str sr="arg1" ve="3">action</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act188" ve="7">
+			<code>43</code>
+			<label>If Current Line Starts The Exit Task Of A Profile</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%current_line</lhs>
+					<op>4</op>
+					<rhs>%regex_exit_task_name_and_code_line</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act189" ve="7">
+			<code>135</code>
+			<label>Goto Process Task Description Start</label>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="1"/>
+			<Str sr="arg2" ve="3">Process Task Description Start</Str>
+		</Action>
+		<Action sr="act19" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%format_task_description_for_markdown_parameter_1</Str>
+			<Str sr="arg1" ve="3">%par1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act190" ve="7">
+			<code>43</code>
+			<label>If Current Line Is Empty Or Contains Only Whitespaces</label>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%current_line</lhs>
+					<op>0</op>
+					<rhs>\%code%line_num</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%current_line</lhs>
+					<op>4</op>
+					<rhs>%regex_whitespace_only_line</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act191" ve="7">
+			<code>135</code>
+			<label>Goto Next Task Line</label>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="1"/>
+			<Str sr="arg2" ve="3">Next Task Line</Str>
+		</Action>
+		<Action sr="act192" ve="7">
+			<code>43</code>
+			<label>Else Unknown current_code_type</label>
+		</Action>
+		<Action sr="act193" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Error! Unknown Code Type At Line %line_num "%current_line" While Processing "%description_task_name" Description</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act194" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act195" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act196" ve="7">
+			<code>547</code>
+			<label>Set "1" to current_code_type_line_count</label>
+			<Str sr="arg0" ve="3">%current_code_type_line_count</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act197" ve="7">
+			<code>547</code>
+			<label>Set line_num to current_code_type_start_line_num</label>
+			<Str sr="arg0" ve="3">%current_code_type_start_line_num</Str>
+			<Str sr="arg1" ve="3">%line_num</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act198" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act199" ve="7">
 			<code>37</code>
 			<label>If First Line Of Action</label>
 			<ConditionList sr="if">
@@ -401,7 +1156,93 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act132" ve="7">
+		<Action sr="act2" ve="7">
+			<code>547</code>
+			<label>Enable this action if you want to flash log messages while running this task</label>
+			<on>false</on>
+			<Str sr="arg0" ve="3">%enable_flash_actions</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act20" ve="7">
+			<code>590</code>
+			<Str sr="arg0" ve="3">%format_task_description_for_markdown_parameter_1</Str>
+			<Str sr="arg1" ve="3">%newline</Str>
+			<Int sr="arg2" val="0"/>
+		</Action>
+		<Action sr="act200" ve="7">
+			<code>37</code>
+			<label>If Current Action Is "Else If", "Else" "End If" Or "End For"</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%current_line</lhs>
+					<op>4</op>
+					<rhs>^[\s]+A[0-9]+: (\[X\] )?((Else If)|(Else)|(End If)|(End For)).*</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act201" ve="7">
+			<code>547</code>
+			<label>Decrement indent_character_count by single_indent_character_count</label>
+			<Str sr="arg0" ve="3">%indent_character_count</Str>
+			<Str sr="arg1" ve="3">%indent_character_count - %single_indent_character_count</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="1"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act202" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act203" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act204" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%indent_string</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act205" ve="7">
+			<code>39</code>
+			<label>Generate indent_string Based On Current indent_character_count</label>
+			<Str sr="arg0" ve="3">%num</Str>
+			<Str sr="arg1" ve="3">1:%indent_character_count</Str>
+		</Action>
+		<Action sr="act206" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%indent_string</Str>
+			<Str sr="arg1" ve="3">%indent_character</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="1"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act207" ve="7">
+			<code>40</code>
+		</Action>
+		<Action sr="act208" ve="7">
+			<code>37</code>
+			<label>If First Line Of Action</label>
+			<ConditionList sr="if">
+				<bool0>And</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%current_code_type_line_count</lhs>
+					<op>0</op>
+					<rhs>1</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%current_code_type</lhs>
+					<op>0</op>
+					<rhs>action</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act209" ve="7">
 			<code>37</code>
 			<label>If Current Action Is "If", "Else If", "Else" Or "For"</label>
 			<ConditionList sr="if">
@@ -412,7 +1253,17 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act133" ve="7">
+		<Action sr="act21" ve="7">
+			<code>547</code>
+			<label>Set indent_character_type</label>
+			<Str sr="arg0" ve="3">%indent_character_type</Str>
+			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(1)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act210" ve="7">
 			<code>547</code>
 			<label>Increment indent_character_count by single_indent_character_count</label>
 			<Str sr="arg0" ve="3">%indent_character_count</Str>
@@ -422,13 +1273,13 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act134" ve="7">
+		<Action sr="act211" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act135" ve="7">
+		<Action sr="act212" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act136" ve="7">
+		<Action sr="act213" ve="7">
 			<code>37</code>
 			<label>If Processing Comment</label>
 			<ConditionList sr="if">
@@ -439,7 +1290,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act137" ve="7">
+		<Action sr="act214" ve="7">
 			<code>598</code>
 			<label>Replace Pre-existing "^[\s]{4}(%tab)?" Indent With "%indent_string"</label>
 			<Str sr="arg0" ve="3">%code(%line_num)</Str>
@@ -451,7 +1302,7 @@ Default: "1"</label>
 			<Int sr="arg6" val="1"/>
 			<Str sr="arg7" ve="3">%indent_string</Str>
 		</Action>
-		<Action sr="act138" ve="7">
+		<Action sr="act215" ve="7">
 			<code>37</code>
 			<label>If Comment Ended</label>
 			<ConditionList sr="if">
@@ -468,25 +1319,14 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act139" ve="7">
+		<Action sr="act216" ve="7">
 			<code>549</code>
 			<Str sr="arg0" ve="3">%current_code_type</Str>
 			<Int sr="arg1" val="0"/>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 		</Action>
-		<Action sr="act14" ve="7">
-			<code>547</code>
-			<label>Set convert_code_to_markdown_code_block
-Default: "1"</label>
-			<Str sr="arg0" ve="3">%convert_code_to_markdown_code_block</Str>
-			<Str sr="arg1" ve="3">1</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act140" ve="7">
+		<Action sr="act217" ve="7">
 			<code>37</code>
 			<label>If Next Action Is "Else If", "Else" "End If" Or "End For"</label>
 			<ConditionList sr="if">
@@ -497,13 +1337,13 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act141" ve="7">
+		<Action sr="act218" ve="7">
 			<code>39</code>
 			<label>For Loop From current_code_type_start_line_num to line_num</label>
 			<Str sr="arg0" ve="3">%num</Str>
 			<Str sr="arg1" ve="3">%current_code_type_start_line_num:%line_num</Str>
 		</Action>
-		<Action sr="act142" ve="7">
+		<Action sr="act219" ve="7">
 			<code>598</code>
 			<label>Remove Single Indent Prefix</label>
 			<Str sr="arg0" ve="3">%code(%num)</Str>
@@ -515,16 +1355,26 @@ Default: "1"</label>
 			<Int sr="arg6" val="1"/>
 			<Str sr="arg7" ve="3"/>
 		</Action>
-		<Action sr="act143" ve="7">
+		<Action sr="act22" ve="7">
+			<code>547</code>
+			<label>Set min_indent_character_count</label>
+			<Str sr="arg0" ve="3">%min_indent_character_count</Str>
+			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(2)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act220" ve="7">
 			<code>40</code>
 		</Action>
-		<Action sr="act144" ve="7">
+		<Action sr="act221" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act145" ve="7">
+		<Action sr="act222" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act146" ve="7">
+		<Action sr="act223" ve="7">
 			<code>43</code>
 			<label>Else If Processing Action</label>
 			<ConditionList sr="if">
@@ -535,7 +1385,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act147" ve="7">
+		<Action sr="act224" ve="7">
 			<code>598</code>
 			<label>Replace Pre-existing "^[\s]{4}(%tab)?" Indent With "%indent_string"</label>
 			<Str sr="arg0" ve="3">%code(%line_num)</Str>
@@ -547,7 +1397,7 @@ Default: "1"</label>
 			<Int sr="arg6" val="1"/>
 			<Str sr="arg7" ve="3">%indent_string</Str>
 		</Action>
-		<Action sr="act148" ve="7">
+		<Action sr="act225" ve="7">
 			<code>37</code>
 			<label>If Action Ended</label>
 			<ConditionList sr="if">
@@ -555,6 +1405,8 @@ Default: "1"</label>
 				<bool1>Or</bool1>
 				<bool2>And</bool2>
 				<bool3>Or2</bool3>
+				<bool4>Or2</bool4>
+				<bool5>Or</bool5>
 				<Condition sr="c0" ve="3">
 					<lhs>%current_code_type_line_count</lhs>
 					<op>0</op>
@@ -580,9 +1432,19 @@ Default: "1"</label>
 					<op>4</op>
 					<rhs>%regex_comment_line_start</rhs>
 				</Condition>
+				<Condition sr="c5" ve="3">
+					<lhs>%next_line_num</lhs>
+					<op>7</op>
+					<rhs>%lines_count</rhs>
+				</Condition>
+				<Condition sr="c6" ve="3">
+					<lhs>%exit_task_starting_next</lhs>
+					<op>0</op>
+					<rhs>1</rhs>
+				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act149" ve="7">
+		<Action sr="act226" ve="7">
 			<code>547</code>
 			<label>Set "0" to skipping_split_action_parameters_on_multiple_lines</label>
 			<Str sr="arg0" ve="3">%skipping_split_action_parameters_on_multiple_lines</Str>
@@ -592,18 +1454,7 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act15" ve="7">
-			<code>547</code>
-			<label>Set set_clipboard_to_formatted_code
-Default: "1"</label>
-			<Str sr="arg0" ve="3">%set_clipboard_to_formatted_code</Str>
-			<Str sr="arg1" ve="3">1</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act150" ve="7">
+		<Action sr="act227" ve="7">
 			<code>37</code>
 			<label>If split_action_parameters_on_multiple_lines Equals "0"</label>
 			<ConditionList sr="if">
@@ -614,7 +1465,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act151" ve="7">
+		<Action sr="act228" ve="7">
 			<code>547</code>
 			<label>Set "1" to skipping_split_action_parameters_on_multiple_lines if current_code_type_start_line_num &lt; line_num</label>
 			<Str sr="arg0" ve="3">%skipping_split_action_parameters_on_multiple_lines</Str>
@@ -631,34 +1482,44 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act152" ve="7">
+		<Action sr="act229" ve="7">
 			<code>135</code>
 			<label>Goto End Action Processing</label>
 			<Int sr="arg0" val="1"/>
 			<Int sr="arg1" val="1"/>
 			<Str sr="arg2" ve="3">End Action Processing</Str>
 		</Action>
-		<Action sr="act153" ve="7">
+		<Action sr="act23" ve="7">
+			<code>547</code>
+			<label>Set max_indent_character_count</label>
+			<Str sr="arg0" ve="3">%max_indent_character_count</Str>
+			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(3)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act230" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act154" ve="7">
+		<Action sr="act231" ve="7">
 			<code>43</code>
 		</Action>
-		<Action sr="act155" ve="7">
+		<Action sr="act232" ve="7">
 			<code>135</code>
 			<label>Goto Continue Action Processing</label>
 			<Int sr="arg0" val="1"/>
 			<Int sr="arg1" val="1"/>
 			<Str sr="arg2" ve="3">Continue Action Processing</Str>
 		</Action>
-		<Action sr="act156" ve="7">
+		<Action sr="act233" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act157" ve="7">
+		<Action sr="act234" ve="7">
 			<code>300</code>
 			<label>Process End Of Action</label>
 		</Action>
-		<Action sr="act158" ve="7">
+		<Action sr="act235" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%action_first_line</Str>
 			<Str sr="arg1" ve="3">%code(%current_code_type_start_line_num)</Str>
@@ -667,7 +1528,7 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act159" ve="7">
+		<Action sr="act236" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%action_all_lines</Str>
 			<Str sr="arg1" ve="3">%code(%current_code_type_start_line_num:%line_num)</Str>
@@ -676,11 +1537,7 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act16" ve="7">
-			<code>300</code>
-			<label>Set User Modifiable Variables End</label>
-		</Action>
-		<Action sr="act160" ve="7">
+		<Action sr="act237" ve="7">
 			<code>37</code>
 			<label>If Action Does Not Contain Parameters</label>
 			<ConditionList sr="if">
@@ -691,17 +1548,27 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act161" ve="7">
+		<Action sr="act238" ve="7">
 			<code>135</code>
 			<label>Goto End Action Processing</label>
 			<Int sr="arg0" val="1"/>
 			<Int sr="arg1" val="1"/>
 			<Str sr="arg2" ve="3">End Action Processing</Str>
 		</Action>
-		<Action sr="act162" ve="7">
+		<Action sr="act239" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act163" ve="7">
+		<Action sr="act24" ve="7">
+			<code>547</code>
+			<label>Set single_indent_character_count</label>
+			<Str sr="arg0" ve="3">%single_indent_character_count</Str>
+			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(4)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act240" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%action_name</Str>
 			<Str sr="arg1" ve="3">%action_first_line</Str>
@@ -710,7 +1577,7 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act164" ve="7">
+		<Action sr="act241" ve="7">
 			<code>598</code>
 			<label>Extract Action Name From First Line Of Action</label>
 			<Str sr="arg0" ve="3">%action_name</Str>
@@ -722,7 +1589,7 @@ Default: "1"</label>
 			<Int sr="arg6" val="1"/>
 			<Str sr="arg7" ve="3">$1</Str>
 		</Action>
-		<Action sr="act165" ve="7">
+		<Action sr="act242" ve="7">
 			<code>547</code>
 			<label>Set "Else" To action_name If It Is Set To "Else If"</label>
 			<Str sr="arg0" ve="3">%action_name</Str>
@@ -739,17 +1606,17 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act166" ve="7">
+		<Action sr="act243" ve="7">
 			<code>300</code>
 			<label>Check if action name exists in action names string array is necessary since otherwise if an invalid action name is passed to get action code function, then a popup/warning is generated in tasker</label>
 		</Action>
-		<Action sr="act167" ve="7">
+		<Action sr="act244" ve="7">
 			<code>664</code>
 			<label>Get Action Index From Action Names String Array</label>
 			<se>false</se>
 			<Str sr="arg0" ve="3">%action_index</Str>
-			<Str sr="arg1" ve="3">net.dinglisch.android.taskerm.gm</Str>
-			<Str sr="arg2" ve="3">b
+			<Str sr="arg1" ve="3">%tcujv_c_taskerutils</Str>
+			<Str sr="arg2" ve="3">%tcujv_cm_taskerutils_getindexofstringinarray
 {int} (String, String[])</Str>
 			<Str sr="arg3" ve="3">%action_name</Str>
 			<Str sr="arg4" ve="3">action_names_string_array</Str>
@@ -759,7 +1626,7 @@ Default: "1"</label>
 			<Str sr="arg8" ve="3"/>
 			<Str sr="arg9" ve="3"/>
 		</Action>
-		<Action sr="act168" ve="7">
+		<Action sr="act245" ve="7">
 			<code>37</code>
 			<label>If Action Code Is Not Valid</label>
 			<ConditionList sr="if">
@@ -770,7 +1637,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act169" ve="7">
+		<Action sr="act246" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Skipping Split Action On Multiple Lines For Action At Line "%line_num" Named "%action_name" Due To Invalid Action Index "%action_index" In Action Names List</Str>
 			<Int sr="arg1" val="0"/>
@@ -782,10 +1649,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act17" ve="7">
-			<code>43</code>
-		</Action>
-		<Action sr="act170" ve="7">
+		<Action sr="act247" ve="7">
 			<code>547</code>
 			<label>Set "1" to skipping_split_action_parameters_on_multiple_lines if current_code_type_start_line_num &lt; line_num</label>
 			<Str sr="arg0" ve="3">%skipping_split_action_parameters_on_multiple_lines</Str>
@@ -802,23 +1666,33 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act171" ve="7">
+		<Action sr="act248" ve="7">
 			<code>135</code>
 			<label>Goto End Action Processing</label>
 			<Int sr="arg0" val="1"/>
 			<Int sr="arg1" val="1"/>
 			<Str sr="arg2" ve="3">End Action Processing</Str>
 		</Action>
-		<Action sr="act172" ve="7">
+		<Action sr="act249" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act173" ve="7">
+		<Action sr="act25" ve="7">
+			<code>547</code>
+			<label>Set cap_indents_at_max_indent_character_count</label>
+			<Str sr="arg0" ve="3">%cap_indents_at_max_indent_character_count</Str>
+			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(5)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act250" ve="7">
 			<code>664</code>
 			<label>Get Action Code From Action Name</label>
 			<se>false</se>
 			<Str sr="arg0" ve="3">%action_code</Str>
-			<Str sr="arg1" ve="3">net.dinglisch.android.taskerm.n</Str>
-			<Str sr="arg2" ve="3">b
+			<Str sr="arg1" ve="3">%tcujv_c_taskeractionslist</Str>
+			<Str sr="arg2" ve="3">%tcujv_cm_taskeractionslist_getactioncodebyname
 {int} (String)</Str>
 			<Str sr="arg3" ve="3">%action_name</Str>
 			<Str sr="arg4" ve="3"/>
@@ -828,7 +1702,7 @@ Default: "1"</label>
 			<Str sr="arg8" ve="3"/>
 			<Str sr="arg9" ve="3"/>
 		</Action>
-		<Action sr="act174" ve="7">
+		<Action sr="act251" ve="7">
 			<code>37</code>
 			<label>If Action Code Is Not Valid</label>
 			<ConditionList sr="if">
@@ -845,7 +1719,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act175" ve="7">
+		<Action sr="act252" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Skipping Split Action On Multiple Lines For Action At Line "%line_num" Named "%action_name" Due To Invalid Action Code "%action_code"</Str>
 			<Int sr="arg1" val="0"/>
@@ -857,7 +1731,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act176" ve="7">
+		<Action sr="act253" ve="7">
 			<code>547</code>
 			<label>Set "1" to skipping_split_action_parameters_on_multiple_lines if current_code_type_start_line_num &lt; line_num</label>
 			<Str sr="arg0" ve="3">%skipping_split_action_parameters_on_multiple_lines</Str>
@@ -874,45 +1748,36 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act177" ve="7">
+		<Action sr="act254" ve="7">
 			<code>135</code>
 			<label>Goto End Action Processing</label>
 			<Int sr="arg0" val="1"/>
 			<Int sr="arg1" val="1"/>
 			<Str sr="arg2" ve="3">End Action Processing</Str>
 		</Action>
-		<Action sr="act178" ve="7">
+		<Action sr="act255" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act179" ve="7">
+		<Action sr="act256" ve="7">
 			<code>300</code>
 			<label>Find Arguments Size Of Action</label>
 		</Action>
-		<Action sr="act18" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%format_task_description_for_markdown_parameter_1</Str>
-			<Str sr="arg1" ve="3">%par1</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act180" ve="7">
+		<Action sr="act257" ve="7">
 			<code>664</code>
 			<se>false</se>
 			<Str sr="arg0" ve="3">%arguments_list_size</Str>
-			<Str sr="arg1" ve="3">net.dinglisch.android.taskerm.n</Str>
-			<Str sr="arg2" ve="3">n
+			<Str sr="arg1" ve="3">%tcujv_c_taskeractionslist</Str>
+			<Str sr="arg2" ve="3">%tcujv_cm_taskeractionslist_getargssizeofactionwithcode
 {int} (int)</Str>
 			<Str sr="arg3" ve="3">%action_code</Str>
-			<Str sr="arg4" ve="3">%action_code</Str>
-			<Str sr="arg5" ve="3">0</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
 			<Str sr="arg6" ve="3"/>
 			<Str sr="arg7" ve="3"/>
 			<Str sr="arg8" ve="3"/>
 			<Str sr="arg9" ve="3"/>
 		</Action>
-		<Action sr="act181" ve="7">
+		<Action sr="act258" ve="7">
 			<code>37</code>
 			<label>If Arguments Size Of Action Is Invalid Or Less Than 1</label>
 			<ConditionList sr="if">
@@ -929,7 +1794,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act182" ve="7">
+		<Action sr="act259" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Skipping Split Action On Multiple Lines For Action At Line "%line_num" Named "%action_name" Due To Invalid Arguments List Size "%arguments_list_size"</Str>
 			<Int sr="arg1" val="0"/>
@@ -941,17 +1806,27 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act183" ve="7">
+		<Action sr="act26" ve="7">
+			<code>547</code>
+			<label>Set split_action_parameters_on_multiple_lines</label>
+			<Str sr="arg0" ve="3">%split_action_parameters_on_multiple_lines</Str>
+			<Str sr="arg1" ve="3">%split_action_parameters_on_multiple_lines(6)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act260" ve="7">
 			<code>135</code>
 			<label>Goto End Action Processing</label>
 			<Int sr="arg0" val="1"/>
 			<Int sr="arg1" val="1"/>
 			<Str sr="arg2" ve="3">End Action Processing</Str>
 		</Action>
-		<Action sr="act184" ve="7">
+		<Action sr="act261" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act185" ve="7">
+		<Action sr="act262" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%arguments_list_size</Str>
 			<Str sr="arg1" ve="3">%arguments_list_size - 1</Str>
@@ -960,16 +1835,16 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act186" ve="7">
+		<Action sr="act263" ve="7">
 			<code>357</code>
 			<Str sr="arg0" ve="3">%argument_names_list</Str>
 		</Action>
-		<Action sr="act187" ve="7">
+		<Action sr="act264" ve="7">
 			<code>39</code>
 			<Str sr="arg0" ve="3">%num</Str>
 			<Str sr="arg1" ve="3">0:%arguments_list_size</Str>
 		</Action>
-		<Action sr="act188" ve="7">
+		<Action sr="act265" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%argument_number</Str>
 			<Str sr="arg1" ve="3">%num</Str>
@@ -978,11 +1853,11 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act189" ve="7">
+		<Action sr="act266" ve="7">
 			<code>664</code>
 			<Str sr="arg0" ve="3">%argument_name</Str>
-			<Str sr="arg1" ve="3">net.dinglisch.android.taskerm.n</Str>
-			<Str sr="arg2" ve="3">a
+			<Str sr="arg1" ve="3">%tcujv_c_taskeractionslist</Str>
+			<Str sr="arg2" ve="3">%tcujv_cm_taskeractionslist_getargnameatindexofactionwithcode
 {String} (Resources, int, int)</Str>
 			<Str sr="arg3" ve="3">resources</Str>
 			<Str sr="arg4" ve="3">%action_code</Str>
@@ -992,33 +1867,63 @@ Default: "1"</label>
 			<Str sr="arg8" ve="3"/>
 			<Str sr="arg9" ve="3"/>
 		</Action>
-		<Action sr="act19" ve="7">
-			<code>590</code>
-			<Str sr="arg0" ve="3">%format_task_description_for_markdown_parameter_1</Str>
-			<Str sr="arg1" ve="3">%newline</Str>
-			<Int sr="arg2" val="0"/>
+		<Action sr="act267" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">%argument_name_for_regex</Str>
+			<Str sr="arg1" ve="3">Pattern</Str>
+			<Str sr="arg2" ve="3">quote
+{String} (String)</Str>
+			<Str sr="arg3" ve="3">%argument_name</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
 		</Action>
-		<Action sr="act190" ve="7">
+		<Action sr="act268" ve="7">
+			<code>548</code>
+			<on>false</on>
+			<Str sr="arg0" ve="3">argument_name_for_regex: "%argument_name_for_regex"</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act269" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_argument_name_repeated</Str>
-			<Str sr="arg1" ve="3">.*%argument_name:.*%argument_name:.*</Str>
+			<Str sr="arg1" ve="3">.*%argument_name_for_regex:.*%argument_name_for_regex:.*</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act191" ve="7">
+		<Action sr="act27" ve="7">
+			<code>547</code>
+			<label>Set convert_code_to_markdown_code_block</label>
+			<Str sr="arg0" ve="3">%convert_code_to_markdown_code_block</Str>
+			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(7)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act270" ve="7">
 			<code>37</code>
-			<label>If Arguments Name Is Repeated In Action Description, Then Not Safe To Split Action On Multiple Lines</label>
+			<label>If Arguments Name Is Repeated In Action Description And Action Code Not In force_split_action_parameters_on_multiple_lines_action_codes, Then Not Safe To Split Action On Multiple Lines</label>
 			<ConditionList sr="if">
+				<bool0>And</bool0>
 				<Condition sr="c0" ve="3">
 					<lhs>%action_all_lines</lhs>
 					<op>4</op>
 					<rhs>%regex_argument_name_repeated</rhs>
 				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>,%force_split_action_parameters_on_multiple_lines_action_codes,</lhs>
+					<op>3</op>
+					<rhs>*,%action_code,*</rhs>
+				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act192" ve="7">
+		<Action sr="act271" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Skipping Split Action On Multiple Lines For Action At Line "%line_num" Named "%action_name" Due To Argument Name "%argument_name" Repetition</Str>
 			<Int sr="arg1" val="0"/>
@@ -1030,7 +1935,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act193" ve="7">
+		<Action sr="act272" ve="7">
 			<code>547</code>
 			<label>Set "1" to skipping_split_action_parameters_on_multiple_lines if current_code_type_start_line_num &lt; line_num</label>
 			<Str sr="arg0" ve="3">%skipping_split_action_parameters_on_multiple_lines</Str>
@@ -1047,17 +1952,17 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act194" ve="7">
+		<Action sr="act273" ve="7">
 			<code>135</code>
 			<label>Goto End Action Processing</label>
 			<Int sr="arg0" val="1"/>
 			<Int sr="arg1" val="1"/>
 			<Str sr="arg2" ve="3">End Action Processing</Str>
 		</Action>
-		<Action sr="act195" ve="7">
+		<Action sr="act274" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act196" ve="7">
+		<Action sr="act275" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%position</Str>
 			<Str sr="arg1" ve="3">%argument_names_list(#) + 1</Str>
@@ -1066,7 +1971,7 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act197" ve="7">
+		<Action sr="act276" ve="7">
 			<code>355</code>
 			<Str sr="arg0" ve="3">%argument_names_list</Str>
 			<Int sr="arg1">
@@ -1075,37 +1980,16 @@ Default: "1"</label>
 			<Str sr="arg2" ve="3">%argument_name</Str>
 			<Int sr="arg3" val="0"/>
 		</Action>
-		<Action sr="act198" ve="7">
+		<Action sr="act277" ve="7">
 			<code>40</code>
 		</Action>
-		<Action sr="act199" ve="7">
+		<Action sr="act278" ve="7">
 			<code>39</code>
 			<label>For Loop On All Argument Names In argument_names_list</label>
 			<Str sr="arg0" ve="3">%num</Str>
 			<Str sr="arg1" ve="3">1:%argument_names_list(#)</Str>
 		</Action>
-		<Action sr="act2" ve="7">
-			<code>547</code>
-			<label>Enable this action if you want to flash log messages while running this task</label>
-			<on>false</on>
-			<Str sr="arg0" ve="3">%enable_flash_actions</Str>
-			<Str sr="arg1" ve="3">1</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act20" ve="7">
-			<code>547</code>
-			<label>Set indent_character_type</label>
-			<Str sr="arg0" ve="3">%indent_character_type</Str>
-			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(1)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act200" ve="7">
+		<Action sr="act279" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%argument_name</Str>
 			<Str sr="arg1" ve="3">%argument_names_list(%num)</Str>
@@ -1114,22 +1998,46 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act201" ve="7">
+		<Action sr="act28" ve="7">
 			<code>547</code>
-			<Str sr="arg0" ve="3">%regex_argument_name_exists</Str>
-			<Str sr="arg1" ve="3">(.*)(%argument_name:.*)</Str>
+			<label>Set set_clipboard_to_formatted_code</label>
+			<Str sr="arg0" ve="3">%set_clipboard_to_formatted_code</Str>
+			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(8)</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act202" ve="7">
+		<Action sr="act280" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">%argument_name_for_regex</Str>
+			<Str sr="arg1" ve="3">Pattern</Str>
+			<Str sr="arg2" ve="3">quote
+{String} (String)</Str>
+			<Str sr="arg3" ve="3">%argument_name</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act281" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_argument_name_exists</Str>
+			<Str sr="arg1" ve="3">(.*)(%argument_name_for_regex:.*)</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act282" ve="7">
 			<code>39</code>
 			<label>For Loop From current_code_type_start_line_num to line_num</label>
 			<Str sr="arg0" ve="3">%num1</Str>
 			<Str sr="arg1" ve="3">%current_code_type_start_line_num:%line_num</Str>
 		</Action>
-		<Action sr="act203" ve="7">
+		<Action sr="act283" ve="7">
 			<code>37</code>
 			<label>If Action Line Contains The Argument Name</label>
 			<ConditionList sr="if">
@@ -1140,49 +2048,42 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act204" ve="7">
+		<Action sr="act284" ve="7">
 			<code>598</code>
 			<label>Add "%newline%indent_string%single_indent_string" Before argument_name</label>
 			<Str sr="arg0" ve="3">%code(%num1)</Str>
 			<Str sr="arg1" ve="3">%regex_argument_name_exists</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
+			<Int sr="arg4" val="1"/>
 			<Str sr="arg5" ve="3"/>
 			<Int sr="arg6" val="1"/>
 			<Str sr="arg7" ve="3">$1%newline%indent_string%single_indent_string$2</Str>
 		</Action>
-		<Action sr="act205" ve="7">
+		<Action sr="act285" ve="7">
 			<code>135</code>
 			<label>Goto Start Of For Loop On All Argument Names In argument_names_list</label>
 			<Int sr="arg0" val="1"/>
 			<Int sr="arg1" val="1"/>
 			<Str sr="arg2" ve="3">For Loop On All Argument Names In argument_names_list</Str>
 		</Action>
-		<Action sr="act206" ve="7">
+		<Action sr="act286" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act207" ve="7">
+		<Action sr="act287" ve="7">
 			<code>40</code>
 		</Action>
-		<Action sr="act208" ve="7">
+		<Action sr="act288" ve="7">
 			<code>40</code>
 		</Action>
-		<Action sr="act209" ve="7">
+		<Action sr="act289" ve="7">
 			<code>300</code>
 			<label>End Action Processing</label>
 		</Action>
-		<Action sr="act21" ve="7">
-			<code>547</code>
-			<label>Set min_indent_character_count</label>
-			<Str sr="arg0" ve="3">%min_indent_character_count</Str>
-			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(2)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
+		<Action sr="act29" ve="7">
+			<code>38</code>
 		</Action>
-		<Action sr="act210" ve="7">
+		<Action sr="act290" ve="7">
 			<code>37</code>
 			<label>If skipping_split_action_parameters_on_multiple_lines Equals "1"</label>
 			<ConditionList sr="if">
@@ -1193,7 +2094,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act211" ve="7">
+		<Action sr="act291" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%current_code_type_start_line_num_plus_1</Str>
 			<Str sr="arg1" ve="3">%current_code_type_start_line_num + 1</Str>
@@ -1202,7 +2103,7 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act212" ve="7">
+		<Action sr="act292" ve="7">
 			<code>39</code>
 			<label>For Loop From current_code_type_start_line_num_plus_1+1 to line_num</label>
 			<Str sr="arg0" ve="3">%num</Str>
@@ -1215,7 +2116,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act213" ve="7">
+		<Action sr="act293" ve="7">
 			<code>598</code>
 			<label>Replace Previously Set "^%indent_string" Indent With "%indent_string%single_indent_string"</label>
 			<Str sr="arg0" ve="3">%code(%num)</Str>
@@ -1227,20 +2128,20 @@ Default: "1"</label>
 			<Int sr="arg6" val="1"/>
 			<Str sr="arg7" ve="3">%indent_string%single_indent_string</Str>
 		</Action>
-		<Action sr="act214" ve="7">
+		<Action sr="act294" ve="7">
 			<code>40</code>
 		</Action>
-		<Action sr="act215" ve="7">
+		<Action sr="act295" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act216" ve="7">
+		<Action sr="act296" ve="7">
 			<code>549</code>
 			<Str sr="arg0" ve="3">%current_code_type</Str>
 			<Int sr="arg1" val="0"/>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 		</Action>
-		<Action sr="act217" ve="7">
+		<Action sr="act297" ve="7">
 			<code>547</code>
 			<label>Append Newline To Line</label>
 			<Str sr="arg0" ve="3">%code(%line_num)</Str>
@@ -1250,24 +2151,38 @@ Default: "1"</label>
 			<Int sr="arg4" val="1"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act218" ve="7">
+		<Action sr="act298" ve="7">
 			<code>300</code>
 			<label>Continue Action Processing</label>
 		</Action>
-		<Action sr="act219" ve="7">
+		<Action sr="act299" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act22" ve="7">
+		<Action sr="act3" ve="7">
 			<code>547</code>
-			<label>Set max_indent_character_count</label>
-			<Str sr="arg0" ve="3">%max_indent_character_count</Str>
-			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(3)</Str>
+			<label>Set action codes whose action parameters should be force split even if duplicates found
+Default:
+664
+Java Function</label>
+			<Str sr="arg0" ve="3">%force_split_action_parameters_on_multiple_lines_action_codes</Str>
+			<Str sr="arg1" ve="3">664</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act220" ve="7">
+		<Action sr="act30" ve="7">
+			<code>37</code>
+			<label>If %par2 Not Received</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%par2</lhs>
+					<op>0</op>
+					<rhs>\%par2</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act300" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%current_code_type_line_count</Str>
 			<Str sr="arg1" ve="3">%current_code_type_line_count + 1</Str>
@@ -1276,11 +2191,11 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act221" ve="7">
+		<Action sr="act301" ve="7">
 			<code>300</code>
-			<label>Next Line</label>
+			<label>Next Task Line</label>
 		</Action>
-		<Action sr="act222" ve="7">
+		<Action sr="act302" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%line_num</Str>
 			<Str sr="arg1" ve="3">%line_num + 1</Str>
@@ -1289,12 +2204,12 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act223" ve="7">
+		<Action sr="act303" ve="7">
 			<code>135</code>
-			<label>Goto Start Of Process Code Loop</label>
+			<label>Goto Process Task Code Loop Start</label>
 			<Int sr="arg0" val="1"/>
 			<Int sr="arg1" val="1"/>
-			<Str sr="arg2" ve="3">Start Of Process Code Loop</Str>
+			<Str sr="arg2" ve="3">Process Task Code Loop Start</Str>
 			<ConditionList sr="if">
 				<Condition sr="c0" ve="3">
 					<lhs>%line_num</lhs>
@@ -1303,18 +2218,18 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act224" ve="7">
+		<Action sr="act304" ve="7">
 			<code>300</code>
-			<label>End Of Process Code Loop</label>
+			<label>Process Task Code Loop End</label>
 		</Action>
-		<Action sr="act225" ve="7">
+		<Action sr="act305" ve="7">
 			<code>592</code>
 			<label>Join Code Array On Newline</label>
 			<Str sr="arg0" ve="3">%code</Str>
 			<Str sr="arg1" ve="3">%newline</Str>
 			<Int sr="arg2" val="0"/>
 		</Action>
-		<Action sr="act226" ve="7">
+		<Action sr="act306" ve="7">
 			<code>37</code>
 			<label>If cap_indents_at_max_indent_character_count Equals "1"</label>
 			<ConditionList sr="if">
@@ -1325,20 +2240,20 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act227" ve="7">
+		<Action sr="act307" ve="7">
 			<code>549</code>
 			<Str sr="arg0" ve="3">%indent_string</Str>
 			<Int sr="arg1" val="0"/>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 		</Action>
-		<Action sr="act228" ve="7">
+		<Action sr="act308" ve="7">
 			<code>39</code>
 			<label>Generate indent_string Based On max_indent_character_count</label>
 			<Str sr="arg0" ve="3">%num</Str>
 			<Str sr="arg1" ve="3">1:%max_indent_character_count</Str>
 		</Action>
-		<Action sr="act229" ve="7">
+		<Action sr="act309" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%indent_string</Str>
 			<Str sr="arg1" ve="3">%indent_character</Str>
@@ -1347,20 +2262,20 @@ Default: "1"</label>
 			<Int sr="arg4" val="1"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act23" ve="7">
+		<Action sr="act31" ve="7">
 			<code>547</code>
-			<label>Set single_indent_character_count</label>
-			<Str sr="arg0" ve="3">%single_indent_character_count</Str>
-			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(4)</Str>
+			<label>Set Clipboard Text To code</label>
+			<Str sr="arg0" ve="3">%code</Str>
+			<Str sr="arg1" ve="3">%CLIP</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act230" ve="7">
+		<Action sr="act310" ve="7">
 			<code>40</code>
 		</Action>
-		<Action sr="act231" ve="7">
+		<Action sr="act311" ve="7">
 			<code>598</code>
 			<label>Replace Indents Greater Than max_indent_character_count With "%indent_string"</label>
 			<Str sr="arg0" ve="3">%code</Str>
@@ -1372,10 +2287,10 @@ Default: "1"</label>
 			<Int sr="arg6" val="1"/>
 			<Str sr="arg7" ve="3">%indent_string</Str>
 		</Action>
-		<Action sr="act232" ve="7">
+		<Action sr="act312" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act233" ve="7">
+		<Action sr="act313" ve="7">
 			<code>37</code>
 			<label>If convert_code_to_markdown_code_block Equals "1"</label>
 			<ConditionList sr="if">
@@ -1386,7 +2301,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act234" ve="7">
+		<Action sr="act314" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%code_for_shell</Str>
 			<Str sr="arg1" ve="3">%code</Str>
@@ -1395,7 +2310,7 @@ Default: "1"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act235" ve="7">
+		<Action sr="act315" ve="7">
 			<code>598</code>
 			<label>replace all single quotes (') with nothing</label>
 			<Str sr="arg0" ve="3">%code_for_shell</Str>
@@ -1414,7 +2329,7 @@ Default: "1"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act236" ve="7">
+		<Action sr="act316" ve="7">
 			<code>123</code>
 			<label>Find Backticks To Print</label>
 			<se>false</se>
@@ -1460,7 +2375,7 @@ echo "$backticks_to_print"</Str>
 			<Str sr="arg4" ve="3">%errors</Str>
 			<Str sr="arg5" ve="3"/>
 		</Action>
-		<Action sr="act237" ve="7">
+		<Action sr="act317" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%exit_code</Str>
 			<Str sr="arg1" ve="3">%err</Str>
@@ -1469,7 +2384,7 @@ echo "$backticks_to_print"</Str>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act238" ve="7">
+		<Action sr="act318" ve="7">
 			<code>37</code>
 			<label>If Failed</label>
 			<ConditionList sr="if">
@@ -1486,7 +2401,7 @@ echo "$backticks_to_print"</Str>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act239" ve="7">
+		<Action sr="act319" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Failed To Find Backticks To Print To Convert "%description_task_name" Task Description To Markdown Code Block
 %task_name Failed
@@ -1504,25 +2419,18 @@ output =
 "</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act24" ve="7">
-			<code>547</code>
-			<label>Set cap_indents_at_max_indent_character_count</label>
-			<Str sr="arg0" ve="3">%cap_indents_at_max_indent_character_count</Str>
-			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(5)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
+		<Action sr="act32" ve="7">
+			<code>43</code>
 		</Action>
-		<Action sr="act240" ve="7">
+		<Action sr="act320" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act241" ve="7">
+		<Action sr="act321" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act242" ve="7">
+		<Action sr="act322" ve="7">
 			<code>547</code>
 			<label>Convert Code To Markdown Code Block</label>
 			<Str sr="arg0" ve="3">%code</Str>
@@ -1534,15 +2442,15 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act243" ve="7">
+		<Action sr="act323" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act244" ve="7">
+		<Action sr="act324" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Format Complete</Str>
 			<Int sr="arg1" val="0"/>
 		</Action>
-		<Action sr="act245" ve="7">
+		<Action sr="act325" ve="7">
 			<code>37</code>
 			<label>If set_clipboard_to_formatted_code Equals "1"</label>
 			<ConditionList sr="if">
@@ -1553,93 +2461,28 @@ output =
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act246" ve="7">
+		<Action sr="act326" ve="7">
 			<code>105</code>
 			<label>Set code To Clipboard Text</label>
 			<Str sr="arg0" ve="3">%code</Str>
 			<Int sr="arg1" val="0"/>
 		</Action>
-		<Action sr="act247" ve="7">
+		<Action sr="act327" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act248" ve="7">
+		<Action sr="act328" ve="7">
 			<code>300</code>
 			<label>Return</label>
 		</Action>
-		<Action sr="act249" ve="7">
+		<Action sr="act329" ve="7">
 			<code>126</code>
 			<Str sr="arg0" ve="3">%code</Str>
 			<Int sr="arg1" val="1"/>
-		</Action>
-		<Action sr="act25" ve="7">
-			<code>547</code>
-			<label>Set split_action_parameters_on_multiple_lines</label>
-			<Str sr="arg0" ve="3">%split_action_parameters_on_multiple_lines</Str>
-			<Str sr="arg1" ve="3">%split_action_parameters_on_multiple_lines(6)</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
+			<Str sr="arg4" ve="3"/>
 		</Action>
-		<Action sr="act26" ve="7">
-			<code>547</code>
-			<label>Set convert_code_to_markdown_code_block</label>
-			<Str sr="arg0" ve="3">%convert_code_to_markdown_code_block</Str>
-			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(7)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act27" ve="7">
-			<code>547</code>
-			<label>Set set_clipboard_to_formatted_code</label>
-			<Str sr="arg0" ve="3">%set_clipboard_to_formatted_code</Str>
-			<Str sr="arg1" ve="3">%format_task_description_for_markdown_parameter_1(8)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act28" ve="7">
-			<code>38</code>
-		</Action>
-		<Action sr="act29" ve="7">
-			<code>37</code>
-			<label>If %par2 Not Received</label>
-			<ConditionList sr="if">
-				<Condition sr="c0" ve="3">
-					<lhs>%par2</lhs>
-					<op>0</op>
-					<rhs>\%par2</rhs>
-				</Condition>
-			</ConditionList>
-		</Action>
-		<Action sr="act3" ve="7">
-			<code>547</code>
-			<label>Set Newline Character</label>
-			<Str sr="arg0" ve="3">%newline</Str>
-			<Str sr="arg1" ve="3">
-</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act30" ve="7">
-			<code>547</code>
-			<label>Set Clipboard Text To code</label>
-			<Str sr="arg0" ve="3">%code</Str>
-			<Str sr="arg1" ve="3">%CLIP</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act31" ve="7">
-			<code>43</code>
-		</Action>
-		<Action sr="act32" ve="7">
+		<Action sr="act33" ve="7">
 			<code>547</code>
 			<label>Set %par2 To code</label>
 			<Str sr="arg0" ve="3">%code</Str>
@@ -1649,10 +2492,10 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act33" ve="7">
+		<Action sr="act34" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act34" ve="7">
+		<Action sr="act35" ve="7">
 			<code>547</code>
 			<label>Set Tab Character</label>
 			<Str sr="arg0" ve="3">%tab</Str>
@@ -1662,7 +2505,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act35" ve="7">
+		<Action sr="act36" ve="7">
 			<code>547</code>
 			<label>Set Space Character</label>
 			<Str sr="arg0" ve="3">%space</Str>
@@ -1672,7 +2515,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act36" ve="7">
+		<Action sr="act37" ve="7">
 			<code>37</code>
 			<label>If indent_character_type Is Set To "space"</label>
 			<ConditionList sr="if">
@@ -1683,7 +2526,7 @@ output =
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act37" ve="7">
+		<Action sr="act38" ve="7">
 			<code>547</code>
 			<label>Set "%space" to indent_character</label>
 			<Str sr="arg0" ve="3">%indent_character</Str>
@@ -1693,7 +2536,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act38" ve="7">
+		<Action sr="act39" ve="7">
 			<code>43</code>
 			<label>If indent_character_type Is Set To "tab"</label>
 			<ConditionList sr="if">
@@ -1704,7 +2547,18 @@ output =
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act39" ve="7">
+		<Action sr="act4" ve="7">
+			<code>547</code>
+			<label>Set Newline Character</label>
+			<Str sr="arg0" ve="3">%newline</Str>
+			<Str sr="arg1" ve="3">
+</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act40" ve="7">
 			<code>547</code>
 			<label>Set "%tab" to indent_character</label>
 			<Str sr="arg0" ve="3">%indent_character</Str>
@@ -1714,14 +2568,10 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act4" ve="7">
-			<code>300</code>
-			<label>Parse And Validate Parameters</label>
-		</Action>
-		<Action sr="act40" ve="7">
+		<Action sr="act41" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act41" ve="7">
+		<Action sr="act42" ve="7">
 			<code>547</code>
 			<label>Set Default Indent Character Count</label>
 			<Str sr="arg0" ve="3">%indent_character_count</Str>
@@ -1731,7 +2581,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act42" ve="7">
+		<Action sr="act43" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_single_indent_prefix</Str>
 			<Str sr="arg1" ve="3">^[%indent_character]{%single_indent_character_count}</Str>
@@ -1740,7 +2590,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act43" ve="7">
+		<Action sr="act44" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_set_max_indent</Str>
 			<Str sr="arg1" ve="3">^[%indent_character]{%max_indent_character_count,}</Str>
@@ -1749,7 +2599,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act44" ve="7">
+		<Action sr="act45" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_valid_number</Str>
 			<Str sr="arg1" ve="3">^[0-9]+$</Str>
@@ -1758,7 +2608,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act45" ve="7">
+		<Action sr="act46" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_valid_bool_value</Str>
 			<Str sr="arg1" ve="3">^[0-1]$</Str>
@@ -1767,7 +2617,56 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act46" ve="7">
+		<Action sr="act47" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_task_or_profile_name_and_code_line</Str>
+			<Str sr="arg1" ve="3">^[\s]*(.+) \([0-9]+\)$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act48" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_profile_name_and_code_line</Str>
+			<Str sr="arg1" ve="3">^[\s]*Profile: (.+) \([0-9]+\)$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act49" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_enter_task_name_and_code_line</Str>
+			<Str sr="arg1" ve="3">^[\s]*Enter: (.+) \([0-9]+\)$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act5" ve="7">
+			<code>300</code>
+			<label>Parse And Validate Parameters</label>
+		</Action>
+		<Action sr="act50" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_exit_task_name_and_code_line</Str>
+			<Str sr="arg1" ve="3">^[\s]*Exit: (.+) \([0-9]+\)$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act51" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_task_collision_handling_value_line</Str>
+			<Str sr="arg1" ve="3">^[\s]+(Abort New Task)|(Abort Existing Task)|(Run Both Together)$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act52" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_action_line_start</Str>
 			<Str sr="arg1" ve="3">^[\s]+A[0-9]+: .</Str>
@@ -1776,7 +2675,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act47" ve="7">
+		<Action sr="act53" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_action_line_end</Str>
 			<Str sr="arg1" ve="3"> \](%space)?$</Str>
@@ -1785,7 +2684,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act48" ve="7">
+		<Action sr="act54" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_action_line_with_parameters</Str>
 			<Str sr="arg1" ve="3">^[\s]+A[0-9]+: (?:\[X\] )?([^\\\[]+) \[.*</Str>
@@ -1794,7 +2693,7 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act49" ve="7">
+		<Action sr="act55" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_comment_line_start</Str>
 			<Str sr="arg1" ve="3">^[\s]+\&lt;</Str>
@@ -1803,7 +2702,41 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act5" ve="7">
+		<Action sr="act56" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_comment_line_end</Str>
+			<Str sr="arg1" ve="3">\&gt;$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act57" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_whitespace_only_line</Str>
+			<Str sr="arg1" ve="3">^[\s]+$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act58" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_valid_comma_separated_numbers_list</Str>
+			<Str sr="arg1" ve="3">^[0-9]+(,[0-9]+)*$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act59" ve="7">
+			<code>345</code>
+			<se>false</se>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3">%indent_character</Str>
+			<Str sr="arg2" ve="3">%indent_character_length</Str>
+		</Action>
+		<Action sr="act6" ve="7">
 			<code>547</code>
 			<on>false</on>
 			<Str sr="arg0" ve="3">%par1</Str>
@@ -1819,29 +2752,14 @@ output =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act50" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%regex_comment_line_end</Str>
-			<Str sr="arg1" ve="3">\&gt;$</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act51" ve="7">
-			<code>345</code>
-			<se>false</se>
-			<Int sr="arg0" val="0"/>
-			<Str sr="arg1" ve="3">%indent_character</Str>
-			<Str sr="arg2" ve="3">%indent_character_length</Str>
-		</Action>
-		<Action sr="act52" ve="7">
+		<Action sr="act60" ve="7">
 			<code>37</code>
 			<ConditionList sr="if">
 				<bool0>And2</bool0>
 				<bool1>Or</bool1>
 				<bool10>Or</bool10>
 				<bool11>Or</bool11>
+				<bool12>Or</bool12>
 				<bool2>Or</bool2>
 				<bool3>Or</bool3>
 				<bool4>Or</bool4>
@@ -1874,6 +2792,11 @@ output =
 					<lhs>%split_action_parameters_on_multiple_lines</lhs>
 					<op>5</op>
 					<rhs>%regex_valid_bool_value</rhs>
+				</Condition>
+				<Condition sr="c13" ve="3">
+					<lhs>%force_split_action_parameters_on_multiple_lines_action_codes</lhs>
+					<op>5</op>
+					<rhs>%regex_valid_comma_separated_numbers_list</rhs>
 				</Condition>
 				<Condition sr="c2" ve="3">
 					<lhs>%indent_character_length</lhs>
@@ -1917,7 +2840,7 @@ output =
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act53" ve="7">
+		<Action sr="act61" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Invalid Parameters To %task_name
 %task_name Failed
@@ -1936,24 +2859,26 @@ split_action_parameters_on_multiple_lines = "%split_action_parameters_on_multipl
 
 convert_code_to_markdown_code_block = "%convert_code_to_markdown_code_block"
 
-set_clipboard_to_formatted_code = "%set_clipboard_to_formatted_code"</Str>
+set_clipboard_to_formatted_code = "%set_clipboard_to_formatted_code"
+
+force_split_action_parameters_on_multiple_lines_action_codes = "%force_split_action_parameters_on_multiple_lines_action_codes"</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act54" ve="7">
+		<Action sr="act62" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act55" ve="7">
+		<Action sr="act63" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act56" ve="7">
+		<Action sr="act64" ve="7">
 			<code>39</code>
 			<label>Generate single_indent_string Based On Current single_indent_character_count</label>
 			<Str sr="arg0" ve="3">%num</Str>
 			<Str sr="arg1" ve="3">1:%single_indent_character_count</Str>
 		</Action>
-		<Action sr="act57" ve="7">
+		<Action sr="act65" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%single_indent_string</Str>
 			<Str sr="arg1" ve="3">%indent_character</Str>
@@ -1962,264 +2887,10 @@ set_clipboard_to_formatted_code = "%set_clipboard_to_formatted_code"</Str>
 			<Int sr="arg4" val="1"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act58" ve="7">
+		<Action sr="act66" ve="7">
 			<code>40</code>
 		</Action>
-		<Action sr="act59" ve="7">
-			<code>300</code>
-			<label>Task Start</label>
-		</Action>
-		<Action sr="act6" ve="7">
-			<code>37</code>
-			<label>If %par1 Not Received</label>
-			<ConditionList sr="if">
-				<Condition sr="c0" ve="3">
-					<lhs>%par1</lhs>
-					<op>0</op>
-					<rhs>\%par1</rhs>
-				</Condition>
-			</ConditionList>
-		</Action>
-		<Action sr="act60" ve="7">
-			<code>590</code>
-			<label>Split Code On Newline To Create Code Array</label>
-			<Str sr="arg0" ve="3">%code</Str>
-			<Str sr="arg1" ve="3">%newline</Str>
-			<Int sr="arg2" val="0"/>
-		</Action>
-		<Action sr="act61" ve="7">
-			<code>37</code>
-			<label>Check If First Line Consists Of Task Name And Code</label>
-			<ConditionList sr="if">
-				<Condition sr="c0" ve="3">
-					<lhs>%code(1)</lhs>
-					<op>5</op>
-					<rhs>^[\s]*(.+) \([0-9]+\)$</rhs>
-				</Condition>
-			</ConditionList>
-		</Action>
-		<Action sr="act62" ve="7">
-			<code>548</code>
-			<Str sr="arg0" ve="3">Error! Task Name And Code Not Found In Line 1 Of Task Description Being Used
-%task_name Failed
-
-Line 1 = "%code(1)"</Str>
-			<Int sr="arg1" val="1"/>
-		</Action>
-		<Action sr="act63" ve="7">
-			<code>137</code>
-			<Int sr="arg0" val="0"/>
-			<Str sr="arg1" ve="3"/>
-		</Action>
-		<Action sr="act64" ve="7">
-			<code>38</code>
-		</Action>
-		<Action sr="act65" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%description_task_name</Str>
-			<Str sr="arg1" ve="3">%code(1)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act66" ve="7">
-			<code>598</code>
-			<label>Get Description Task Name From First Line</label>
-			<Str sr="arg0" ve="3">%description_task_name</Str>
-			<Str sr="arg1" ve="3">^[\s]*(.+) \([0-9]+\)$</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Str sr="arg5" ve="3"/>
-			<Int sr="arg6" val="1"/>
-			<Str sr="arg7" ve="3">$1</Str>
-		</Action>
 		<Action sr="act67" ve="7">
-			<code>548</code>
-			<Str sr="arg0" ve="3">Formatting "%description_task_name" Task Description For Markdown</Str>
-			<Int sr="arg1" val="0"/>
-		</Action>
-		<Action sr="act68" ve="7">
-			<code>547</code>
-			<label>Set Line 1 To "Task Name: %description_task_name"</label>
-			<Str sr="arg0" ve="3">%code(1)</Str>
-			<Str sr="arg1" ve="3">Task Name: %description_task_name</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act69" ve="7">
-			<code>37</code>
-			<label>If Second Line Equals "Abort New Task", "Abort Existing Task" Or "Run Both Together"</label>
-			<ConditionList sr="if">
-				<Condition sr="c0" ve="3">
-					<lhs>%code(2)</lhs>
-					<op>4</op>
-					<rhs>^[\s]+(Abort New Task)|(Abort Existing Task)|(Run Both Together)$</rhs>
-				</Condition>
-			</ConditionList>
-		</Action>
-		<Action sr="act7" ve="7">
-			<code>300</code>
-			<label>Set User Modifiable Variables Start</label>
-		</Action>
-		<Action sr="act70" ve="7">
-			<code>598</code>
-			<label>Remove Pre-existing "^[\s]{4}(%tab)?" Indent</label>
-			<Str sr="arg0" ve="3">%code(2)</Str>
-			<Str sr="arg1" ve="3">^[\s]{4}(%tab)?</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Str sr="arg5" ve="3"/>
-			<Int sr="arg6" val="1"/>
-			<Str sr="arg7" ve="3"/>
-		</Action>
-		<Action sr="act71" ve="7">
-			<code>547</code>
-			<label>Set Line 1 To "Collision Handling: %code(2)"</label>
-			<Str sr="arg0" ve="3">%code(2)</Str>
-			<Str sr="arg1" ve="3">Collision Handling: %code(2)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act72" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%code_start_line_num</Str>
-			<Str sr="arg1" ve="3">3</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act73" ve="7">
-			<code>43</code>
-		</Action>
-		<Action sr="act74" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%code_start_line_num</Str>
-			<Str sr="arg1" ve="3">2</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act75" ve="7">
-			<code>38</code>
-		</Action>
-		<Action sr="act76" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%actions_label</Str>
-			<Str sr="arg1" ve="3">
-Actions:</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act77" ve="7">
-			<code>355</code>
-			<label>Push actions_label At code_start_line_num</label>
-			<Str sr="arg0" ve="3">%code</Str>
-			<Int sr="arg1">
-				<var>%code_start_line_num</var>
-			</Int>
-			<Str sr="arg2" ve="3">%actions_label</Str>
-			<Int sr="arg3" val="0"/>
-		</Action>
-		<Action sr="act78" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%code_start_line_num</Str>
-			<Str sr="arg1" ve="3">%code_start_line_num + 1</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="1"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act79" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%lines_count</Str>
-			<Str sr="arg1" ve="3">%code(#)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act8" ve="7">
-			<code>547</code>
-			<label>Set indent_character_type
-Default: "space"</label>
-			<Str sr="arg0" ve="3">%indent_character_type</Str>
-			<Str sr="arg1" ve="3">space</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act80" ve="7">
-			<code>356</code>
-			<label>Remove Last Line If Only Whitespaces</label>
-			<Str sr="arg0" ve="3">%code</Str>
-			<Int sr="arg1">
-				<var>%lines_count</var>
-			</Int>
-			<Str sr="arg2" ve="3"/>
-			<ConditionList sr="if">
-				<Condition sr="c0" ve="3">
-					<lhs>%code(%lines_count)</lhs>
-					<op>4</op>
-					<rhs>^[\s]+$</rhs>
-				</Condition>
-			</ConditionList>
-		</Action>
-		<Action sr="act81" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%lines_count</Str>
-			<Str sr="arg1" ve="3">%code(#)</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act82" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%line_num</Str>
-			<Str sr="arg1" ve="3">%code_start_line_num</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act83" ve="7">
-			<code>549</code>
-			<Str sr="arg0" ve="3">%current_code_type</Str>
-			<Int sr="arg1" val="0"/>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-		</Action>
-		<Action sr="act84" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%current_code_type_line_count</Str>
-			<Str sr="arg1" ve="3">1</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act85" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%current_code_type_start_line_num</Str>
-			<Str sr="arg1" ve="3">%line_num</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act86" ve="7">
 			<code>37</code>
 			<label>If split_action_parameters_on_multiple_lines Equals "1"</label>
 			<ConditionList sr="if">
@@ -2230,7 +2901,307 @@ Default: "space"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act87" ve="7">
+		<Action sr="act68" ve="7">
+			<code>300</code>
+			<label>Get Tasker Package Version Code</label>
+		</Action>
+		<Action sr="act69" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%field_name</Str>
+			<Str sr="arg1" ve="3">versionCode</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act7" ve="7">
+			<code>37</code>
+			<label>If %par1 Not Received</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%par1</lhs>
+					<op>0</op>
+					<rhs>\%par1</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act70" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%package_name</Str>
+			<Str sr="arg1" ve="3">net.dinglisch.android.taskerm</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act71" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">package_manager</Str>
+			<Str sr="arg1" ve="3">CONTEXT</Str>
+			<Str sr="arg2" ve="3">getPackageManager
+{PackageManager} ()</Str>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act72" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">package_info</Str>
+			<Str sr="arg1" ve="3">package_manager</Str>
+			<Str sr="arg2" ve="3">getPackageInfo
+{PackageInfo} (String, int)</Str>
+			<Str sr="arg3" ve="3">%package_name</Str>
+			<Str sr="arg4" ve="3">0</Str>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act73" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">%tasker_package_version_code</Str>
+			<Str sr="arg1" ve="3">package_info.%field_name</Str>
+			<Str sr="arg2" ve="3">assign
+{Object} ()</Str>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act74" ve="7">
+			<code>548</code>
+			<on>false</on>
+			<Str sr="arg0" ve="3">%tasker_package_version_code</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act75" ve="7">
+			<code>300</code>
+			<label>Run format_task_description_for_markdown_set_java_class_and_method_variables_js</label>
+		</Action>
+		<Action sr="act76" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%javascript_failed</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act77" ve="7">
+			<code>129</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">//Set Default Variables Start
+
+var JS_VERBOSE_LEVEL=1; //default to log level 1
+
+var JS_OUTPUT=""; //default to none
+var JS_ERRORS=""; //default to none
+
+var REGEX_VALID_NUMBER= new RegExp('^[0-9]+$');
+var REGEX_VALID_TASKER_VARIABLE_NAME= new RegExp('^[a-zA-Z0-9][a-zA-Z0-9_]{2,}$');
+var REGEX_STRING_ENDS_WITH_UNDERSCORE= new RegExp('_$');
+
+//Set Default Variables End
+
+function log(log_level, output) { if (typeof JS_VERBOSE_LEVEL === 'number' &amp;&amp; JS_VERBOSE_LEVEL &gt;= log_level &amp;&amp; typeof JS_OUTPUT !== 'undefined') { JS_OUTPUT = JS_OUTPUT + output.toString() + "\n"; } }
+function log_error(errors) { if (typeof JS_ERRORS !== 'undefined') { JS_ERRORS = JS_ERRORS + errors.toString() + "\n"; } }
+function exit_js(exit_code) { setLocal("js_exit_code", exit_code.toString()); setLocal("js_output", JS_OUTPUT); setLocal("js_errors", JS_ERRORS); exit();}
+
+
+//Validate Tasker Package Version Code
+var tasker_package_version_code = tasker_package_version_code;
+if ( !REGEX_VALID_NUMBER.test(tasker_package_version_code) ) {
+	log_error("Invalid tasker_package_version_code: '" + tasker_package_version_code + "'");
+	exit_js(1);
+}
+
+
+//Define Tasker Config Utils Java Variables
+//"TCUJV" -&gt; "Tasker Config Utils"
+//"_C_" -&gt; "Class"
+//"_CE_" -&gt; "Class Enum"
+//"_CM_" -&gt; "Class Method"
+
+
+//Define Tasker Config Utils Java Class Variables
+log(1, "Defining TCUJV_C variables");
+
+
+//Set TaskerActionsList Class
+var TCUJV_C_TaskerActionsList = "net.dinglisch.android.taskerm.n";
+
+//Set TaskerUtils Class
+var TCUJV_C_TaskerUtils = "net.dinglisch.android.taskerm.gm";
+
+
+
+//Define Tasker Config Utils Java Method Variables
+log(1, "Defining TCUJV_CE and TCUJV_CM variables");
+
+
+//TaskerActionsList Class Methods
+
+var TCUJV_CM_TaskerActionsList_GetActionNamesList = "l";
+var TCUJV_CM_TaskerActionsList_GetActionCodeByName = "b";
+var TCUJV_CM_TaskerActionsList_GetArgNameAtIndexOfActionWithCode = "a";
+var TCUJV_CM_TaskerActionsList_GetArgsSizeOfActionWithCode = "n";
+
+
+
+//TaskerUtils Class Methods
+
+var TCUJV_CM_TaskerUtils_GetIndexOfStringInArray = "b";
+
+
+
+//Convert all TCUJV variables to tasker local variables
+log(1, "Converting all TCUJV variables to tasker local variables");
+
+var tasker_config_utils_java_variables_to_set = [
+"TCUJV_C_TaskerActionsList", "TCUJV_C_TaskerUtils",
+"TCUJV_CM_TaskerActionsList_GetActionNamesList", "TCUJV_CM_TaskerActionsList_GetActionCodeByName", "TCUJV_CM_TaskerActionsList_GetArgNameAtIndexOfActionWithCode", "TCUJV_CM_TaskerActionsList_GetArgsSizeOfActionWithCode",
+"TCUJV_CM_TaskerUtils_GetIndexOfStringInArray"];
+
+//setLocal("tasker_config_utils_java_variables_to_set_string", tasker_config_utils_java_variables_to_set.toString());
+
+for(var i=0;i&lt;tasker_config_utils_java_variables_to_set.length;i++) {
+
+	var variable_name = tasker_config_utils_java_variables_to_set[i];
+	var variable_value = window[tasker_config_utils_java_variables_to_set[i]];
+
+	if ( typeof variable_name === 'undefined' ||
+			!variable_name ||
+				!REGEX_VALID_TASKER_VARIABLE_NAME.test(variable_name) ||
+					REGEX_STRING_ENDS_WITH_UNDERSCORE.test(variable_name)) {
+		log_error("Undefined, empty or invalid tasker variable_name in tasker_config_utils_java_variables_to_set: '" + variable_name + "'");
+		exit_js(1);
+	}
+
+	if ( typeof variable_value === 'undefined' ||
+			!variable_value ) {
+		log_error("Undefined or empty variable_value for variable_name in tasker_config_utils_java_variables_to_set: '" + variable_name + "'");
+		exit_js(1);
+	}
+
+	setLocal(variable_name.toLowerCase(), variable_value);
+
+}
+
+
+
+//Exit with success
+log(1, "Complete");
+exit_js(0);</Str>
+			<Str sr="arg1" ve="3"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="50"/>
+		</Action>
+		<Action sr="act78" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%javascript_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errmsg
+"
+
+js_exit_code = "%js_exit_code"
+
+js_output =
+"
+%js_output
+"
+
+js_errors = 
+"
+%js_errors
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<bool1>Or</bool1>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%errmsg</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%js_exit_code</lhs>
+					<op>1</op>
+					<rhs>0</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act79" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%javascript_failed</lhs>
+					<op>12</op>
+					<rhs>%par1</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act8" ve="7">
+			<code>300</code>
+			<label>Set User Modifiable Variables Start</label>
+		</Action>
+		<Action sr="act80" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">format_task_description_for_markdown_set_java_class_and_method_variables_js Failed.
+
+%javascript_failed</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act81" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act82" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act83" ve="7">
+			<code>548</code>
+			<on>false</on>
+			<Str sr="arg0" ve="3">format_task_description_for_markdown_set_java_class_and_method_variables_js Output:
+
+js_exit_code = "%js_exit_code"
+
+js_output =
+"
+%js_output
+"
+
+js_errors =
+"
+%js_errors
+"</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act84" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act85" ve="7">
+			<code>300</code>
+			<label>Get All Action Names And Convert To Array</label>
+		</Action>
+		<Action sr="act86" ve="7">
 			<code>664</code>
 			<Str sr="arg0" ve="3">resources</Str>
 			<Str sr="arg1" ve="3">CONTEXT</Str>
@@ -2244,11 +3215,11 @@ Default: "space"</label>
 			<Str sr="arg8" ve="3"/>
 			<Str sr="arg9" ve="3"/>
 		</Action>
-		<Action sr="act88" ve="7">
+		<Action sr="act87" ve="7">
 			<code>664</code>
 			<Str sr="arg0" ve="3">action_names_list</Str>
-			<Str sr="arg1" ve="3">net.dinglisch.android.taskerm.n</Str>
-			<Str sr="arg2" ve="3">l
+			<Str sr="arg1" ve="3">%tcujv_c_taskeractionslist</Str>
+			<Str sr="arg2" ve="3">%tcujv_cm_taskeractionslist_getactionnameslist
 {List} ()</Str>
 			<Str sr="arg3" ve="3"/>
 			<Str sr="arg4" ve="3"/>
@@ -2258,7 +3229,7 @@ Default: "space"</label>
 			<Str sr="arg8" ve="3"/>
 			<Str sr="arg9" ve="3"/>
 		</Action>
-		<Action sr="act89" ve="7">
+		<Action sr="act88" ve="7">
 			<code>664</code>
 			<se>false</se>
 			<Str sr="arg0" ve="3"/>
@@ -2273,18 +3244,7 @@ Default: "space"</label>
 			<Str sr="arg8" ve="3"/>
 			<Str sr="arg9" ve="3"/>
 		</Action>
-		<Action sr="act9" ve="7">
-			<code>547</code>
-			<label>Set min_indent_character_count
-Default: "4"</label>
-			<Str sr="arg0" ve="3">%min_indent_character_count</Str>
-			<Str sr="arg1" ve="3">4</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act90" ve="7">
+		<Action sr="act89" ve="7">
 			<code>37</code>
 			<label>If exception not raised</label>
 			<ConditionList sr="if">
@@ -2295,7 +3255,18 @@ Default: "4"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act91" ve="7">
+		<Action sr="act9" ve="7">
+			<code>547</code>
+			<label>Set indent_character_type
+Default: "space"</label>
+			<Str sr="arg0" ve="3">%indent_character_type</Str>
+			<Str sr="arg1" ve="3">space</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act90" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%is_action_names_list_null</Str>
 			<Str sr="arg1" ve="3">false</Str>
@@ -2304,11 +3275,11 @@ Default: "4"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act92" ve="7">
+		<Action sr="act91" ve="7">
 			<code>43</code>
 			<label>Else if exception raised</label>
 		</Action>
-		<Action sr="act93" ve="7">
+		<Action sr="act92" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%is_action_names_list_null</Str>
 			<Str sr="arg1" ve="3">true</Str>
@@ -2317,10 +3288,10 @@ Default: "4"</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act94" ve="7">
+		<Action sr="act93" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act95" ve="7">
+		<Action sr="act94" ve="7">
 			<code>664</code>
 			<Str sr="arg0" ve="3">%action_names_list_size</Str>
 			<Str sr="arg1" ve="3">action_names_list</Str>
@@ -2341,7 +3312,7 @@ Default: "4"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act96" ve="7">
+		<Action sr="act95" ve="7">
 			<code>37</code>
 			<ConditionList sr="if">
 				<bool0>Or</bool0>
@@ -2357,19 +3328,33 @@ Default: "4"</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act97" ve="7">
+		<Action sr="act96" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Error! Failed To Get List Of All Action Names In Tasker
 %task_name Failed</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act98" ve="7">
+		<Action sr="act97" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act99" ve="7">
+		<Action sr="act98" ve="7">
 			<code>38</code>
+		</Action>
+		<Action sr="act99" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">new_string_array</Str>
+			<Str sr="arg1" ve="3">String[]</Str>
+			<Str sr="arg2" ve="3">new
+{String[]} (int)</Str>
+			<Str sr="arg3" ve="3">%action_names_list_size</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
 		</Action>
 		<Img sr="icn" ve="2">
 			<nme>mw_content_sort</nme>
