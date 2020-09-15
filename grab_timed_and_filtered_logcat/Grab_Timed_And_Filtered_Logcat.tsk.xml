@@ -1,13 +1,16 @@
-<TaskerData sr="" dvi="1" tv="5.9.1">
+<TaskerData sr="" dvi="1" tv="5.9.3">
 	<Task sr="task865">
 		<cdate>1578505443974</cdate>
-		<edate>1578903623179</edate>
+		<edate>1599741968146</edate>
 		<id>865</id>
 		<nme>Grab Timed And Filtered Logcat</nme>
-		<pri>100</pri>
+		<pri>7</pri>
 		<Action sr="act0" ve="7">
 			<code>300</code>
 			<label>A tasks that allows user to capture logcats starting from current time for the next x amount of seconds. It also allows capturing logcat entries of specific tags and application of regex to filter specific entries.
+
+Reading logcat requires root or ADB access or "android.permission.READ_LOGS" permission to be granted to tasker.
+Reading dmesg or last_kmesg requires root or ADB access.
 
 The Tasker "Located Entry" Profile capturing mechanism sometimes doesn't allow the user to see the exact flow of logcat entries in a user friendly way specially if a lot of entries are captured. Moreover, sometimes the user doesn't know what filters to apply without seeing all the logcat entries first.
 
@@ -37,8 +40,13 @@ If both are disabled, then the logcat_tag_filter will not be passed to the logca
 
 To use the task, make a desktop shortcut if required or use the Tasker task play button to run the task, then do things for which you want to capture logcat entries for. Do not do extra things. Moreover, you might need to wait a couple of seconds for things to be added to logcat so finish doing what you want to capture entries for a few seconds before the timeout expires and then wait for it to expire.
 
-If the logcat command fails with a non-zero exit code but you still see the logcat output flashed, then this may be because the timeout command killed the logcat command and its exiting with a non-zero exit to show that. Just add another "And %exit_code neq code_you_received" in the if conditional statements of the exit_code after the logcat command with the anchor "If logcat command failed". Currently exit codes 124, 142 and 257 are ignored but additional ones may need to be ignored for some devices.
+If the logcat command fails with a non-zero exit code but you still see the logcat output flashed, then this may be because the timeout command killed the logcat command and its exiting with a non-zero exit to show that. Just add the exit code you received to the logcat_success_exit_codes variable at the start of the task, which stores a comma separated list of exit code integers that will be considered as success instead of failures. Normally, 0 is the only exit code that is considered a success. Currently, only exit codes 0, 124, 142 and 257 are considered as success but additional ones may need to be added for some devices.
 
+
+Control:
+"
+version_number: 0.3.0
+"
 
 This task does not take any parameters or return anything.</label>
 		</Action>
@@ -52,6 +60,21 @@ This task does not take any parameters or return anything.</label>
 			<Int sr="arg5" val="3"/>
 		</Action>
 		<Action sr="act10" ve="7">
+			<code>300</code>
+			<label>Validate User Modifiable Variables Start</label>
+		</Action>
+		<Action sr="act100" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act101" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">unfiltered logcat entries written to "%unfiltered_logcat_file" and filtered logcat entries written to "%filtered_logcat_file"</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act102" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act11" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_valid_number_regex</Str>
 			<Str sr="arg1" ve="3">^[0-9]+$</Str>
@@ -60,7 +83,7 @@ This task does not take any parameters or return anything.</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act11" ve="7">
+		<Action sr="act12" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_valid_unix_path_1</Str>
 			<Str sr="arg1" ve="3">^[\/].*[^\/]$</Str>
@@ -69,7 +92,7 @@ This task does not take any parameters or return anything.</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act12" ve="7">
+		<Action sr="act13" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_invalid_double_quote_escaping</Str>
 			<Str sr="arg1" ve="3">.*(?&lt;!\\)(?:\\\\)*".*</Str>
@@ -78,7 +101,7 @@ This task does not take any parameters or return anything.</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act13" ve="7">
+		<Action sr="act14" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_valid_shell_metacharacters_containing_string</Str>
 			<Str sr="arg1" ve="3">.*([#$&amp;?!*;"'`\\|^\\\[\\\]&lt;&gt;{}()]+).*</Str>
@@ -87,7 +110,7 @@ This task does not take any parameters or return anything.</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act14" ve="7">
+		<Action sr="act15" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%regex_valid_path_in_storage</Str>
 			<Str sr="arg1" ve="3">^/storage/emulated/0/.+$</Str>
@@ -96,7 +119,16 @@ This task does not take any parameters or return anything.</label>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act15" ve="7">
+		<Action sr="act16" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_valid_comma_separated_numbers_list</Str>
+			<Str sr="arg1" ve="3">^[0-9]+(,[0-9]+)*$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act17" ve="7">
 			<code>37</code>
 			<ConditionList sr="if">
 				<bool0>Or</bool0>
@@ -112,7 +144,7 @@ This task does not take any parameters or return anything.</label>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act16" ve="7">
+		<Action sr="act18" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">timeout_seconds Is Invalid
 %task_name Failed
@@ -120,15 +152,19 @@ This task does not take any parameters or return anything.</label>
 timeout_seconds = "%timeout_seconds"</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act17" ve="7">
+		<Action sr="act19" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act18" ve="7">
+		<Action sr="act2" ve="7">
+			<code>300</code>
+			<label>Set User Modifiable Variables Start</label>
+		</Action>
+		<Action sr="act20" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act19" ve="7">
+		<Action sr="act21" ve="7">
 			<code>37</code>
 			<ConditionList sr="if">
 				<bool0>Or</bool0>
@@ -156,11 +192,7 @@ timeout_seconds = "%timeout_seconds"</Str>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act2" ve="7">
-			<code>300</code>
-			<label>Set User Modifiable Variables Start</label>
-		</Action>
-		<Action sr="act20" ve="7">
+		<Action sr="act22" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">unfiltered_logcat_file Is Invalid
 %task_name Failed
@@ -168,15 +200,15 @@ timeout_seconds = "%timeout_seconds"</Str>
 unfiltered_logcat_file = "%unfiltered_logcat_file"</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act21" ve="7">
+		<Action sr="act23" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act22" ve="7">
+		<Action sr="act24" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act23" ve="7">
+		<Action sr="act25" ve="7">
 			<code>37</code>
 			<ConditionList sr="if">
 				<bool0>Or</bool0>
@@ -204,7 +236,7 @@ unfiltered_logcat_file = "%unfiltered_logcat_file"</Str>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act24" ve="7">
+		<Action sr="act26" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">filtered_logcat_file Is Invalid
 %task_name Failed
@@ -212,45 +244,28 @@ unfiltered_logcat_file = "%unfiltered_logcat_file"</Str>
 filtered_logcat_file = "%filtered_logcat_file"</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act25" ve="7">
+		<Action sr="act27" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act26" ve="7">
+		<Action sr="act28" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act27" ve="7">
+		<Action sr="act29" ve="7">
 			<code>37</code>
 			<ConditionList sr="if">
-				<bool0>Or</bool0>
 				<Condition sr="c0" ve="3">
-					<lhs>%timeout_seconds</lhs>
+					<lhs>%logcat_success_exit_codes</lhs>
 					<op>5</op>
-					<rhs>%regex_valid_number_regex</rhs>
-				</Condition>
-				<Condition sr="c1" ve="3">
-					<lhs>%timeout_seconds</lhs>
-					<op>7</op>
-					<rhs>999</rhs>
+					<rhs>%regex_valid_comma_separated_numbers_list</rhs>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act28" ve="7">
-			<code>548</code>
-			<Str sr="arg0" ve="3">timeout_seconds Is Invalid
-%task_name Failed
-
-timeout_seconds = "%timeout_seconds"</Str>
-			<Int sr="arg1" val="1"/>
-		</Action>
-		<Action sr="act29" ve="7">
-			<code>137</code>
-			<Int sr="arg0" val="0"/>
-			<Str sr="arg1" ve="3"/>
-		</Action>
 		<Action sr="act3" ve="7">
 			<code>547</code>
+			<label>Set logcat_tag_filter
+Default: (disabled)</label>
 			<on>false</on>
 			<Str sr="arg0" ve="3">%logcat_tag_filter</Str>
 			<Str sr="arg1" ve="3">ActivityManager:D ActivityTrigger:D StatusBar:D PhoneStatusBar:D *:S</Str>
@@ -260,13 +275,137 @@ timeout_seconds = "%timeout_seconds"</Str>
 			<Int sr="arg5" val="3"/>
 		</Action>
 		<Action sr="act30" ve="7">
-			<code>38</code>
+			<code>548</code>
+			<Str sr="arg0" ve="3">logcat_success_exit_codes Is Invalid
+%task_name Failed
+
+logcat_success_exit_codes = "%logcat_success_exit_codes"</Str>
+			<Int sr="arg1" val="1"/>
 		</Action>
 		<Action sr="act31" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act32" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act33" ve="7">
 			<code>300</code>
 			<label>Validate User Modifiable Variables End</label>
 		</Action>
-		<Action sr="act32" ve="7">
+		<Action sr="act34" ve="7">
+			<code>365</code>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%has_root
+Root Access
+&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">CheckRoot()</Str>
+		</Action>
+		<Action sr="act35" ve="7">
+			<code>365</code>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%has_adb_wifi
+ADB Wifi Access
+&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">CheckADBWifi()</Str>
+		</Action>
+		<Action sr="act36" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%read_logs_permission</Str>
+			<Str sr="arg1" ve="3">android.permission.READ_LOGS</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act37" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">%check_permission_result</Str>
+			<Str sr="arg1" ve="3">CONTEXT</Str>
+			<Str sr="arg2" ve="3">checkSelfPermission
+{int} (String)</Str>
+			<Str sr="arg3" ve="3">%read_logs_permission</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act38" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%has_read_logs_permission</Str>
+			<Str sr="arg1" ve="3">true</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%check_permission_result</lhs>
+					<op>0</op>
+					<rhs>0</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act39" ve="7">
+			<code>37</code>
+			<label>If tasker neither has root or ADB access or READ_LOGS permission</label>
+			<ConditionList sr="if">
+				<bool0>And</bool0>
+				<bool1>And</bool1>
+				<Condition sr="c0" ve="3">
+					<lhs>%has_root</lhs>
+					<op>1</op>
+					<rhs>true</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%has_adb_wifi</lhs>
+					<op>1</op>
+					<rhs>true</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%has_read_logs_permission</lhs>
+					<op>1</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act4" ve="7">
+			<code>547</code>
+			<label>Set logcat_filter_regex</label>
+			<Str sr="arg0" ve="3">%logcat_filter_regex</Str>
+			<Str sr="arg1" ve="3">(?i).*((activity)|(trigger)|(resume)|(start)|(stop)|(config change)|(systemuivisibility)|(statusbar)).*</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act40" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">"%task_name" task requires tasker to at least have one of the following: root or ADB access or READ_LOGS permission
+
+%task_name Failed</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act41" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act42" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act43" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%newline</Str>
 			<Str sr="arg1" ve="3">
@@ -276,7 +415,7 @@ timeout_seconds = "%timeout_seconds"</Str>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act33" ve="7">
+		<Action sr="act44" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%logcat_tag_filter</Str>
 			<Str sr="arg1" ve="3"> </Str>
@@ -292,7 +431,7 @@ timeout_seconds = "%timeout_seconds"</Str>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act34" ve="7">
+		<Action sr="act45" ve="7">
 			<code>123</code>
 			<label>get start_time</label>
 			<se>false</se>
@@ -303,111 +442,329 @@ timeout_seconds = "%timeout_seconds"</Str>
 			<Str sr="arg4" ve="3"/>
 			<Str sr="arg5" ve="3"/>
 		</Action>
-		<Action sr="act35" ve="7">
-			<code>123</code>
-			<label>Capture logcat for seconds defined in timeout_seconds</label>
-			<se>false</se>
-			<Str sr="arg0" ve="3">logcat -c &amp;&amp; timeout %timeout_seconds logcat %logcat_tag_filter</Str>
+		<Action sr="act46" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Starting Logcat Capture At "%start_time"</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+		<Action sr="act47" ve="7">
+			<code>300</code>
+			<label>Store logcat to "%path/logcat.txt"</label>
+		</Action>
+		<Action sr="act48" ve="7">
+			<code>300</code>
+			<label>Capture logcat for seconds defined in timeout_seconds1</label>
+		</Action>
+		<Action sr="act49" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%output</Str>
 			<Int sr="arg1" val="0"/>
 			<Int sr="arg2" val="0"/>
-			<Str sr="arg3" ve="3">%logcat</Str>
-			<Str sr="arg4" ve="3">%errors</Str>
-			<Str sr="arg5" ve="3"/>
+			<Int sr="arg3" val="0"/>
 		</Action>
-		<Action sr="act36" ve="7">
+		<Action sr="act5" ve="7">
 			<code>547</code>
-			<Str sr="arg0" ve="3">%exit_code</Str>
-			<Str sr="arg1" ve="3">%err</Str>
+			<label>Set logcat capturing time in seconds
+Default: 10</label>
+			<Str sr="arg0" ve="3">%timeout_seconds</Str>
+			<Str sr="arg1" ve="3">10</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act37" ve="7">
-			<code>123</code>
-			<label>get end_time</label>
-			<se>false</se>
-			<Str sr="arg0" ve="3">date +"%m-%d %I:%M:%S"</Str>
+		<Action sr="act50" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%errors</Str>
 			<Int sr="arg1" val="0"/>
 			<Int sr="arg2" val="0"/>
-			<Str sr="arg3" ve="3">%end_time</Str>
-			<Str sr="arg4" ve="3"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act51" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act52" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%logcat_command</Str>
+			<Str sr="arg1" ve="3">logcat -c &amp;&amp; timeout %timeout_seconds logcat %logcat_tag_filter</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act53" ve="7">
+			<code>37</code>
+			<label>If tasker has root access</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_root</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act54" ve="7">
+			<code>123</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">%logcat_command</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="1"/>
+			<Str sr="arg3" ve="3">%output</Str>
+			<Str sr="arg4" ve="3">%errors</Str>
 			<Str sr="arg5" ve="3"/>
 		</Action>
-		<Action sr="act38" ve="7">
+		<Action sr="act55" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errors
+"
+
+output = 
+"
+%output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>And</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs>0</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>,%logcat_success_exit_codes,</lhs>
+					<op>3</op>
+					<rhs>*,%err,*</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act56" ve="7">
+			<code>43</code>
+			<label>If tasker has ADB access</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_adb_wifi</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act57" ve="7">
+			<code>375</code>
+			<se>false</se>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%aw_output
+Output
+Output resulting from the command. May be empty.&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">%logcat_command</Str>
+			<Str sr="arg2" ve="3"/>
+			<Str sr="arg3" ve="3"/>
+			<Int sr="arg4" val="10"/>
+			<Int sr="arg5" val="0"/>
+		</Action>
+		<Action sr="act58" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errmsg
+"
+
+output = 
+"
+%aw_output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>And</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs>0</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>,%logcat_success_exit_codes,</lhs>
+					<op>3</op>
+					<rhs>*,%err,*</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act59" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Str sr="arg1" ve="3">%aw_output</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%aw_output</lhs>
+					<op>1</op>
+					<rhs>\%aw_output</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act6" ve="7">
+			<code>547</code>
+			<label>Set path to unfiltered logcat file
+Default: /storage/emulated/0/unfiltered_logcat.txt</label>
+			<Str sr="arg0" ve="3">%unfiltered_logcat_file</Str>
+			<Str sr="arg1" ve="3">/storage/emulated/0/unfiltered_logcat.txt</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act60" ve="7">
+			<code>43</code>
+			<label>If tasker has READ_LOGS permission</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_read_logs_permission</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act61" ve="7">
+			<code>123</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">%logcat_command</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Str sr="arg3" ve="3">%output</Str>
+			<Str sr="arg4" ve="3">%errors</Str>
+			<Str sr="arg5" ve="3"/>
+		</Action>
+		<Action sr="act62" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errors
+"
+
+output = 
+"
+%output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>And</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs>0</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>,%logcat_success_exit_codes,</lhs>
+					<op>3</op>
+					<rhs>*,%err,*</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act63" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act64" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Cannot read logcat since tasker does not have root or ADB access or READ_LOGS permission
+
+%task_name Failed</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act65" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act66" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act67" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%logcat</Str>
+			<Str sr="arg1" ve="3">%output</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%output</lhs>
+					<op>1</op>
+					<rhs>\%output</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act68" ve="7">
 			<code>548</code>
 			<on>false</on>
 			<Str sr="arg0" ve="3">%logcat
 %errors</Str>
 			<Int sr="arg1" val="0"/>
 		</Action>
-		<Action sr="act39" ve="7">
+		<Action sr="act69" ve="7">
 			<code>37</code>
 			<label>If logcat command failed</label>
 			<ConditionList sr="if">
-				<bool0>Or2</bool0>
-				<bool1>And</bool1>
-				<bool2>And</bool2>
-				<bool3>And</bool3>
 				<Condition sr="c0" ve="3">
-					<lhs>%exit_code</lhs>
-					<op>1</op>
-					<rhs>\%err</rhs>
-				</Condition>
-				<Condition sr="c1" ve="3">
-					<lhs>%errors</lhs>
+					<lhs>%command_failed</lhs>
 					<op>12</op>
 					<rhs></rhs>
 				</Condition>
-				<Condition sr="c2" ve="3">
-					<lhs>%exit_code</lhs>
-					<op>1</op>
-					<rhs>124</rhs>
-				</Condition>
-				<Condition sr="c3" ve="3">
-					<lhs>%exit_code</lhs>
-					<op>1</op>
-					<rhs>142</rhs>
-				</Condition>
-				<Condition sr="c4" ve="3">
-					<lhs>%exit_code</lhs>
-					<op>1</op>
-					<rhs>257</rhs>
-				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act4" ve="7">
+		<Action sr="act7" ve="7">
 			<code>547</code>
-			<Str sr="arg0" ve="3">%logcat_filter_regex</Str>
-			<Str sr="arg1" ve="3">(?i).*((activity)|(trigger)|(resume)|(start)|(stop)|(config change)|(systemuivisibility)|(statusbar)).*</Str>
+			<label>Set path to filtered logcat file
+Default: /storage/emulated/0/filtered_logcat.txt</label>
+			<Str sr="arg0" ve="3">%filtered_logcat_file</Str>
+			<Str sr="arg1" ve="3">/storage/emulated/0/filtered_logcat.txt</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="0"/>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act40" ve="7">
+		<Action sr="act70" ve="7">
 			<code>548</code>
-			<Str sr="arg0" ve="3">Failed To run logcat command
+			<Str sr="arg0" ve="3">Failed to run logcat command
 
-exit_code = "%exit_code"
-
-errors =
-"
-%errors
-"
-
-output =
-"
-%logcat
-"</Str>
+%command_failed</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act41" ve="7">
+		<Action sr="act71" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act42" ve="7">
+		<Action sr="act72" ve="7">
 			<code>43</code>
 			<label>If no logcat entries found</label>
 			<ConditionList sr="if">
@@ -418,20 +775,31 @@ output =
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act43" ve="7">
+		<Action sr="act73" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">No output returned by logcat command</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act44" ve="7">
+		<Action sr="act74" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act45" ve="7">
+		<Action sr="act75" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act46" ve="7">
+		<Action sr="act76" ve="7">
+			<code>123</code>
+			<label>get end_time</label>
+			<se>false</se>
+			<Str sr="arg0" ve="3">date +"%m-%d %I:%M:%S"</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Str sr="arg3" ve="3">%end_time</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+		</Action>
+		<Action sr="act77" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%unfiltered_logcat_entries</Str>
 			<Str sr="arg1" ve="3">Start Time: %start_time
@@ -442,7 +810,7 @@ End Time: %end_time</Str>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act47" ve="7">
+		<Action sr="act78" ve="7">
 			<code>598</code>
 			<label>replace all single quotes (') with ('\'')</label>
 			<Str sr="arg0" ve="3">%unfiltered_logcat_entries</Str>
@@ -461,7 +829,7 @@ End Time: %end_time</Str>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act48" ve="7">
+		<Action sr="act79" ve="7">
 			<code>123</code>
 			<label>Write filtered_logcat_entries to filtered_logcat_file</label>
 			<se>false</se>
@@ -472,7 +840,18 @@ End Time: %end_time</Str>
 			<Str sr="arg4" ve="3">%errors</Str>
 			<Str sr="arg5" ve="3"/>
 		</Action>
-		<Action sr="act49" ve="7">
+		<Action sr="act8" ve="7">
+			<code>547</code>
+			<label>Set exit codes that should be considered a success
+Default: 0,124,142,257</label>
+			<Str sr="arg0" ve="3">%logcat_success_exit_codes</Str>
+			<Str sr="arg1" ve="3">0,124,142,257</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act80" ve="7">
 			<code>37</code>
 			<label>If failed</label>
 			<ConditionList sr="if">
@@ -489,16 +868,7 @@ End Time: %end_time</Str>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act5" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%timeout_seconds</Str>
-			<Str sr="arg1" ve="3">10</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act50" ve="7">
+		<Action sr="act81" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Failed to write filtered logcat entries to "%filtered_logcat_file"
 
@@ -513,15 +883,15 @@ errors =
 "</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act51" ve="7">
+		<Action sr="act82" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act52" ve="7">
+		<Action sr="act83" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act53" ve="7">
+		<Action sr="act84" ve="7">
 			<code>37</code>
 			<label>If logcat_filter_regex is not set, then just return</label>
 			<ConditionList sr="if">
@@ -532,20 +902,20 @@ errors =
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act54" ve="7">
+		<Action sr="act85" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">unfiltered logcat entries written to "%unfiltered_logcat_file"</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act55" ve="7">
+		<Action sr="act86" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
 		</Action>
-		<Action sr="act56" ve="7">
+		<Action sr="act87" ve="7">
 			<code>38</code>
 		</Action>
-		<Action sr="act57" ve="7">
+		<Action sr="act88" ve="7">
 			<code>598</code>
 			<label>Apply logcat_filter_regex to logcat to find filtered_logcat_entries</label>
 			<Str sr="arg0" ve="3">%logcat</Str>
@@ -564,7 +934,7 @@ errors =
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act58" ve="7">
+		<Action sr="act89" ve="7">
 			<code>37</code>
 			<label>If no entries matched logcat_filter_regex</label>
 			<ConditionList sr="if">
@@ -575,24 +945,19 @@ errors =
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act59" ve="7">
+		<Action sr="act9" ve="7">
+			<code>300</code>
+			<label>Set User Modifiable Variables End</label>
+		</Action>
+		<Action sr="act90" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">No matching logcat entries found for `%logcat_filter_regex`</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act6" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%unfiltered_logcat_file</Str>
-			<Str sr="arg1" ve="3">/storage/emulated/0/unfiltered_logcat.txt</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act60" ve="7">
+		<Action sr="act91" ve="7">
 			<code>43</code>
 		</Action>
-		<Action sr="act61" ve="7">
+		<Action sr="act92" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%newline</Str>
 			<Str sr="arg1" ve="3">
@@ -602,14 +967,14 @@ errors =
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act62" ve="7">
+		<Action sr="act93" ve="7">
 			<code>592</code>
 			<label>Join filtered_logcat_entries array with a newline character</label>
 			<Str sr="arg0" ve="3">%filtered_logcat_entries</Str>
 			<Str sr="arg1" ve="3">%newline</Str>
 			<Int sr="arg2" val="0"/>
 		</Action>
-		<Action sr="act63" ve="7">
+		<Action sr="act94" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%filtered_logcat_entries</Str>
 			<Str sr="arg1" ve="3">Start Time: %start_time
@@ -620,7 +985,7 @@ End Time: %end_time</Str>
 			<Int sr="arg4" val="0"/>
 			<Int sr="arg5" val="3"/>
 		</Action>
-		<Action sr="act64" ve="7">
+		<Action sr="act95" ve="7">
 			<code>598</code>
 			<label>replace all single quotes (') with ('\'')</label>
 			<Str sr="arg0" ve="3">%filtered_logcat_entries</Str>
@@ -639,7 +1004,7 @@ End Time: %end_time</Str>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act65" ve="7">
+		<Action sr="act96" ve="7">
 			<code>123</code>
 			<label>Write unfiltered_logcat_entries to unfiltered_logcat_file</label>
 			<se>false</se>
@@ -650,7 +1015,7 @@ End Time: %end_time</Str>
 			<Str sr="arg4" ve="3">%errors</Str>
 			<Str sr="arg5" ve="3"/>
 		</Action>
-		<Action sr="act66" ve="7">
+		<Action sr="act97" ve="7">
 			<code>37</code>
 			<label>If failed</label>
 			<ConditionList sr="if">
@@ -667,7 +1032,7 @@ End Time: %end_time</Str>
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act67" ve="7">
+		<Action sr="act98" ve="7">
 			<code>548</code>
 			<Str sr="arg0" ve="3">Failed to write unfiltered logcat entries to "%unfiltered_logcat_file"
 
@@ -682,38 +1047,10 @@ errors =
 "</Str>
 			<Int sr="arg1" val="1"/>
 		</Action>
-		<Action sr="act68" ve="7">
+		<Action sr="act99" ve="7">
 			<code>137</code>
 			<Int sr="arg0" val="0"/>
 			<Str sr="arg1" ve="3"/>
-		</Action>
-		<Action sr="act69" ve="7">
-			<code>38</code>
-		</Action>
-		<Action sr="act7" ve="7">
-			<code>547</code>
-			<Str sr="arg0" ve="3">%filtered_logcat_file</Str>
-			<Str sr="arg1" ve="3">/storage/emulated/0/filtered_logcat.txt</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="0"/>
-			<Int sr="arg4" val="0"/>
-			<Int sr="arg5" val="3"/>
-		</Action>
-		<Action sr="act70" ve="7">
-			<code>548</code>
-			<Str sr="arg0" ve="3">unfiltered logcat entries written to "%unfiltered_logcat_file" and filtered logcat entries written to "%filtered_logcat_file"</Str>
-			<Int sr="arg1" val="1"/>
-		</Action>
-		<Action sr="act71" ve="7">
-			<code>38</code>
-		</Action>
-		<Action sr="act8" ve="7">
-			<code>300</code>
-			<label>Set User Modifiable Variables End</label>
-		</Action>
-		<Action sr="act9" ve="7">
-			<code>300</code>
-			<label>Validate User Modifiable Variables Start</label>
 		</Action>
 		<Img sr="icn" ve="2">
 			<nme>mw_action_view_headline</nme>

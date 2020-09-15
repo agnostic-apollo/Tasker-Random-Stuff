@@ -27,13 +27,16 @@ This project provides a Tasker task that allows a user to capture logcats starti
 
 ### Dependencies
 
-- No specific dependencies other than requires Tasker to be granted `android.permission.READ_LOGS`. Either grant it over adb manually using `pm grant net.dinglisch.android.taskerm android.permission.READ_LOGS` command or use the script in [tasker_package_utils](https://github.com/Taskomater/tasker_package_utils) project which has a few more features. Root users are automatically granted permissions by Tasker if required.
+- No specific dependencies other than it requires Tasker to be granted root or ADB access or `android.permission.READ_LOGS`. To grant the permission, either grant it over adb manually using `pm grant net.dinglisch.android.taskerm android.permission.READ_LOGS` command or use the script in [tasker_package_utils](https://github.com/Taskomater/tasker_package_utils) project which has a few more features.
 ##
 
 
 ### Downloads
 
+Latest version is `v0.3.0`.
+
 - [GitHub releases](https://github.com/agnostic-apollo/Tasker-Random-Stuff/releases).
+- [TaskerNet](https://taskernet.com/shares/?user=AS35m8mXdvaT1Vj8TwkSaCaoMUv220IIGtHe3pG4MymrCUhpgzrat6njEOnDVVulhAIHLi6BPUt1&id=Task%3AGrab+Timed+And+Filtered+Logcat).
 ##
 
 
@@ -78,7 +81,7 @@ Check [Grab_Timed_And_Filtered_Logcat Task Info](Grab_Timed_And_Filtered_Logcat.
 
 ### Changelog
 
-Check [CHANGELOG.md](../CHANGELOG.md) file for the **Changelog**.
+Check [CHANGELOG.md](CHANGELOG.md) file for the **Changelog**.
 ##
 
 

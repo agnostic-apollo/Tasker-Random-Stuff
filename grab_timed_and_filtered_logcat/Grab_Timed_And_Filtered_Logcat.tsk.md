@@ -1,8 +1,9 @@
 # Grab Timed And Filtered Logcat
 
 ## Export Info:
-**Tasker Version:** `5.9.1`  
-**Timestamp:** `2020-01-14 19.22.17`  
+**Tasker Version:** `5.9.3`  
+**Timestamp:** `2020-09-12 13.44.07`  
+**sha256sum:** `0377c4d3a4a04be3ef3576815b22df5039728e943b23b98c470fbfd9741673db`  
 
 
 
@@ -36,9 +37,17 @@
 **ID:** `865`  
 **Collision Handling:** `Abort New Task`  
 **Keep Device Awake:** `false`  
+**Control:**
+```
+
+version_number: 0.3.0
+```
 **Help:**
 ```
 A tasks that allows user to capture logcats starting from current time for the next x amount of seconds. It also allows capturing logcat entries of specific tags and application of regex to filter specific entries.
+
+Reading logcat requires root or ADB access or "android.permission.READ_LOGS" permission to be granted to tasker.
+Reading dmesg or last_kmesg requires root or ADB access.
 
 The Tasker "Located Entry" Profile capturing mechanism sometimes doesn't allow the user to see the exact flow of logcat entries in a user friendly way specially if a lot of entries are captured. Moreover, sometimes the user doesn't know what filters to apply without seeing all the logcat entries first.
 
@@ -68,8 +77,13 @@ If both are disabled, then the logcat_tag_filter will not be passed to the logca
 
 To use the task, make a desktop shortcut if required or use the Tasker task play button to run the task, then do things for which you want to capture logcat entries for. Do not do extra things. Moreover, you might need to wait a couple of seconds for things to be added to logcat so finish doing what you want to capture entries for a few seconds before the timeout expires and then wait for it to expire.
 
-If the logcat command fails with a non-zero exit code but you still see the logcat output flashed, then this may be because the timeout command killed the logcat command and its exiting with a non-zero exit to show that. Just add another "And %exit_code neq code_you_received" in the if conditional statements of the exit_code after the logcat command with the anchor "If logcat command failed". Currently exit codes 124, 142 and 257 are ignored but additional ones may need to be ignored for some devices.
+If the logcat command fails with a non-zero exit code but you still see the logcat output flashed, then this may be because the timeout command killed the logcat command and its exiting with a non-zero exit to show that. Just add the exit code you received to the logcat_success_exit_codes variable at the start of the task, which stores a comma separated list of exit code integers that will be considered as success instead of failures. Normally, 0 is the only exit code that is considered a success. Currently, only exit codes 0, 124, 142 and 257 are considered as success but additional ones may need to be added for some devices.
 
+
+Control:
+"
+version_number: 0.3.0
+"
 
 This task does not take any parameters or return anything.
 ```
