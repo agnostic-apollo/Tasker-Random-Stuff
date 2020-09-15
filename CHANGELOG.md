@@ -13,11 +13,25 @@ All notable changes to this project will be documented in this file.
 - **Fixed** for any bug fixes.
 - **Security** in case of vulnerabilities.
 ##
-Extract Task Caller Array Values
+
 
 ## [Unreleased]
 
 `-`
+
+
+## [1.5.0] - 2020-09-15
+
+### Added
+- [grab_timed_and_filtered_logcat](grab_timed_and_filtered_logcat):
+	- Updated to `version_number: 0.3.0`.
+- [save_logcat_dmesg_last_kmesg](save_logcat_dmesg_last_kmesg):
+	- Added initial release `version_number: 0.1.0`.
+- [format_task_description_for_markdown](format_task_description_for_markdown):
+	- Updated to `version_number: 0.3.0`.
+
+### Changed
+- Changing `CHANGELOG.md` format from henceforth. Each sub project will now have its own `CHANGELOG.md` for project specific changes.
 
 
 ## [1.4.0] - 2020-06-14
@@ -54,7 +68,8 @@ Extract Task Caller Array Values
 ##
 
 
-[unreleased]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.4.0...HEAD
+[unreleased]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.1.0...v1.2.0
