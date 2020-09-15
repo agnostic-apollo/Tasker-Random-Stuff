@@ -1,0 +1,1163 @@
+<TaskerData sr="" dvi="1" tv="5.9.3">
+	<Task sr="task990">
+		<cdate>1545047385703</cdate>
+		<edate>1599918051140</edate>
+		<id>990</id>
+		<nme>Save logcat;dmesg;last_kmesg</nme>
+		<pri>7</pri>
+		<Action sr="act0" ve="7">
+			<code>300</code>
+			<label>A helper task to save logcat, dmesg and last_kmesg/console-ramoops to the android storage.
+
+Reading logcat requires root or ADB access or "android.permission.READ_LOGS" permission to be granted to tasker.
+Reading dmesg or last_kmesg requires root or ADB access.
+
+"logcat" is the log of android OS system and app messages. It can be used to debug errors like why an app crashed or to monitor what in going on underneath in the android OS. Android OS has a lot of components that output a lot of information to the logcat about their state. Installed apps may optionally also output information to the logcat. The tasker "Logcat Event" profile may be used to run specific actions when a certain entry is outputted to the logcat. By default, when this task runs the logcat command, the output of every component of only the last few minutes of the logcat is saved to the file. You may set additional options in the logcat_command_options variable to pass them to the logcat command to get specific logcat entries. If you want to record logcat entries of a specific event, then run this task as soon as the desired event finishes. For more information on logcat, check https://developer.android.com/studio/command-line/logcat.
+
+"dmesg" is the log of the android kernel, i.e linux kernel. It contains information outputted by the kernel components like device drivers or selinux. This normally isn't needed by android app devs or users, other than if root actions are being run. By default, when this task runs the dmesg command, the output of every component of only the last few minutes of the dmesg is saved to the file. You may set additional options in the dmesg_command_options variable to pass them to the dmesg command to get specific dmesg entries. For more information on dmesg, check https://man7.org/linux/man-pages/man1/dmesg.1.html
+
+The "/proc/last_kmsg" or the "/sys/fs/pstore/console-ramoops" file in android&gt;=6 stores the last few android kernel messages just before an android phone crashes or has a kernel panic. The file can be read on the next boot up to debug why the phone crashed earlier. This file will not exist on a boot up if the phone didn't have a crash on the last boot and was normally rebooted or booted up. For more information on last_kmesg, check https://android.googlesource.com/kernel/common/+/android-3.18/Documentation/ramoops.txt
+
+The "Set User Modifiable Variables*" section defines a few variables to alter the behaviour of the task.
+
+The logcat_file defines the path to the file to which to save the logcat. It must be an absolute path and must be under "/storage/emulated/0". The default is "/storage/emulated/0/logcat.txt".
+
+The dmesg_file defines the path to the file to which to save the dmesg. It must be an absolute path and must be under "/storage/emulated/0". The default is "/storage/emulated/0/dmesg.txt".
+
+The last_kmesg_file defines the path to the file to which to save the last_kmesg. It must be an absolute path and must be under "/storage/emulated/0". The default is "/storage/emulated/0/last_kmesg.txt".
+
+
+Control:
+"
+version_number: 0.1.0
+"
+
+This task does not take any parameters or return anything.</label>
+		</Action>
+		<Action sr="act1" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%task_name</Str>
+			<Str sr="arg1" ve="3">Save logcat;dmesg;last_kmesg</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act10" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_valid_unix_path_1</Str>
+			<Str sr="arg1" ve="3">^[\/].*[^\/]$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act100" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Str sr="arg1" ve="3">%aw_output</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%aw_output</lhs>
+					<op>1</op>
+					<rhs>\%aw_output</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act101" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act102" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Skipping saving last_kmesg since tasker does not have root or ADB access</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act103" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Str sr="arg1" ve="3">skipped</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act104" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act105" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%command_failed</lhs>
+					<op>12</op>
+					<rhs>\%err
+\%errmsg</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act106" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Failed to save last_kmesg
+
+%command_failed</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act107" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act108" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act109" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output_flash</Str>
+			<Str sr="arg1" ve="3">
+
+last_kmesg: %output</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="1"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act11" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_invalid_double_quote_escaping</Str>
+			<Str sr="arg1" ve="3">.*(?&lt;!\\)(?:\\\\)*".*</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act110" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act111" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">%output_flash</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act12" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_valid_shell_metacharacters_containing_string</Str>
+			<Str sr="arg1" ve="3">.*([#$&amp;?!*;"'`\\|^\\\[\\\]&lt;&gt;{}()]+).*</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act13" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%regex_valid_path_in_storage</Str>
+			<Str sr="arg1" ve="3">^/storage/emulated/0/.+$</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act14" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<bool1>Or</bool1>
+				<bool2>Or</bool2>
+				<Condition sr="c0" ve="3">
+					<lhs>%logcat_file</lhs>
+					<op>5</op>
+					<rhs>%regex_valid_unix_path_1</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%logcat_file</lhs>
+					<op>4</op>
+					<rhs>%regex_invalid_double_quote_escaping</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%logcat_file</lhs>
+					<op>4</op>
+					<rhs>%regex_valid_shell_metacharacters_containing_string</rhs>
+				</Condition>
+				<Condition sr="c3" ve="3">
+					<lhs>%logcat_file</lhs>
+					<op>5</op>
+					<rhs>%regex_valid_path_in_storage</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act15" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">logcat_file Is Invalid
+%task_name Failed
+
+logcat_file = "%logcat_file"</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act16" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act17" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act18" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<bool1>Or</bool1>
+				<bool2>Or</bool2>
+				<Condition sr="c0" ve="3">
+					<lhs>%dmesg_file</lhs>
+					<op>5</op>
+					<rhs>%regex_valid_unix_path_1</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%dmesg_file</lhs>
+					<op>4</op>
+					<rhs>%regex_invalid_double_quote_escaping</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%dmesg_file</lhs>
+					<op>4</op>
+					<rhs>%regex_valid_shell_metacharacters_containing_string</rhs>
+				</Condition>
+				<Condition sr="c3" ve="3">
+					<lhs>%dmesg_file</lhs>
+					<op>5</op>
+					<rhs>%regex_valid_path_in_storage</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act19" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">dmesg_file Is Invalid
+%task_name Failed
+
+dmesg_file = "%dmesg_file"</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act2" ve="7">
+			<code>300</code>
+			<label>Set User Modifiable Variables Start</label>
+		</Action>
+		<Action sr="act20" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act21" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act22" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<bool1>Or</bool1>
+				<bool2>Or</bool2>
+				<Condition sr="c0" ve="3">
+					<lhs>%last_kmesg_file</lhs>
+					<op>5</op>
+					<rhs>%regex_valid_unix_path_1</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%last_kmesg_file</lhs>
+					<op>4</op>
+					<rhs>%regex_invalid_double_quote_escaping</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%last_kmesg_file</lhs>
+					<op>4</op>
+					<rhs>%regex_valid_shell_metacharacters_containing_string</rhs>
+				</Condition>
+				<Condition sr="c3" ve="3">
+					<lhs>%last_kmesg_file</lhs>
+					<op>5</op>
+					<rhs>%regex_valid_path_in_storage</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act23" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">last_kmesg_file Is Invalid
+%task_name Failed
+
+last_kmesg_file = "%last_kmesg_file"</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act24" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act25" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act26" ve="7">
+			<code>300</code>
+			<label>Validate User Modifiable Variables End</label>
+		</Action>
+		<Action sr="act27" ve="7">
+			<code>365</code>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%has_root
+Root Access
+&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">CheckRoot()</Str>
+		</Action>
+		<Action sr="act28" ve="7">
+			<code>365</code>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%has_adb_wifi
+ADB Wifi Access
+&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">CheckADBWifi()</Str>
+		</Action>
+		<Action sr="act29" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%read_logs_permission</Str>
+			<Str sr="arg1" ve="3">android.permission.READ_LOGS</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act3" ve="7">
+			<code>547</code>
+			<label>Set path to logcat output file
+Default: /storage/emulated/0/logcat.txt</label>
+			<Str sr="arg0" ve="3">%logcat_file</Str>
+			<Str sr="arg1" ve="3">/storage/emulated/0/logcat.txt</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act30" ve="7">
+			<code>664</code>
+			<Str sr="arg0" ve="3">%check_permission_result</Str>
+			<Str sr="arg1" ve="3">CONTEXT</Str>
+			<Str sr="arg2" ve="3">checkSelfPermission
+{int} (String)</Str>
+			<Str sr="arg3" ve="3">%read_logs_permission</Str>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Str sr="arg6" ve="3"/>
+			<Str sr="arg7" ve="3"/>
+			<Str sr="arg8" ve="3"/>
+			<Str sr="arg9" ve="3"/>
+		</Action>
+		<Action sr="act31" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%has_read_logs_permission</Str>
+			<Str sr="arg1" ve="3">true</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%check_permission_result</lhs>
+					<op>0</op>
+					<rhs>0</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act32" ve="7">
+			<code>37</code>
+			<label>If tasker neither has root or ADB access or READ_LOGS permission</label>
+			<ConditionList sr="if">
+				<bool0>And</bool0>
+				<bool1>And</bool1>
+				<Condition sr="c0" ve="3">
+					<lhs>%has_root</lhs>
+					<op>1</op>
+					<rhs>true</rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%has_adb_wifi</lhs>
+					<op>1</op>
+					<rhs>true</rhs>
+				</Condition>
+				<Condition sr="c2" ve="3">
+					<lhs>%has_read_logs_permission</lhs>
+					<op>1</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act33" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">"%task_name" task requires tasker to at least have one of the following: root or ADB access or READ_LOGS permission
+
+%task_name Failed</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act34" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act35" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act36" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output_flash</Str>
+			<Str sr="arg1" ve="3">Done</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="1"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act37" ve="7">
+			<code>300</code>
+			<label>Store logcat to "%path/logcat.txt"</label>
+		</Action>
+		<Action sr="act38" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act39" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%errors</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act4" ve="7">
+			<code>547</code>
+			<label>Set path to dmesg output file
+Default: /storage/emulated/0/dmesg.txt</label>
+			<Str sr="arg0" ve="3">%dmesg_file</Str>
+			<Str sr="arg1" ve="3">/storage/emulated/0/dmesg.txt</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act40" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act41" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%logcat_command</Str>
+			<Str sr="arg1" ve="3">logcat -d %logcat_command_options &gt; "%logcat_file" &amp;&amp; echo 'saved at "%logcat_file"'</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act42" ve="7">
+			<code>37</code>
+			<label>If tasker has root access</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_root</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act43" ve="7">
+			<code>123</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">%logcat_command</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="1"/>
+			<Str sr="arg3" ve="3">%output</Str>
+			<Str sr="arg4" ve="3">%errors</Str>
+			<Str sr="arg5" ve="3"/>
+		</Action>
+		<Action sr="act44" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errors
+"
+
+output = 
+"
+%output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%errors</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act45" ve="7">
+			<code>43</code>
+			<label>If tasker has ADB access</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_adb_wifi</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act46" ve="7">
+			<code>375</code>
+			<se>false</se>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%aw_output
+Output
+Output resulting from the command. May be empty.&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">%logcat_command</Str>
+			<Str sr="arg2" ve="3"/>
+			<Str sr="arg3" ve="3"/>
+			<Int sr="arg4" val="10"/>
+			<Int sr="arg5" val="0"/>
+		</Action>
+		<Action sr="act47" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errmsg
+"
+
+output = 
+"
+%aw_output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%errmsg</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act48" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Str sr="arg1" ve="3">%aw_output</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%aw_output</lhs>
+					<op>1</op>
+					<rhs>\%aw_output</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act49" ve="7">
+			<code>43</code>
+			<label>If tasker has READ_LOGS permission</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_read_logs_permission</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act5" ve="7">
+			<code>547</code>
+			<label>Set path to last_kmesg output file
+Default: /storage/emulated/0/last_kmesg.txt</label>
+			<Str sr="arg0" ve="3">%last_kmesg_file</Str>
+			<Str sr="arg1" ve="3">/storage/emulated/0/last_kmesg.txt</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act50" ve="7">
+			<code>123</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">%logcat_command</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Str sr="arg3" ve="3">%output</Str>
+			<Str sr="arg4" ve="3">%errors</Str>
+			<Str sr="arg5" ve="3"/>
+		</Action>
+		<Action sr="act51" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errors
+"
+
+output = 
+"
+%output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%errors</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act52" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act53" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Skipping saving logcat since tasker does not have root or ADB access or READ_LOGS permission</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act54" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Str sr="arg1" ve="3">skipped</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act55" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act56" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%command_failed</lhs>
+					<op>12</op>
+					<rhs>\%err
+\%errmsg</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act57" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Failed to save logcat
+
+%command_failed</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act58" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act59" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act6" ve="7">
+			<code>547</code>
+			<label>Set optional logcat command options
+Default: &lt;single space character&gt;</label>
+			<Str sr="arg0" ve="3">%logcat_command_options</Str>
+			<Str sr="arg1" ve="3"> </Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act60" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output_flash</Str>
+			<Str sr="arg1" ve="3">
+
+logcat: %output</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="1"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act61" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act62" ve="7">
+			<code>300</code>
+			<label>Store dmesg to "%path/dmesg.txt"</label>
+		</Action>
+		<Action sr="act63" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act64" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%errors</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act65" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act66" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%dmesg_command</Str>
+			<Str sr="arg1" ve="3">dmesg %dmesg_command_options &gt; "%dmesg_file" &amp;&amp; echo 'saved at "%dmesg_file"'</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act67" ve="7">
+			<code>37</code>
+			<label>If tasker has root access</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_root</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act68" ve="7">
+			<code>123</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">%dmesg_command</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="1"/>
+			<Str sr="arg3" ve="3">%output</Str>
+			<Str sr="arg4" ve="3">%errors</Str>
+			<Str sr="arg5" ve="3"/>
+		</Action>
+		<Action sr="act69" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errors
+"
+
+output = 
+"
+%output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%errors</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act7" ve="7">
+			<code>547</code>
+			<label>Set optional dmesg command options
+Default: &lt;single space character&gt;</label>
+			<Str sr="arg0" ve="3">%dmesg_command_options</Str>
+			<Str sr="arg1" ve="3"> </Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act70" ve="7">
+			<code>43</code>
+			<label>If tasker has ADB access</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_adb_wifi</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act71" ve="7">
+			<code>375</code>
+			<se>false</se>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%aw_output
+Output
+Output resulting from the command. May be empty.&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">%dmesg_command</Str>
+			<Str sr="arg2" ve="3"/>
+			<Str sr="arg3" ve="3"/>
+			<Int sr="arg4" val="10"/>
+			<Int sr="arg5" val="0"/>
+		</Action>
+		<Action sr="act72" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errmsg
+"
+
+output = 
+"
+%aw_output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%errmsg</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act73" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Str sr="arg1" ve="3">%aw_output</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%aw_output</lhs>
+					<op>1</op>
+					<rhs>\%aw_output</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act74" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act75" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Skipping saving dmesg since tasker does not have root or ADB access</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act76" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Str sr="arg1" ve="3">skipped</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act77" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act78" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%command_failed</lhs>
+					<op>12</op>
+					<rhs>\%err
+\%errmsg</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act79" ve="7">
+			<code>548</code>
+			<Str sr="arg0" ve="3">Failed to save dmesg
+
+%command_failed</Str>
+			<Int sr="arg1" val="1"/>
+		</Action>
+		<Action sr="act8" ve="7">
+			<code>300</code>
+			<label>Set User Modifiable Variables End</label>
+		</Action>
+		<Action sr="act80" ve="7">
+			<code>137</code>
+			<Int sr="arg0" val="0"/>
+			<Str sr="arg1" ve="3"/>
+		</Action>
+		<Action sr="act81" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act82" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%output_flash</Str>
+			<Str sr="arg1" ve="3">
+
+dmesg: %output</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="1"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act83" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act84" ve="7">
+			<code>300</code>
+			<label>Store last_kmesg to "%path/last_kmesg.txt"</label>
+		</Action>
+		<Action sr="act85" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%output</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act86" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%errors</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act87" ve="7">
+			<code>549</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act88" ve="7">
+			<code>37</code>
+			<label>If SDK version is greater or equal to android 6, then read last_kmesg dump from "/sys/fs/pstore/console-ramoops"</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%SDK</lhs>
+					<op>7</op>
+					<rhs>22</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act89" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%last_kmesg_dump_file</Str>
+			<Str sr="arg1" ve="3">/sys/fs/pstore/console-ramoops</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act9" ve="7">
+			<code>300</code>
+			<label>Validate User Modifiable Variables Start</label>
+		</Action>
+		<Action sr="act90" ve="7">
+			<code>43</code>
+			<label>Else read last_kmesg dump from "/proc/last_kmsg"</label>
+		</Action>
+		<Action sr="act91" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%last_kmesg_dump_file</Str>
+			<Str sr="arg1" ve="3">/proc/last_kmsg</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act92" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act93" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%last_kmesg_command</Str>
+			<Str sr="arg1" ve="3">test -f "%last_kmesg_dump_file" &amp;&amp; test -r "%last_kmesg_dump_file" &amp;&amp; (cat "%last_kmesg_dump_file" &gt; "%last_kmesg_file" &amp;&amp; echo 'saved at "%last_kmesg_file"') || echo "not found"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+		</Action>
+		<Action sr="act94" ve="7">
+			<code>37</code>
+			<label>If tasker has root access</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_root</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act95" ve="7">
+			<code>123</code>
+			<se>false</se>
+			<Str sr="arg0" ve="3">%last_kmesg_command</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="1"/>
+			<Str sr="arg3" ve="3">%output</Str>
+			<Str sr="arg4" ve="3">%errors</Str>
+			<Str sr="arg5" ve="3"/>
+		</Action>
+		<Action sr="act96" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errors
+"
+
+output = 
+"
+%output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%errors</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act97" ve="7">
+			<code>43</code>
+			<label>If tasker has ADB access</label>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%has_adb_wifi</lhs>
+					<op>0</op>
+					<rhs>true</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act98" ve="7">
+			<code>375</code>
+			<se>false</se>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%aw_output
+Output
+Output resulting from the command. May be empty.&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">%last_kmesg_command</Str>
+			<Str sr="arg2" ve="3"/>
+			<Str sr="arg3" ve="3"/>
+			<Int sr="arg4" val="10"/>
+			<Int sr="arg5" val="0"/>
+		</Action>
+		<Action sr="act99" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%command_failed</Str>
+			<Str sr="arg1" ve="3">exit_code = "%err"
+
+errors = 
+"
+%errmsg
+"
+
+output = 
+"
+%aw_output
+"</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<ConditionList sr="if">
+				<bool0>Or</bool0>
+				<Condition sr="c0" ve="3">
+					<lhs>%err</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+				<Condition sr="c1" ve="3">
+					<lhs>%errmsg</lhs>
+					<op>12</op>
+					<rhs></rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Img sr="icn" ve="2">
+			<nme>mw_action_reorder</nme>
+			<tint>-16777216</tint>
+		</Img>
+	</Task>
+</TaskerData>
