@@ -1,6 +1,6 @@
 # Grab Timed And Filtered Logcat
 
-This project provides a Tasker task that allows a user to capture logcats starting from the current time for the next x seconds using the [Tasker App]. It also allows capturing logcat entries of specific tags and also the usage of regexes to filter specific entries.
+This project provides a Tasker task that allows a user to capture logcats starting from the current time for the next x seconds using the [Tasker App]. It also allows capturing logcat entries of specific tags and also the usage of regexes to filter specific entries. Check [Grab_Timed_And_Filtered_Logcat Task Info](Grab_Timed_And_Filtered_Logcat.tsk.md) file for more info on the task.
 ##
 
 
