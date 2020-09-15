@@ -1,6 +1,8 @@
 # Save logcat, dmesg and last_kmesg
 
-This project provides a Tasker task that allows a user to save the logcat, dmesg and last_kmesg to a file in android storage. Check [Save_logcat_dmesg_last_kmesg Task Info](Save_logcat_dmesg_last_kmesg.tsk.md) file for more info on the task.
+This project provides a Tasker task that allows a user to save the logcat, dmesg and last_kmesg to a file in android storage.
+
+Check [Save_logcat_dmesg_last_kmesg Task Info](Save_logcat_dmesg_last_kmesg.tsk.md) file for more info on the task.
 ##
 
 
