@@ -4,6 +4,7 @@ This repository provides random stuff related to the [Tasker App].
 ##
 
 
+
 ### Contents
 - [Downloads](#Downloads)
 - [Stuff](#Stuff)
@@ -11,10 +12,12 @@ This repository provides random stuff related to the [Tasker App].
 ##
 
 
+
 ### Downloads
 
 - [GitHub releases](https://github.com/agnostic-apollo/Tasker-Random-Stuff/releases).
 ##
+
 
 
 ### Stuff
@@ -27,6 +30,7 @@ This repository provides random stuff related to the [Tasker App].
 - [tasker_config_perform_task_return_variable_toggle_add](tasker_config_perform_task_return_variable_toggle_add)
 - [tasker_config_rty_add](tasker_config_rty_add)
 ##
+
 
 
 ### Changelog

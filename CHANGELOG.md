@@ -20,6 +20,13 @@ All notable changes to this project will be documented in this file.
 `-`
 
 
+## [1.6.0] - 2021-03-04
+
+### Added
+- [format_task_description_for_markdown](format_task_description_for_markdown):
+	- Updated to `version_number: 0.4.0`.
+
+
 ## [1.5.0] - 2020-09-15
 
 ### Added
@@ -68,7 +75,8 @@ All notable changes to this project will be documented in this file.
 ##
 
 
-[unreleased]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.5.0...HEAD
+[unreleased]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/agnostic-apollo/Tasker-Random-Stuff/compare/v1.2.0...v1.3.0
